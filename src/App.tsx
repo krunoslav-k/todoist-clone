@@ -12,8 +12,9 @@ function App() {
   }
 
   return (
-    <>
-      <div>
+    <main className="flex flex-col justify-center items-center py-8">
+      <h1 className="p-10 font-bold text-2xl tracking-wide">Todoist</h1>
+      <div className="w-3/5">
         {todos.map((todo) => {
           return (
             <TodoItem
@@ -24,7 +25,7 @@ function App() {
           );
         })}
       </div>
-    </>
+    </main>
   );
 }
 
