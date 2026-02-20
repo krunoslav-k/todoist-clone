@@ -1,6 +1,8 @@
 import { useState } from "react";
 import TodoItem from "./components/TodoItem";
 import { dummyData } from "./data/dummyData";
+import AddTodoForm from "./components/AddTodoForm";
+import type Todo from "./types/todo";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
@@ -9,6 +11,16 @@ function App() {
     setTodos((prevTodos) =>
       prevTodos.map((todo) => (todo.id === id ? { ...todo, completed } : todo)),
     );
+  }
+
+  function addTodo(title: string) {
+    const newTodo: Todo = {
+      id: Date.now(),
+      title: title,
+      description: "",
+      completed: false,
+    };
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
   }
 
   return (
@@ -25,6 +37,7 @@ function App() {
           );
         })}
       </div>
+      <AddTodoForm handleAddTodo={addTodo} />
     </main>
   );
 }
