@@ -15,14 +15,18 @@ function App() {
     );
   }
 
-  function addTodo(title: string) {
+  function addTodo(title: string, description: string) {
     const newTodo: Todo = {
       id: Date.now(),
-      title: title,
-      description: "",
+      title,
+      description,
       completed: false,
     };
     setTodos((prevTodos) => [...prevTodos, newTodo]);
+  }
+
+  function cancelAddTodo() {
+    setIsAddTodoFormOpen(false);
   }
 
   return (
@@ -56,9 +60,14 @@ function App() {
             </span>
           </button>
         )}
-      </div>
 
-      {isAddTodoFormOpen && <AddTodoForm handleAddTodo={addTodo} />}
+        {isAddTodoFormOpen && (
+          <AddTodoForm
+            handleAddTodo={addTodo}
+            handleCancelAddTodo={cancelAddTodo}
+          />
+        )}
+      </div>
     </main>
   );
 }

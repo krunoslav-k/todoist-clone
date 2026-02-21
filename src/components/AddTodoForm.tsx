@@ -1,33 +1,63 @@
 import { useState } from "react";
 
 interface AddTodoFormProps {
-  handleAddTodo: (title: string) => void;
+  handleAddTodo: (title: string, description: string) => void;
+  handleCancelAddTodo: () => void;
 }
 
-export default function AddTodoForm({ handleAddTodo }: AddTodoFormProps) {
-  const [input, setInput] = useState("");
+export default function AddTodoForm({
+  handleAddTodo,
+  handleCancelAddTodo,
+}: AddTodoFormProps) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!input.trim()) return;
+    if (!title.trim() || !description.trim()) return;
 
-    handleAddTodo(input.trim());
-    setInput("");
+    handleAddTodo(title.trim(), description.trim());
+    setTitle("");
+    setDescription("");
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      className="w-full px-2 py-3 border-[1px] border-gray-400 rounded-lg flex flex-col"
+    >
       <input
         type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Add task"
-        className="border border-gray-600"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Task name"
+        className=""
       />
-      <button type="submit" className="bg-amber-200 w-6 h-6">
-        +
-      </button>
+
+      <input
+        type="text"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Description"
+        className=""
+      />
+
+      <div>
+        <button
+          onClick={handleCancelAddTodo}
+          className="px-5 py-2 bg-amber-100 hover:bg-amber-200"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          className="px-5 py-2 bg-blue-300 hover:bg-blue-400"
+        >
+          Add task
+        </button>
+      </div>
     </form>
   );
 }
