@@ -6,6 +6,7 @@ import type Todo from "./types/todo";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
+  const [isAddTodoFormOpen, setIsAddTodoFormOpen] = useState(false);
 
   function toggleCompleted(id: number, completed: boolean) {
     setTodos((prevTodos) =>
@@ -36,8 +37,15 @@ function App() {
             />
           );
         })}
+
+        {!isAddTodoFormOpen && (
+          <button onClick={() => setIsAddTodoFormOpen((prev) => !prev)}>
+            Add task
+          </button>
+        )}
       </div>
-      <AddTodoForm handleAddTodo={addTodo} />
+
+      {isAddTodoFormOpen && <AddTodoForm handleAddTodo={addTodo} />}
     </main>
   );
 }
