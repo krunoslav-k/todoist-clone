@@ -15,7 +15,7 @@ export default function AddTodoForm({
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!title.trim() || !description.trim()) return;
+    if (!title.trim()) return;
 
     handleAddTodo(title.trim(), description.trim());
     setTitle("");
