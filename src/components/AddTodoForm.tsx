@@ -25,14 +25,14 @@ export default function AddTodoForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full px-2 py-3 border-[1px] border-gray-400 rounded-lg flex flex-col"
+      className="w-full  border-[1px] border-gray-300 rounded-lg flex flex-col"
     >
       <input
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Task name"
-        className=""
+        className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none"
       />
 
       <input
@@ -40,20 +40,20 @@ export default function AddTodoForm({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description"
-        className=""
+        className="ml-2.5 mr-2.5 mb-2 text-sm font-light text-gray-600 focus:outline-none"
       />
 
-      <div>
+      <div className="border-t-1 border-gray-300 p-2 flex justify-end gap-2.5">
         <button
           onClick={handleCancelAddTodo}
-          className="px-5 py-2 bg-amber-100 hover:bg-amber-200"
+          className="px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-sm font-medium"
         >
           Cancel
         </button>
 
         <button
           type="submit"
-          className="px-5 py-2 bg-blue-300 hover:bg-blue-400"
+          className="px-3.5 py-2 rounded-md bg-slate-600 hover:bg-slate-700 text-sm text-white font-medium"
         >
           Add task
         </button>
