@@ -37,6 +37,7 @@ export default function TodoItem({ todo, onToggleCompleted }: TodoItemProps) {
           <div className="ml-2 text-[0.8rem] text-gray-400">
             {todo.description}
           </div>
+          <div>{todo.dueDate ? todo.dueDate.toDateString() : ""}</div>
         </div>
       </label>
     </div>

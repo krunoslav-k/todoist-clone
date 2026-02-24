@@ -15,12 +15,13 @@ function App() {
     );
   }
 
-  function addTodo(title: string, description: string) {
+  function addTodo(title: string, description: string, dueDate: Date) {
     const newTodo: Todo = {
       id: Date.now(),
       title,
       description,
       completed: false,
+      dueDate,
     };
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   }
