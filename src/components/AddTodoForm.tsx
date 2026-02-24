@@ -1,3 +1,4 @@
+import { AlarmClock, Calendar, Ellipsis, Flag } from "lucide-react";
 import { useState } from "react";
 
 interface AddTodoFormProps {
@@ -40,8 +41,30 @@ export default function AddTodoForm({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description"
-        className="ml-2.5 mr-2.5 mb-2 text-sm font-light text-gray-600 focus:outline-none"
+        className="ml-2.5 mr-2.5 mb-2.5 text-sm font-light text-gray-600 focus:outline-none"
       />
+
+      <div className="ml-2 mb-2 flex justify-start items-center gap-2">
+        <button className="button">
+          <Calendar
+            strokeWidth={1.5}
+            size={15}
+            className="text-gray-500 relative top-[-0.5px]"
+          />{" "}
+          Date
+        </button>
+        <button className="button">
+          <Flag strokeWidth={1.5} size={15} className="text-gray-500" />{" "}
+          Priority
+        </button>
+        <button className="button">
+          <AlarmClock strokeWidth={1.5} size={15} className="text-gray-500" />{" "}
+          Reminders
+        </button>
+        <button className="button px-1 h-7.5">
+          <Ellipsis strokeWidth={1.75} size={20} className="text-gray-500" />
+        </button>
+      </div>
 
       <div className="border-t-1 border-gray-300 p-2 flex justify-end gap-2.5">
         <button
