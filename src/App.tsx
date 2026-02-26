@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TodoItem from "./components/TodoItem";
 import { dummyData } from "./data/dummyData";
-import AddTodoForm from "./components/AddTodoForm";
+import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
 import type Todo from "./types/todo";
 import AddTodoButton from "./components/AddTodoButton";
 

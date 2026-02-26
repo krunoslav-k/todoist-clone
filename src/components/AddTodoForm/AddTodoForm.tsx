@@ -1,6 +1,9 @@
-import { AlarmClock, Calendar, Ellipsis, Flag } from "lucide-react";
 import { useState } from "react";
-import DatePicker from "./DatePicker";
+import DatePicker from "./modals/DatePicker";
+import DateButton from "./buttons/DateButton";
+import PriorityButton from "./buttons/PriorityButton";
+import RemindersButton from "./buttons/RemindersButton";
+import OptionsButton from "./buttons/OptionsButton";
 
 interface AddTodoFormProps {
   handleAddTodo: (
@@ -30,7 +33,7 @@ export default function AddTodoForm({
     setDescription("");
   }
 
-  function handleDueDateClick() {
+  function handleDateButtonClick() {
     setIsDatePickerOpen((prev) => !prev);
   }
 
@@ -57,25 +60,10 @@ export default function AddTodoForm({
         />
 
         <div className="ml-2 mb-2 flex justify-start items-center gap-2">
-          <button onClick={handleDueDateClick} className="button">
-            <Calendar
-              strokeWidth={1.5}
-              size={15}
-              className="text-gray-500 relative top-[-0.5px]"
-            />{" "}
-            Date
-          </button>
-          <button className="button">
-            <Flag strokeWidth={1.5} size={15} className="text-gray-500" />{" "}
-            Priority
-          </button>
-          <button className="button">
-            <AlarmClock strokeWidth={1.5} size={15} className="text-gray-500" />{" "}
-            Reminders
-          </button>
-          <button className="button px-1 h-7.5">
-            <Ellipsis strokeWidth={1.75} size={20} className="text-gray-500" />
-          </button>
+          <DateButton handleDateButtonClick={handleDateButtonClick} />
+          <PriorityButton />
+          <RemindersButton />
+          <OptionsButton />
         </div>
 
         <div className="border-t-1 border-gray-300 p-2 flex justify-end gap-2.5">
