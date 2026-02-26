@@ -7,7 +7,7 @@ interface TodoItemProps {
 
 export default function TodoItem({ todo, onToggleCompleted }: TodoItemProps) {
   return (
-    <div className="p-3 border-b-1 border-gray-300">
+    <div className="p-3 border-b border-gray-300">
       <label className="flex items-center justify-start hover:cursor-pointer group">
         <input
           type="checkbox"
@@ -38,6 +38,7 @@ export default function TodoItem({ todo, onToggleCompleted }: TodoItemProps) {
             {todo.description}
           </div>
           <div>{todo.dueDate ? todo.dueDate.toDateString() : ""}</div>
+          <div>{todo.priority ? todo.priority : ""}</div>
         </div>
       </label>
     </div>

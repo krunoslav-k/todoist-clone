@@ -4,12 +4,15 @@ import DateButton from "./buttons/DateButton";
 import PriorityButton from "./buttons/PriorityButton";
 import RemindersButton from "./buttons/RemindersButton";
 import OptionsButton from "./buttons/OptionsButton";
+import PrioritySelector from "./modals/PrioritySelector";
+import type { Priority } from "../../types/todo";
 
 interface AddTodoFormProps {
   handleAddTodo: (
     title: string,
     description: string,
     dueDate: Date | undefined,
+    priority: Priority,
   ) => void;
   handleCancelAddTodo: () => void;
 }
@@ -21,20 +24,34 @@ export default function AddTodoForm({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState<Date>();
+  const [priority, setPriority] = useState<Priority>(4);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isPrioritySelectorOpen, setIsPrioritySelectorOpen] = useState(false);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!title.trim()) return;
 
-    handleAddTodo(title.trim(), description.trim(), dueDate);
+    handleAddTodo(title.trim(), description.trim(), dueDate, priority);
     setTitle("");
     setDescription("");
+    setPriority(4);
   }
 
   function handleDateButtonClick() {
     setIsDatePickerOpen((prev) => !prev);
+    setIsPrioritySelectorOpen(false);
+  }
+
+  function handlePriorityButtonClick() {
+    setIsPrioritySelectorOpen((prev) => !prev);
+    setIsDatePickerOpen(false);
+  }
+
+  function handlePrioritySelect(priority: Priority) {
+    setPriority(priority);
+    setIsPrioritySelectorOpen(false);
   }
 
   return (
@@ -61,12 +78,14 @@ export default function AddTodoForm({
 
         <div className="ml-2 mb-2 flex justify-start items-center gap-2">
           <DateButton handleDateButtonClick={handleDateButtonClick} />
-          <PriorityButton />
+          <PriorityButton
+            handlePriorityButtonClick={handlePriorityButtonClick}
+          />
           <RemindersButton />
           <OptionsButton />
         </div>
 
-        <div className="border-t-1 border-gray-300 p-2 flex justify-end gap-2.5">
+        <div className="border-t border-gray-300 p-2 flex justify-end gap-2.5">
           <button
             onClick={handleCancelAddTodo}
             className="px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-sm font-medium"
@@ -84,6 +103,9 @@ export default function AddTodoForm({
       </form>
 
       {isDatePickerOpen && <DatePicker handleSelectDate={setDueDate} />}
+      {isPrioritySelectorOpen && (
+        <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
+      )}
     </>
   );
 }
