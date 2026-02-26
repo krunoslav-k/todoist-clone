@@ -1,5 +1,8 @@
+import { format } from "date-fns/format";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
+import { enGB } from "react-day-picker/locale/en-GB";
 import "react-day-picker/style.css";
 
 interface DatePickerProps {
@@ -21,6 +24,32 @@ export default function DatePicker({ handleSelectDate }: DatePickerProps) {
         mode="single"
         selected={selected}
         onSelect={handleSelect}
+        weekStartsOn={1}
+        locale={enGB}
+        formatters={{
+          formatWeekdayName: (date) =>
+            date.toLocaleDateString("en-GB", { weekday: "short" }).charAt(0),
+
+          formatCaption: (date) => format(date, "MMM yyyy", { locale: enGB }),
+        }}
+        classNames={{
+          caption: "flex justify-center items-center border-3",
+          caption_label: "text-[0.9rem] font-semibold",
+          button_previous:
+            "p-0.5 rounded-sm hover:bg-gray-100 flex items-center justify-center",
+          button_next:
+            "ml-3 p-0.5 rounded-sm hover:bg-gray-100 flex items-center justify-center",
+          head_cell: "text-xl font-light text-gray-600",
+          day: "text-sm",
+        }}
+        components={{
+          Chevron: ({ orientation }) =>
+            orientation === "left" ? (
+              <ChevronLeft className="h-5 w-5 stroke-1 text-gray-500" />
+            ) : (
+              <ChevronRight className="h-5 w-5 stroke-1 text-gray-500" />
+            ),
+        }}
       />
     </div>
   );
