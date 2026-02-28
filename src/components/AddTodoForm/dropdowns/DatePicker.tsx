@@ -18,7 +18,7 @@ export default function DatePicker({ handleSelectDate }: DatePickerProps) {
   }
 
   return (
-    <div className="p-4 border border-gray-300 rounded-lg bg-white shadow w-fit relative z-10 bottom-50 left-19">
+    <div className="p-3 pt-0 border border-gray-300 rounded-lg bg-white shadow w-fit relative z-10 bottom-50 left-19">
       <DayPicker
         animate
         mode="single"
@@ -34,15 +34,19 @@ export default function DatePicker({ handleSelectDate }: DatePickerProps) {
         }}
         classNames={{
           caption: "flex justify-center items-center border-3",
-          caption_label: "text-[0.9rem] font-semibold",
+          caption_label:
+            "flex justify-center items-center text-[0.8rem] font-semibold",
           button_previous:
             "p-0.5 rounded-sm hover:bg-gray-100 flex items-center justify-center",
           button_next:
             "ml-3 p-0.5 rounded-sm hover:bg-gray-100 flex items-center justify-center",
           head_cell: "text-xs font-light text-gray-600",
-          day: " text-xs p-0",
-
+          day: "h-7 w-7 p-0.5 text-xs ",
+          day_button: "h-7 w-7 text-xs",
+          month_caption: "py-4.5 flex justify-between",
           month: "w-fit",
+          weekdays: "border-b border-gray-200",
+          weekday: "font-light text-[0.65rem] text-gray-500",
         }}
         components={{
           Chevron: ({ orientation }) =>
