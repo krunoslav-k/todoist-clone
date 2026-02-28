@@ -4,7 +4,6 @@ import { dummyData } from "./data/dummyData";
 import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
 import type Todo from "./types/todo";
 import AddTodoButton from "./components/AddTodoButton";
-import type { Priority } from "./types/todo";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
@@ -16,20 +15,8 @@ function App() {
     );
   }
 
-  function addTodo(
-    title: string,
-    description: string,
-    dueDate: Date,
-    priority: Priority,
-  ) {
-    const newTodo: Todo = {
-      id: Date.now(),
-      title,
-      description,
-      completed: false,
-      dueDate,
-      priority,
-    };
+  function addTodo(todo: Todo) {
+    const newTodo: Todo = { ...todo, id: Date.now() };
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   }
 

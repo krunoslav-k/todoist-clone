@@ -8,14 +8,10 @@ import PrioritySelector from "./dropdowns/PrioritySelector";
 import type { Priority } from "../../types/todo";
 import RemindersDropdown from "./dropdowns/RemindersDropdown";
 import type { ActiveDropdown } from "../../types/ui";
+import type Todo from "../../types/todo";
 
 interface AddTodoFormProps {
-  handleAddTodo: (
-    title: string,
-    description: string,
-    dueDate: Date | undefined,
-    priority: Priority,
-  ) => void;
+  handleAddTodo: (todo: Todo) => void;
   handleCancelAddTodo: () => void;
 }
 
@@ -23,21 +19,24 @@ export default function AddTodoForm({
   handleAddTodo,
   handleCancelAddTodo,
 }: AddTodoFormProps) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState<Date>();
-  const [priority, setPriority] = useState<Priority>(4);
+  const initialTodo: Todo = {
+    id: 0,
+    title: "",
+    description: "",
+    completed: false,
+    dueDate: undefined,
+    priority: undefined,
+  };
+  const [todo, setTodo] = useState<Todo>(initialTodo);
   const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!title.trim()) return;
+    if (!todo.title.trim()) return;
 
-    handleAddTodo(title.trim(), description.trim(), dueDate, priority);
-    setTitle("");
-    setDescription("");
-    setPriority(4);
+    handleAddTodo(todo);
+    setTodo(initialTodo);
   }
 
   function handleDropdownClick(type: Exclude<ActiveDropdown, null>) {
@@ -45,7 +44,14 @@ export default function AddTodoForm({
   }
 
   function handlePrioritySelect(priority: Priority) {
-    setPriority(priority);
+    setTodo((prev) => {
+      return { ...prev, priority };
+    });
+    setActiveDropdown(null);
+  }
+
+  function handleDateSelect(dueDate: Date) {
+    setTodo((prev) => ({ ...prev, dueDate }));
     setActiveDropdown(null);
   }
 
@@ -57,16 +63,20 @@ export default function AddTodoForm({
       >
         <input
           type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={todo.title}
+          onChange={(e) =>
+            setTodo((prev) => ({ ...prev, title: e.target.value }))
+          }
           placeholder="Task name"
           className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none"
         />
 
         <input
           type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={todo.description}
+          onChange={(e) =>
+            setTodo((prev) => ({ ...prev, description: e.target.value }))
+          }
           placeholder="Description"
           className="ml-2.5 mr-2.5 mb-2.5 text-sm font-light text-gray-600 focus:outline-none"
         />
@@ -93,7 +103,7 @@ export default function AddTodoForm({
       </form>
 
       {activeDropdown === "date" ? (
-        <DatePicker handleSelectDate={setDueDate} />
+        <DatePicker handleSelectDate={handleDateSelect} />
       ) : activeDropdown === "priority" ? (
         <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
       ) : activeDropdown === "reminders" ? (
