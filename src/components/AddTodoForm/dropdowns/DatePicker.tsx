@@ -39,8 +39,10 @@ export default function DatePicker({ handleSelectDate }: DatePickerProps) {
             "p-0.5 rounded-sm hover:bg-gray-100 flex items-center justify-center",
           button_next:
             "ml-3 p-0.5 rounded-sm hover:bg-gray-100 flex items-center justify-center",
-          head_cell: "text-xl font-light text-gray-600",
-          day: "text-sm",
+          head_cell: "text-xs font-light text-gray-600",
+          day: " text-xs p-0",
+
+          month: "w-fit",
         }}
         components={{
           Chevron: ({ orientation }) =>

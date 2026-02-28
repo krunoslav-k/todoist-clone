@@ -1,11 +1,12 @@
 import { useState } from "react";
-import DatePicker from "./modals/DatePicker";
+import DatePicker from "./dropdowns/DatePicker";
 import DateButton from "./buttons/DateButton";
 import PriorityButton from "./buttons/PriorityButton";
 import RemindersButton from "./buttons/RemindersButton";
 import OptionsButton from "./buttons/OptionsButton";
-import PrioritySelector from "./modals/PrioritySelector";
+import PrioritySelector from "./dropdowns/PrioritySelector";
 import type { Priority } from "../../types/todo";
+import RemindersDropdown from "./dropdowns/RemindersDropdown";
 
 interface AddTodoFormProps {
   handleAddTodo: (
@@ -27,6 +28,7 @@ export default function AddTodoForm({
   const [priority, setPriority] = useState<Priority>(4);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isPrioritySelectorOpen, setIsPrioritySelectorOpen] = useState(false);
+  const [isRemindersDropdownOpen, setIsRemindersDropdownOpen] = useState(false);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -52,6 +54,10 @@ export default function AddTodoForm({
   function handlePrioritySelect(priority: Priority) {
     setPriority(priority);
     setIsPrioritySelectorOpen(false);
+  }
+
+  function handleRemindersButtonClick() {
+    setIsRemindersDropdownOpen((prev) => !prev);
   }
 
   return (
@@ -81,7 +87,9 @@ export default function AddTodoForm({
           <PriorityButton
             handlePriorityButtonClick={handlePriorityButtonClick}
           />
-          <RemindersButton />
+          <RemindersButton
+            handleRemindersButtonClick={handleRemindersButtonClick}
+          />
           <OptionsButton />
         </div>
 
@@ -93,10 +101,7 @@ export default function AddTodoForm({
             Cancel
           </button>
 
-          <button
-            type="submit"
-            className="px-3.5 py-2 rounded-md bg-slate-600 hover:bg-slate-700 text-sm text-white font-medium"
-          >
+          <button type="submit" className="add_button">
             Add task
           </button>
         </div>
@@ -106,6 +111,7 @@ export default function AddTodoForm({
       {isPrioritySelectorOpen && (
         <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
       )}
+      {isRemindersDropdownOpen && <RemindersDropdown />}
     </>
   );
 }
