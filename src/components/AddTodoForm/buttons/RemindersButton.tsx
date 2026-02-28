@@ -10,6 +10,7 @@ export default function RemindersButton({
 }: RemindersButtonProps) {
   return (
     <button
+      type="button"
       onClick={() => handleRemindersButtonClick("reminders")}
       className="button"
     >

@@ -7,7 +7,11 @@ interface DateButtonProps {
 
 export default function DateButton({ handleDateButtonClick }: DateButtonProps) {
   return (
-    <button onClick={() => handleDateButtonClick("date")} className="button">
+    <button
+      type="button"
+      onClick={() => handleDateButtonClick("date")}
+      className="button"
+    >
       <Calendar
         strokeWidth={1.5}
         size={15}

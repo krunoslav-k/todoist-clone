@@ -10,6 +10,7 @@ export default function PriorityButton({
 }: PriorityButtonProps) {
   return (
     <button
+      type="button"
       onClick={() => handlePriorityButtonClick("priority")}
       className="button"
     >
