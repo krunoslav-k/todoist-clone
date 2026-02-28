@@ -1,12 +1,13 @@
 import { Calendar } from "lucide-react";
+import type { ActiveDropdown } from "../../../types/ui";
 
 interface DateButtonProps {
-  handleDateButtonClick: () => void;
+  handleDateButtonClick: (type: Exclude<ActiveDropdown, null>) => void;
 }
 
 export default function DateButton({ handleDateButtonClick }: DateButtonProps) {
   return (
-    <button onClick={handleDateButtonClick} className="button">
+    <button onClick={() => handleDateButtonClick("date")} className="button">
       <Calendar
         strokeWidth={1.5}
         size={15}

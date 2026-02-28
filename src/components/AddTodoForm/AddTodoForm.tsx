@@ -7,6 +7,7 @@ import OptionsButton from "./buttons/OptionsButton";
 import PrioritySelector from "./dropdowns/PrioritySelector";
 import type { Priority } from "../../types/todo";
 import RemindersDropdown from "./dropdowns/RemindersDropdown";
+import type { ActiveDropdown } from "../../types/ui";
 
 interface AddTodoFormProps {
   handleAddTodo: (
@@ -26,9 +27,7 @@ export default function AddTodoForm({
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState<Date>();
   const [priority, setPriority] = useState<Priority>(4);
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [isPrioritySelectorOpen, setIsPrioritySelectorOpen] = useState(false);
-  const [isRemindersDropdownOpen, setIsRemindersDropdownOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,23 +40,13 @@ export default function AddTodoForm({
     setPriority(4);
   }
 
-  function handleDateButtonClick() {
-    setIsDatePickerOpen((prev) => !prev);
-    setIsPrioritySelectorOpen(false);
-  }
-
-  function handlePriorityButtonClick() {
-    setIsPrioritySelectorOpen((prev) => !prev);
-    setIsDatePickerOpen(false);
+  function handleDropdownClick(type: Exclude<ActiveDropdown, null>) {
+    setActiveDropdown((prev) => (prev === type ? null : type));
   }
 
   function handlePrioritySelect(priority: Priority) {
     setPriority(priority);
-    setIsPrioritySelectorOpen(false);
-  }
-
-  function handleRemindersButtonClick() {
-    setIsRemindersDropdownOpen((prev) => !prev);
+    setActiveDropdown(null);
   }
 
   return (
@@ -83,13 +72,9 @@ export default function AddTodoForm({
         />
 
         <div className="ml-2 mb-2 flex justify-start items-center gap-2">
-          <DateButton handleDateButtonClick={handleDateButtonClick} />
-          <PriorityButton
-            handlePriorityButtonClick={handlePriorityButtonClick}
-          />
-          <RemindersButton
-            handleRemindersButtonClick={handleRemindersButtonClick}
-          />
+          <DateButton handleDateButtonClick={handleDropdownClick} />
+          <PriorityButton handlePriorityButtonClick={handleDropdownClick} />
+          <RemindersButton handleRemindersButtonClick={handleDropdownClick} />
           <OptionsButton />
         </div>
 
@@ -107,11 +92,13 @@ export default function AddTodoForm({
         </div>
       </form>
 
-      {isDatePickerOpen && <DatePicker handleSelectDate={setDueDate} />}
-      {isPrioritySelectorOpen && (
+      {activeDropdown === "date" ? (
+        <DatePicker handleSelectDate={setDueDate} />
+      ) : activeDropdown === "priority" ? (
         <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
-      )}
-      {isRemindersDropdownOpen && <RemindersDropdown />}
+      ) : activeDropdown === "reminders" ? (
+        <RemindersDropdown />
+      ) : null}
     </>
   );
 }
