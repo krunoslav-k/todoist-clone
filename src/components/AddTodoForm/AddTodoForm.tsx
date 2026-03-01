@@ -50,7 +50,7 @@ export default function AddTodoForm({
     setActiveDropdown(null);
   }
 
-  function handleDateSelect(dueDate: Date) {
+  function handleSelectDate(dueDate: Date) {
     setTodo((prev) => ({ ...prev, dueDate }));
     setActiveDropdown(null);
   }
@@ -103,7 +103,7 @@ export default function AddTodoForm({
       </form>
 
       {activeDropdown === "date" ? (
-        <DatePicker handleSelectDate={handleDateSelect} />
+        <DatePicker handleSelectDate={handleSelectDate} />
       ) : activeDropdown === "priority" ? (
         <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
       ) : activeDropdown === "reminders" ? (
