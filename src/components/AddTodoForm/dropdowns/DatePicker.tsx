@@ -15,12 +15,16 @@ export default function DatePicker({ handleSelectDate }: DatePickerProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [inputValue, setInputValue] = useState("");
 
-  const parsedDate =
-    inputValue.length === 10
-      ? parse(inputValue, "dd.MM.yyyy", new Date())
-      : null;
+  const parsedDate = (() => {
+    const parts = inputValue.split(".");
+    if (parts.length === 3 && parts[2].length === 4) {
+      const date = parse(inputValue, "d.M.yyyy", new Date());
+      if (isValid(date)) return date;
+    }
+    return null;
+  })();
 
-  const isDateCompleteAndValid = parsedDate && isValid(parsedDate);
+  const isDateCompleteAndValid = parsedDate !== null;
 
   const handleDayPickerSelect = (date: Date | undefined) => {
     if (!date) {
@@ -29,17 +33,23 @@ export default function DatePicker({ handleSelectDate }: DatePickerProps) {
     } else {
       setSelectedDate(date);
       setDisplayedMonth(date);
-      setInputValue(format(date, "dd.MM.yyyy"));
+      setInputValue(format(date, "d.M.yyyy"));
       handleSelectDate(date);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    const newValue = e.target.value;
+    setInputValue(newValue);
 
-    const parsedDate = parse(e.target.value, "dd.MM.yyyy", new Date());
+    const parts = newValue.split(".");
+    let parsedDate: Date | null = null;
+    if (parts.length === 3 && parts[2].length === 4) {
+      const date = parse(newValue, "d.M.yyyy", new Date());
+      if (isValid(date)) parsedDate = date;
+    }
 
-    if (isValid(parsedDate)) {
+    if (parsedDate) {
       setSelectedDate(parsedDate);
       setDisplayedMonth(parsedDate);
     } else {
