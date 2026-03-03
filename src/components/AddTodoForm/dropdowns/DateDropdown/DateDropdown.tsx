@@ -9,9 +9,13 @@ import CalendarView from "./CalendarView";
 
 interface DateDropdownProps {
   handleSelectDate: (dueDate: Date) => void;
+  handleDeleteDate: () => void;
 }
 
-export default function DateDropdown({ handleSelectDate }: DateDropdownProps) {
+export default function DateDropdown({
+  handleSelectDate,
+  handleDeleteDate,
+}: DateDropdownProps) {
   const [displayedMonth, setDisplayedMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [inputValue, setInputValue] = useState("");
@@ -58,6 +62,13 @@ export default function DateDropdown({ handleSelectDate }: DateDropdownProps) {
     }
   };
 
+  function deleteDate() {
+    setDisplayedMonth(new Date());
+    setSelectedDate(undefined);
+    setInputValue("");
+    handleDeleteDate();
+  }
+
   return (
     <div className="flex flex-col p-3 pt-0 border border-gray-300 rounded-lg bg-white shadow w-fit relative z-10 bottom-50 left-19">
       <DateInput
@@ -83,7 +94,10 @@ export default function DateDropdown({ handleSelectDate }: DateDropdownProps) {
         </button>
       )}
 
-      <QuickDates handleSelectDate={handleSelectDate} />
+      <QuickDates
+        handleSelectDate={handleSelectDate}
+        handleNoDateClick={deleteDate}
+      />
 
       <CalendarView
         displayedMonth={displayedMonth}

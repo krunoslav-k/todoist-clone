@@ -1,55 +1,128 @@
-import { addDays, format, nextSaturday } from "date-fns";
-import { Calendar1, Sofa, Sun } from "lucide-react";
+import { addDays, format, isWeekend, nextSaturday } from "date-fns";
+import {
+  Calendar1,
+  CalendarArrowDown,
+  CalendarDays,
+  CircleOff,
+  Sofa,
+  Sun,
+} from "lucide-react";
 
 interface QuickDatesProps {
   handleSelectDate: (dueDate: Date) => void;
+  handleNoDateClick: () => void;
 }
 
-export default function QuickDates({ handleSelectDate }: QuickDatesProps) {
+type QuickDateOption = {
+  label: string;
+  icon: React.ElementType;
+  color: string;
+  getDate: () => Date;
+  formatString?: string;
+  shouldShow: boolean;
+};
+
+export default function QuickDates({
+  handleSelectDate,
+  handleNoDateClick,
+}: QuickDatesProps) {
+  const today = new Date();
+  const isTodayWeekend = isWeekend(today);
+  const weekendLabel = isTodayWeekend ? "Next weekend" : "This weekend";
+  const weekendFormatString = isTodayWeekend ? "eee d LLL" : "eee";
+  const quickDateOptions: QuickDateOption[] = [
+    {
+      label: "Today",
+      icon: Calendar1,
+      color: "#4b9344",
+      getDate: () => today,
+      formatString: "eee",
+
+      shouldShow: true,
+    },
+    {
+      label: "Tomorrow",
+      icon: Sun,
+      color: "#ad6200",
+      getDate: () => addDays(today, 1),
+      formatString: "eee",
+      shouldShow: true,
+    },
+    {
+      label: "Later this week",
+      icon: CalendarDays,
+      color: "#6a2ec2",
+      getDate: () => addDays(today, 2),
+      formatString: "eee",
+      shouldShow: true,
+    },
+    {
+      label: weekendLabel,
+      icon: Sofa,
+      color: "#2570e0",
+      getDate: () => nextSaturday(today),
+      formatString: weekendFormatString,
+      shouldShow: true,
+    },
+
+    {
+      label: "Next week",
+      icon: CalendarArrowDown,
+      color: "#6a2ec2",
+      getDate: () => addDays(today, 2),
+      formatString: "eee",
+      shouldShow: true,
+    }, //treba dodati da se prikazuje osim ako je today subota ili nedjelja, jer to bi bilo onda tommorow
+  ];
+
   return (
     <div className="-mx-3 py-1 border-t border-b border-gray-200">
-      <div className="h-full flex justify-between items-stretch group">
+      {quickDateOptions
+        .filter((option) => option.shouldShow)
+        .map(({ label, icon: Icon, color, getDate, formatString }) => {
+          const date = getDate();
+
+          return (
+            <div
+              key={label}
+              className="flex justify-between items-stretch group"
+            >
+              <button
+                onClick={() => handleSelectDate(date)}
+                className="w-full py-2 flex justify-start items-center text-sm group-hover:bg-gray-100 hover:cursor-pointer"
+              >
+                <Icon
+                  size={20}
+                  strokeWidth={1.25}
+                  color={color}
+                  className="mx-3"
+                />
+                {label}
+              </button>
+
+              {date && formatString && (
+                <div className="flex items-center pr-4 text-xs font-light text-gray-500 group-hover:bg-gray-100 whitespace-nowrap">
+                  {format(date, formatString)}
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+      {/* no date button */}
+      <div className="flex justify-between items-stretch group">
         <button
-          onClick={() => handleSelectDate(new Date())}
+          onClick={handleNoDateClick}
           className="w-full py-2 flex justify-start items-center text-sm group-hover:bg-gray-100 hover:cursor-pointer"
         >
-          <Calendar1
+          <CircleOff
             size={20}
             strokeWidth={1.25}
-            color="#4b9344"
+            color={"#808080"}
             className="mx-3"
           />
-          Today
+          No date
         </button>
-        <div className="flex items-center pr-4 text-xs font-light text-gray-500 group-hover:bg-gray-100">
-          {format(new Date(), "eee")}
-        </div>
-      </div>
-
-      <div className="h-full flex justify-between items-stretch group">
-        <button
-          onClick={() => handleSelectDate(addDays(new Date(), 1))}
-          className="w-full py-2 flex justify-start items-center text-sm group-hover:bg-gray-100 hover:cursor-pointer"
-        >
-          <Sun size={20} strokeWidth={1.25} color="#ad6200" className="mx-3" />
-          Tomorrow
-        </button>
-        <div className="flex items-center pr-4 text-xs font-light text-gray-500 group-hover:bg-gray-100">
-          {format(addDays(new Date(), 1), "eee")}
-        </div>
-      </div>
-
-      <div className="h-full flex justify-between items-stretch group">
-        <button
-          onClick={() => handleSelectDate(nextSaturday(new Date()))}
-          className="w-full py-2 flex justify-start items-center text-sm group-hover:bg-gray-100 hover:cursor-pointer"
-        >
-          <Sofa size={20} strokeWidth={1.25} color="#2570e0" className="mx-3" />
-          Next weekend
-        </button>
-        <div className="w-fit whitespace-nowrap flex items-center pr-4 text-xs font-light text-gray-500 group-hover:bg-gray-100">
-          {format(nextSaturday(new Date()), "eee d LLL")}
-        </div>
       </div>
     </div>
   );

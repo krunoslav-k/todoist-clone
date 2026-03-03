@@ -55,6 +55,11 @@ export default function AddTodoForm({
     setActiveDropdown(null);
   }
 
+  function handleDeleteDate() {
+    setTodo((prev) => ({ ...prev, dueDate: undefined }));
+    setActiveDropdown(null);
+  }
+
   return (
     <>
       <form
@@ -103,7 +108,10 @@ export default function AddTodoForm({
       </form>
 
       {activeDropdown === "date" ? (
-        <DateDropdown handleSelectDate={handleSelectDate} />
+        <DateDropdown
+          handleSelectDate={handleSelectDate}
+          handleDeleteDate={handleDeleteDate}
+        />
       ) : activeDropdown === "priority" ? (
         <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
       ) : activeDropdown === "reminders" ? (
