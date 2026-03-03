@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DatePicker from "./dropdowns/DatePicker";
+import DateDropdown from "./dropdowns/DateDropdown/DateDropdown";
 import DateButton from "./buttons/DateButton";
 import PriorityButton from "./buttons/PriorityButton";
 import RemindersButton from "./buttons/RemindersButton";
@@ -103,7 +103,7 @@ export default function AddTodoForm({
       </form>
 
       {activeDropdown === "date" ? (
-        <DatePicker handleSelectDate={handleSelectDate} />
+        <DateDropdown handleSelectDate={handleSelectDate} />
       ) : activeDropdown === "priority" ? (
         <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
       ) : activeDropdown === "reminders" ? (
