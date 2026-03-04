@@ -6,6 +6,7 @@ import "react-day-picker/style.css";
 import DateInput from "./DateInput";
 import QuickDates from "./QuickDates";
 import CalendarView from "./CalendarView";
+import ScheduleOptions from "./ScheduleOptions";
 
 interface DateDropdownProps {
   handleSelectDate: (dueDate: Date) => void;
@@ -106,6 +107,8 @@ export default function DateDropdown({
         selectedDate={selectedDate}
         handleDayPickerSelect={handleDayPickerSelect}
       />
+
+      <ScheduleOptions />
     </div>
   );
 }
