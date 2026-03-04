@@ -95,6 +95,7 @@ export default function DateDropdown({
       )}
 
       <QuickDates
+        selectedDate={selectedDate}
         handleSelectDate={handleSelectDate}
         handleNoDateClick={deleteDate}
       />
