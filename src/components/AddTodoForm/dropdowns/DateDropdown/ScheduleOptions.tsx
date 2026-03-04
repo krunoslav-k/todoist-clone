@@ -8,6 +8,10 @@ export default function ScheduleOptions() {
     null,
   );
 
+  function handleCancelClick() {
+    setActivePopup(null);
+  }
+
   return (
     <div className="-mx-3 px-3 pt-3 flex flex-col items-stretch gap-3 border-t border-gray-200">
       <button
@@ -35,7 +39,11 @@ export default function ScheduleOptions() {
         Repeat
       </button>
 
-      {activePopup === "time" && <ScheduleOptionTime />}
+      {activePopup === "time" && (
+        <div className="relative">
+          <ScheduleOptionTime handleCancelClick={handleCancelClick} />
+        </div>
+      )}
       {activePopup === "repeat" && <ScheduleOptionRepeat />}
     </div>
   );

@@ -94,10 +94,7 @@ export default function AddTodoForm({
         </div>
 
         <div className="border-t border-gray-300 p-2 flex justify-end gap-2.5">
-          <button
-            onClick={handleCancelAddTodo}
-            className="px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-sm font-medium"
-          >
+          <button onClick={handleCancelAddTodo} className="cancel_button">
             Cancel
           </button>
 
