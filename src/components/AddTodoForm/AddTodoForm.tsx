@@ -52,7 +52,7 @@ export default function AddTodoForm({
 
   function handleSelectDate(dueDate: Date) {
     setTodo((prev) => ({ ...prev, dueDate }));
-    setActiveDropdown(null);
+    //setActiveDropdown(null);
   }
 
   function handleDeleteDate() {

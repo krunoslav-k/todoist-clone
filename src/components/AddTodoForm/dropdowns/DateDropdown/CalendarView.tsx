@@ -41,8 +41,10 @@ export default function CalendarView({
         button_next:
           "ml-3 p-0.5 rounded-sm hover:bg-gray-100 flex items-center justify-center",
         head_cell: "text-xs font-light text-gray-600",
-        day: "h-7 w-7 p-0.5 text-xs ",
-        day_button: "h-7 w-7 text-xs",
+        day: "h-6 w-6  text-sm",
+        today: "text-[#39485e] font-black",
+        selected: "bg-[#39485e] rounded-full text-white font-black",
+        day_button: "h-6 w-6 m-1.25 text-sm",
         month_caption: "py-4.5 flex justify-between",
         month: "w-fit",
         weekdays: "border-b border-gray-200",

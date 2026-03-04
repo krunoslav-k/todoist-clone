@@ -38,7 +38,7 @@ export default function DateDropdown({
     } else {
       setSelectedDate(date);
       setDisplayedMonth(date);
-      setInputValue(format(date, "d.M.yyyy"));
+      setInputValue(format(date, "d LLL"));
       handleSelectDate(date);
     }
   };
