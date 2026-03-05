@@ -108,7 +108,7 @@ export default function DateDropdown({
         handleDayPickerSelect={handleDayPickerSelect}
       />
 
-      <ScheduleOptions />
+      <ScheduleOptions selectedDate={selectedDate} />
     </div>
   );
 }

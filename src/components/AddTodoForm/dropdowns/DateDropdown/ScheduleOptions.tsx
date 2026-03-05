@@ -3,7 +3,13 @@ import { useState } from "react";
 import ScheduleOptionTime from "./ScheduleOptionTime";
 import ScheduleOptionRepeat from "./ScheduleOptionRepeat";
 
-export default function ScheduleOptions() {
+interface ScheduleOptionsProps {
+  selectedDate: Date | undefined;
+}
+
+export default function ScheduleOptions({
+  selectedDate,
+}: ScheduleOptionsProps) {
   const [activePopup, setActivePopup] = useState<"time" | "repeat" | null>(
     null,
   );
@@ -13,7 +19,7 @@ export default function ScheduleOptions() {
   }
 
   return (
-    <div className="-mx-3 px-3 pt-3 flex flex-col items-stretch gap-3 border-t border-gray-200">
+    <div className="-mx-3 px-3 pt-3 flex flex-col items-stretch gap-3 border-t border-gray-200 relative">
       <button
         onClick={() => setActivePopup("time")}
         className="py-1.5 flex justify-center items-center gap-2 border border-gray-300 rounded-md text-sm text-gray-500 font-medium cursor-pointer hover:bg-gray-100 hover:border-gray-300 hover:text-gray-800 transition-all ease-in-out group"
@@ -40,11 +46,11 @@ export default function ScheduleOptions() {
       </button>
 
       {activePopup === "time" && (
-        <div className="relative">
-          <ScheduleOptionTime handleCancelClick={handleCancelClick} />
-        </div>
+        <ScheduleOptionTime handleCancelClick={handleCancelClick} />
       )}
-      {activePopup === "repeat" && <ScheduleOptionRepeat />}
+      {activePopup === "repeat" && (
+        <ScheduleOptionRepeat selectedDate={selectedDate} />
+      )}
     </div>
   );
 }
