@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { useState } from "react";
 
 interface ScheduleOptionTimeProps {
   handleCancelClick: () => void;
@@ -7,6 +8,16 @@ interface ScheduleOptionTimeProps {
 export default function ScheduleOptionTime({
   handleCancelClick,
 }: ScheduleOptionTimeProps) {
+  const [isTimesOpen, setIsTimesOpen] = useState(false);
+
+  const times = [];
+
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      times.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+    }
+  }
+
   return (
     <div className="w-80 p-3 flex flex-col gap-3 absolute -right-7 bottom-24 z-10 bg-white border border-gray-200 rounded-xl shadow-lg">
       <div className="flex justify-between items-center">
@@ -16,9 +27,22 @@ export default function ScheduleOptionTime({
         <input
           type="text"
           id="time"
+          onClick={() => setIsTimesOpen(true)}
           className="w-50 px-1.75 py-1.25 border border-gray-300 rounded-sm text-sm text-gray-600 hover:border-gray-400 focus:outline-none"
         />
       </div>
+
+      {isTimesOpen && (
+        <ul className="h-60 w-44 p-1 border border-gray-200 rounded-xl bg-white text-sm text-gray-800 overflow-y-auto shadow-lg absolute left-26 top-12">
+          {times.map((time) => {
+            return (
+              <li key={time} className="px-2 py-2 hover:bg-gray-100 rounded-lg">
+                {time}
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
       <div className="flex justify-between items-center">
         <label htmlFor="duration" className="text-sm text-gray-800 font-medium">
