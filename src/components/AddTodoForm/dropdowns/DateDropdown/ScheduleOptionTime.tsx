@@ -10,13 +10,42 @@ export default function ScheduleOptionTime({
 }: ScheduleOptionTimeProps) {
   const [isTimesOpen, setIsTimesOpen] = useState(false);
 
-  const times = [];
-
-  for (let h = 0; h < 24; h++) {
-    for (let m = 0; m < 60; m += 15) {
-      times.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+  function generateTimes() {
+    const times = [];
+    for (let h = 0; h < 24; h++) {
+      for (let m = 0; m < 60; m += 15) {
+        times.push(
+          `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`,
+        );
+      }
     }
+    return times;
   }
+
+  function getCurrentRoundedTime() {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const roundedMinutes = Math.ceil(minutes / 15) * 15;
+    let hour = now.getHours();
+    let minute = roundedMinutes;
+    if (minute === 60) {
+      minute = 0;
+      hour = (hour + 1) % 24;
+    }
+    const currentTime = `${String(hour).padStart(2, "0")}:${String(
+      minute,
+    ).padStart(2, "0")}`;
+    return currentTime;
+  }
+
+  function sortTimesFromCurrent(times: string[]) {
+    const currentTime = getCurrentRoundedTime();
+    const startIndex = times.indexOf(currentTime);
+
+    return [...times.slice(startIndex), ...times.slice(0, startIndex)];
+  }
+
+  const times = sortTimesFromCurrent(generateTimes());
 
   return (
     <div className="w-80 p-3 flex flex-col gap-3 absolute -right-7 bottom-24 z-10 bg-white border border-gray-200 rounded-xl shadow-lg">
