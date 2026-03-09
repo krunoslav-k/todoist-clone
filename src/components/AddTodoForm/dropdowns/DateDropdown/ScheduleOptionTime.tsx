@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { useState } from "react";
+import PremiumFeatureModal from "./PremiumFeatureModal";
 
 interface ScheduleOptionTimeProps {
   handleCancelClick: () => void;
@@ -10,6 +11,8 @@ export default function ScheduleOptionTime({
 }: ScheduleOptionTimeProps) {
   const [isTimesOpen, setIsTimesOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState("");
+  const [isPremiumFeatureModalOpen, setIsPremiumFeatureModalOpen] =
+    useState(false);
 
   function generateTimes() {
     const times = [];
@@ -93,7 +96,10 @@ export default function ScheduleOptionTime({
         <label htmlFor="duration" className="text-sm text-gray-800 font-medium">
           Duration
         </label>
-        <button className="w-50 flex justify-between items-center px-1.75 py-1.25 bg-gray-100 border border-gray-300 rounded-sm text-sm text-gray-700 hover:border-gray-400 cursor-pointer">
+        <button
+          onClick={() => setIsPremiumFeatureModalOpen(true)}
+          className="w-50 flex justify-between items-center px-1.75 py-1.25 bg-gray-100 border border-gray-300 rounded-sm text-sm text-gray-700 hover:border-gray-400 cursor-pointer"
+        >
           <span>No duration</span>
           <Star size={16} strokeWidth="5" color="#ee8100" />
         </button>
@@ -120,6 +126,12 @@ export default function ScheduleOptionTime({
         </button>
         <button className="add_button w-18 py-1.75">Save</button>
       </div>
+
+      {isPremiumFeatureModalOpen && (
+        <PremiumFeatureModal
+          handleCloseButtonClick={() => setIsPremiumFeatureModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
