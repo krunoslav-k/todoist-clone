@@ -9,6 +9,7 @@ export default function ScheduleOptionTime({
   handleCancelClick,
 }: ScheduleOptionTimeProps) {
   const [isTimesOpen, setIsTimesOpen] = useState(false);
+  const [selectedTime, setSelectedTime] = useState("");
 
   function generateTimes() {
     const times = [];
@@ -47,6 +48,16 @@ export default function ScheduleOptionTime({
 
   const times = sortTimesFromCurrent(generateTimes());
 
+  function handleTimeInputClick() {
+    setSelectedTime(getCurrentRoundedTime());
+    setIsTimesOpen(true);
+  }
+
+  function handleTimeInputOptionClick(time: string) {
+    setSelectedTime(time);
+    setIsTimesOpen(false);
+  }
+
   return (
     <div className="w-80 p-3 flex flex-col gap-3 absolute -right-7 bottom-24 z-10 bg-white border border-gray-200 rounded-xl shadow-lg">
       <div className="flex justify-between items-center">
@@ -56,7 +67,8 @@ export default function ScheduleOptionTime({
         <input
           type="text"
           id="time"
-          onClick={() => setIsTimesOpen(true)}
+          value={selectedTime}
+          onClick={handleTimeInputClick}
           className="w-50 px-1.75 py-1.25 border border-gray-300 rounded-sm text-sm text-gray-600 hover:border-gray-400 focus:outline-none"
         />
       </div>
@@ -65,7 +77,11 @@ export default function ScheduleOptionTime({
         <ul className="h-60 w-44 p-1 border border-gray-200 rounded-xl bg-white text-sm text-gray-800 overflow-y-auto shadow-lg absolute left-26 top-12">
           {times.map((time) => {
             return (
-              <li key={time} className="px-2 py-2 hover:bg-gray-100 rounded-lg">
+              <li
+                key={time}
+                onClick={() => handleTimeInputOptionClick(time)}
+                className="px-2 py-2 hover:bg-gray-100 rounded-lg"
+              >
                 {time}
               </li>
             );
