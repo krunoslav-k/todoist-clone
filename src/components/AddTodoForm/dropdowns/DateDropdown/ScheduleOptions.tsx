@@ -5,10 +5,12 @@ import ScheduleOptionRepeat from "./ScheduleOptionRepeat";
 
 interface ScheduleOptionsProps {
   selectedDate: Date | undefined;
+  handleAddTime: (time: string) => void;
 }
 
 export default function ScheduleOptions({
   selectedDate,
+  handleAddTime,
 }: ScheduleOptionsProps) {
   const [activePopup, setActivePopup] = useState<"time" | "repeat" | null>(
     null,
@@ -46,7 +48,10 @@ export default function ScheduleOptions({
       </button>
 
       {activePopup === "time" && (
-        <ScheduleOptionTime handleCancelClick={handleCancelClick} />
+        <ScheduleOptionTime
+          handleCancelClick={handleCancelClick}
+          handleAddTime={handleAddTime}
+        />
       )}
       {activePopup === "repeat" && (
         <ScheduleOptionRepeat selectedDate={selectedDate} />

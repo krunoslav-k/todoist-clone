@@ -4,10 +4,12 @@ import PremiumFeatureModal from "./PremiumFeatureModal";
 
 interface ScheduleOptionTimeProps {
   handleCancelClick: () => void;
+  handleAddTime: (time: string) => void;
 }
 
 export default function ScheduleOptionTime({
   handleCancelClick,
+  handleAddTime,
 }: ScheduleOptionTimeProps) {
   const [isTimesOpen, setIsTimesOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState("");
@@ -124,7 +126,12 @@ export default function ScheduleOptionTime({
         >
           Cancel
         </button>
-        <button className="add_button w-18 py-1.75">Save</button>
+        <button
+          onClick={() => handleAddTime(selectedTime)}
+          className="add_button w-18 py-1.75"
+        >
+          Save
+        </button>
       </div>
 
       {isPremiumFeatureModalOpen && (

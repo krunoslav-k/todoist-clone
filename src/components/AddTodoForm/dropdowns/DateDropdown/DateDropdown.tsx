@@ -70,6 +70,13 @@ export default function DateDropdown({
     handleDeleteDate();
   }
 
+  function addTimeToDate(time: string) {
+    const [hours, minutes] = time.split(":").map(Number);
+    if (selectedDate) {
+      selectedDate.setHours(hours, minutes, 0, 0);
+    }
+  }
+
   return (
     <div className="flex flex-col p-3 pt-0 border border-gray-300 rounded-lg bg-white shadow w-fit relative z-10 bottom-50 left-19">
       <DateInput
@@ -108,7 +115,10 @@ export default function DateDropdown({
         handleDayPickerSelect={handleDayPickerSelect}
       />
 
-      <ScheduleOptions selectedDate={selectedDate} />
+      <ScheduleOptions
+        selectedDate={selectedDate}
+        handleAddTime={addTimeToDate}
+      />
     </div>
   );
 }

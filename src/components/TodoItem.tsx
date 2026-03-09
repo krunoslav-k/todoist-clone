@@ -37,7 +37,11 @@ export default function TodoItem({ todo, onToggleCompleted }: TodoItemProps) {
           <div className="ml-2 text-[0.8rem] text-gray-400">
             {todo.description}
           </div>
-          <div>{todo.dueDate ? todo.dueDate.toDateString() : ""}</div>
+          <div>
+            {todo.dueDate
+              ? `${todo.dueDate.toDateString()} ${todo.dueDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+              : ""}
+          </div>
           <div>{todo.priority ? todo.priority : ""}</div>
         </div>
       </label>
