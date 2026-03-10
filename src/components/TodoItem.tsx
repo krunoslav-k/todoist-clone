@@ -1,4 +1,7 @@
+import { Calendar } from "lucide-react";
+import { dueDateColors } from "../config/dueDateColors";
 import type Todo from "../types/todo";
+import { dueDateHelper } from "../utils/dueDateHelper";
 import TodoCheckbox from "./TodoCheckbox";
 
 interface TodoItemProps {
@@ -12,6 +15,9 @@ export default function TodoItem({
   onToggleCompleted,
   onTodoSelect,
 }: TodoItemProps) {
+  const { label, category } = dueDateHelper(todo.dueDate);
+  const color = dueDateColors[category];
+
   return (
     <div className="p-3 border-b border-gray-300">
       <div className="flex flex-col hover:cursor-pointer group">
@@ -25,9 +31,12 @@ export default function TodoItem({
 
         <div onClick={() => onTodoSelect(todo.id)} className="ml-6">
           <p className="ml-2 text-[0.8rem] text-gray-400">{todo.description}</p>
-          <div>
+          <div
+            className={`ml-2 flex items-center gap-0.5 text-[13px] font-light ${color}`}
+          >
+            <Calendar strokeWidth={1.6} size={12} />
             {todo.dueDate
-              ? `${todo.dueDate.toDateString()} ${todo.dueDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+              ? `${label} ${todo.dueDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
               : ""}
           </div>
           <div>{todo.priority ? todo.priority : ""}</div>
