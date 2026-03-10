@@ -4,12 +4,12 @@ import { dummyData } from "./data/dummyData";
 import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
 import type Todo from "./types/todo";
 import AddTodoButton from "./components/AddTodoButton";
-import EditTodoModal from "./components/EditTodoModal";
+import TodoModal from "./components/TodoModal/TodoModal";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
   const [isAddTodoFormOpen, setIsAddTodoFormOpen] = useState(false);
-  const [isEditTodoModalOpen, setIsEditTodoModalOpen] = useState(false);
+  const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | undefined>();
 
   function toggleCompleted(id: number, completed: boolean) {
@@ -33,11 +33,11 @@ function App() {
 
   function selectTodo(id: number) {
     setSelectedTodo(todos.find((todo) => todo.id === id));
-    setIsEditTodoModalOpen(true);
+    setIsTodoModalOpen(true);
   }
 
   function hideEditTodoModal() {
-    setIsEditTodoModalOpen(false);
+    setIsTodoModalOpen(false);
   }
 
   return (
@@ -66,8 +66,8 @@ function App() {
           />
         )}
       </div>
-      {selectedTodo && isEditTodoModalOpen && (
-        <EditTodoModal
+      {selectedTodo && isTodoModalOpen && (
+        <TodoModal
           todo={selectedTodo}
           onToggleCompleted={toggleCompleted}
           onCloseClick={hideEditTodoModal}
