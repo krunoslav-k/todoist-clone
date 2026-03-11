@@ -25,7 +25,7 @@ export default function AddTodoForm({
     description: "",
     completed: false,
     dueDate: undefined,
-    priority: undefined,
+    priority: 4,
   };
   const [todo, setTodo] = useState<Todo>(initialTodo);
   const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);

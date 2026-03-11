@@ -18,6 +18,17 @@ export default function TodoItem({
   const { label, category } = dueDateHelper(todo.dueDate);
   const color = dueDateColors[category];
 
+  let dueDateTime = "";
+  if (
+    todo.dueDate &&
+    !(todo.dueDate.getHours() === 0 && todo.dueDate.getMinutes() === 0)
+  ) {
+    dueDateTime = todo.dueDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
   return (
     <div className="p-3 border-b border-gray-300">
       <div className="flex flex-col hover:cursor-pointer group">
@@ -35,9 +46,7 @@ export default function TodoItem({
             className={`ml-2 flex items-center gap-0.5 text-[13px] font-light ${color}`}
           >
             <Calendar strokeWidth={1.6} size={12} />
-            {todo.dueDate
-              ? `${label} ${todo.dueDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-              : ""}
+            {todo.dueDate ? `${label} ${dueDateTime}` : ""}
           </div>
           <div>{todo.priority ? todo.priority : ""}</div>
         </div>
