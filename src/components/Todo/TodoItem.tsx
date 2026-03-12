@@ -1,4 +1,4 @@
-import { Calendar } from "lucide-react";
+import { Calendar, GripVertical } from "lucide-react";
 import { dueDateColors } from "../../config/dueDateColors";
 import type Todo from "../../types/todo";
 import { dueDateHelper } from "../../utils/dueDateHelper";
@@ -43,8 +43,18 @@ export default function TodoItem({
       {...attributes}
       {...listeners}
       style={style}
-      className="p-3 border-b border-gray-300"
+      className="p-3 border-b border-gray-300 relative group/todoitem"
     >
+      <div className="absolute -left-8 top-2.75 w-8 h-full hidden group-hover/todoitem:block hover:block">
+        <span
+          {...attributes}
+          {...listeners}
+          className="w-fit h-fit py-1 px-0.5 flex items-center justify-center rounded-sm cursor-move hover:bg-gray-100"
+          title="Drag to reorder"
+        >
+          <GripVertical size={18} className="text-gray-600" />
+        </span>
+      </div>
       <div className="flex flex-col hover:cursor-pointer group">
         <div
           onClick={() => onTodoSelect(todo.id)}
