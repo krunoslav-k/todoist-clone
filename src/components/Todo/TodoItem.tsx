@@ -5,6 +5,7 @@ import { dueDateHelper } from "../../utils/dueDateHelper";
 import TodoCheckbox from "./TodoCheckbox";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import TodoItemActions from "./TodoItemActions";
 
 interface TodoItemProps {
   todo: Todo;
@@ -43,7 +44,7 @@ export default function TodoItem({
       {...attributes}
       {...listeners}
       style={style}
-      className="p-3 border-b border-gray-300 relative group/todoitem"
+      className="flex items-start p-3 border-b border-gray-300 relative group/todoitem"
     >
       <div className="absolute -left-8 top-2.75 w-8 h-full hidden group-hover/todoitem:block hover:block">
         <span
@@ -55,7 +56,8 @@ export default function TodoItem({
           <GripVertical size={18} className="text-gray-600" />
         </span>
       </div>
-      <div className="flex flex-col hover:cursor-pointer group">
+
+      <div className="-ml-2 grow flex flex-col hover:cursor-pointer group">
         <div
           onClick={() => onTodoSelect(todo.id)}
           className="flex items-center"
@@ -78,6 +80,8 @@ export default function TodoItem({
           <div>{todo.priority ? todo.priority : ""}</div>
         </div>
       </div>
+
+      <TodoItemActions />
     </div>
   );
 }
