@@ -17,6 +17,7 @@ interface TodoListProps {
   onEditTodo: (editedTodo: Todo) => void;
   activeTodoForm: "add" | number | null;
   setActiveTodoForm: (form: "add" | number | null) => void;
+  onDueDateEdit: (todoId: number, dueDate: Date) => void;
 }
 
 export default function TodoList({
@@ -27,6 +28,7 @@ export default function TodoList({
   onEditTodo,
   activeTodoForm,
   setActiveTodoForm,
+  onDueDateEdit,
 }: TodoListProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -61,6 +63,7 @@ export default function TodoList({
                 onEditTodo={onEditTodo}
                 activeTodoForm={activeTodoForm}
                 setActiveTodoForm={setActiveTodoForm}
+                onDueDateEdit={onDueDateEdit}
                 key={todo.id}
               />
             );

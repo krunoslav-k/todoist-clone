@@ -11,15 +11,23 @@ import ScheduleOptions from "./ScheduleOptions";
 interface DateDropdownProps {
   handleSelectDate: (dueDate: Date) => void;
   handleDeleteDate: () => void;
+  initialDueDate?: Date;
 }
 
 export default function DateDropdown({
   handleSelectDate,
   handleDeleteDate,
+  initialDueDate,
 }: DateDropdownProps) {
-  const [displayedMonth, setDisplayedMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [inputValue, setInputValue] = useState("");
+  const [displayedMonth, setDisplayedMonth] = useState(
+    initialDueDate ?? new Date(),
+  );
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    initialDueDate ?? undefined,
+  );
+  const [inputValue, setInputValue] = useState(
+    initialDueDate?.toDateString() ?? "",
+  );
 
   const parsedDate = (() => {
     const parts = inputValue.split(".");

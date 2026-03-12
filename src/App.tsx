@@ -38,6 +38,14 @@ function App() {
     setIsTodoModalOpen(true);
   }
 
+  function handleDueDateEdit(selectedTodoId: number, editedDueDate: Date) {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === selectedTodoId ? { ...todo, dueDate: editedDueDate } : todo,
+      ),
+    );
+  }
+
   return (
     <main className="flex flex-col justify-center items-center py-8">
       <h1 className="p-10 font-bold text-2xl tracking-wide">Inbox</h1>
@@ -51,6 +59,7 @@ function App() {
           onEditTodo={editTodo}
           activeTodoForm={activeTodoForm}
           setActiveTodoForm={setActiveTodoForm}
+          onDueDateEdit={handleDueDateEdit}
         />
 
         {activeTodoForm !== "add" && (

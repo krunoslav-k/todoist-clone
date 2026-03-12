@@ -7,6 +7,8 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TodoItemActions from "./TodoItemActions";
 import TodoForm from "../AddTodoForm/TodoForm";
+import { useState } from "react";
+import DateDropdown from "../AddTodoForm/dropdowns/DateDropdown/DateDropdown";
 
 interface TodoItemProps {
   todo: Todo;
@@ -15,6 +17,7 @@ interface TodoItemProps {
   onEditTodo: (editedTodo: Todo) => void;
   activeTodoForm: "add" | number | null;
   setActiveTodoForm: (form: "add" | number | null) => void;
+  onDueDateEdit: (todoId: number, dueDate: Date) => void;
 }
 
 export default function TodoItem({
@@ -24,7 +27,9 @@ export default function TodoItem({
   onEditTodo,
   activeTodoForm,
   setActiveTodoForm,
+  onDueDateEdit,
 }: TodoItemProps) {
+  const [isDueDateMenuOpen, setIsDueDateMenuOpen] = useState(false);
   const { label, category } = dueDateHelper(todo.dueDate);
   const color = dueDateColors[category];
   const {
@@ -52,6 +57,10 @@ export default function TodoItem({
   }
 
   const isEditing = activeTodoForm === todo.id;
+
+  function handleSelectDate(dueDate: Date) {
+    onDueDateEdit(todo.id, dueDate);
+  }
 
   return (
     <>
@@ -112,10 +121,18 @@ export default function TodoItem({
           {!isSorting && (
             <TodoItemActions
               onEditTodo={() => setActiveTodoForm(todo.id)}
-              onDueDateClick={() => {}}
+              onDueDateClick={() => setIsDueDateMenuOpen(true)}
             />
           )}
         </div>
+      )}
+
+      {isDueDateMenuOpen && (
+        <DateDropdown
+          handleSelectDate={handleSelectDate}
+          handleDeleteDate={() => handleSelectDate(undefined)}
+          initialDueDate={todo.dueDate}
+        />
       )}
 
       {isEditing && (
