@@ -1,4 +1,9 @@
-import { DndContext } from "@dnd-kit/core";
+import {
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import type Todo from "../../types/todo";
 import TodoItem from "./TodoItem";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
@@ -9,6 +14,7 @@ interface TodoListProps {
   onToggleCompleted: (id: number, completed: boolean) => void;
   onTodoSelect: (id: number) => void;
   onSetTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  onEditTodo: (editedTodo: Todo) => void;
 }
 
 export default function TodoList({
@@ -16,7 +22,16 @@ export default function TodoList({
   onToggleCompleted,
   onTodoSelect,
   onSetTodos,
+  onEditTodo,
 }: TodoListProps) {
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 1,
+      },
+    }),
+  );
+
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
@@ -31,7 +46,7 @@ export default function TodoList({
 
   return (
     <ul>
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
         <SortableContext items={todos.map((todo) => todo.id)}>
           {todos.map((todo) => {
             return (
@@ -39,6 +54,7 @@ export default function TodoList({
                 todo={todo}
                 onToggleCompleted={onToggleCompleted}
                 onTodoSelect={onTodoSelect}
+                onEditTodo={onEditTodo}
                 key={todo.id}
               />
             );
