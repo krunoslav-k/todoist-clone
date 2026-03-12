@@ -1,6 +1,12 @@
 import { CircleQuestionMark } from "lucide-react";
 
-export default function RemindersDropdown() {
+interface RemindersDropdownProps {
+  onToggleReminder: () => void;
+}
+
+export default function RemindersDropdown({
+  onToggleReminder,
+}: RemindersDropdownProps) {
   return (
     <div className="w-fit px-2 py-3 border border-gray-300 rounded-lg bg-white shadow-xs relative left-43.5 bottom-15.5 z-10">
       <p className="text-sm font-bold">Reminders</p>
@@ -24,7 +30,9 @@ export default function RemindersDropdown() {
             className="text-gray-500"
           />
         </button>
-        <button className="add_button">Add reminder</button>
+        <button onClick={onToggleReminder} className="add_button">
+          Add reminder
+        </button>
       </div>
     </div>
   );

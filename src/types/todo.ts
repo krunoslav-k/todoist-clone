@@ -5,6 +5,7 @@ export default interface Todo {
   completed: boolean;
   dueDate?: Date;
   priority: Priority;
+  hasReminder: boolean;
 }
 
 export type Priority = 1 | 2 | 3 | 4;

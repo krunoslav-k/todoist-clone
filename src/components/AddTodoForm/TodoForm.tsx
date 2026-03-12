@@ -17,6 +17,7 @@ const EMPTY_TODO: Todo = {
   completed: false,
   dueDate: undefined,
   priority: 4,
+  hasReminder: false,
 };
 
 interface TodoFormProps {
@@ -60,6 +61,12 @@ export default function TodoForm({
 
   function handleDeleteDate() {
     setTodo((prev) => ({ ...prev, dueDate: undefined }));
+    setActiveDropdown(null);
+  }
+
+  function handleToggleReminder() {
+    const toggledReminder = !todo.hasReminder;
+    setTodo((prev) => ({ ...prev, hasReminder: toggledReminder }));
     setActiveDropdown(null);
   }
 
@@ -115,7 +122,7 @@ export default function TodoForm({
       ) : activeDropdown === "priority" ? (
         <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
       ) : activeDropdown === "reminders" ? (
-        <RemindersDropdown />
+        <RemindersDropdown onToggleReminder={handleToggleReminder} />
       ) : null}
     </>
   );
