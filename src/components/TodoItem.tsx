@@ -45,8 +45,11 @@ export default function TodoItem({
           <div
             className={`ml-2 flex items-center gap-0.5 text-[13px] font-light ${color}`}
           >
-            <Calendar strokeWidth={1.6} size={12} />
-            {todo.dueDate ? `${label} ${dueDateTime}` : ""}
+            {todo.dueDate && (
+              <span className="flex items-center gap-1">
+                <Calendar strokeWidth={1.6} size={12} /> {label} {dueDateTime}
+              </span>
+            )}
           </div>
           <div>{todo.priority ? todo.priority : ""}</div>
         </div>
