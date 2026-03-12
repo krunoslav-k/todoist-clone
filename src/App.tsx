@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { dummyData } from "./data/dummyData";
-import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
+import TodoForm from "./components/AddTodoForm/TodoForm";
 import type Todo from "./types/todo";
 import AddTodoButton from "./components/AddTodoButton";
 import TodoModal from "./components/TodoModal/TodoModal";
@@ -8,9 +8,11 @@ import TodoList from "./components/Todo/TodoList";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
-  const [isAddTodoFormOpen, setIsAddTodoFormOpen] = useState(false);
-  const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
+  const [activeTodoForm, setActiveTodoForm] = useState<"add" | number | null>(
+    null,
+  );
   const [selectedTodo, setSelectedTodo] = useState<Todo | undefined>();
+  const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
 
   function toggleCompleted(id: number, completed: boolean) {
     setTodos((prevTodos) =>
@@ -21,29 +23,19 @@ function App() {
   function addTodo(todo: Todo) {
     const newTodo: Todo = { ...todo, id: Date.now() };
     setTodos((prevTodos) => [...prevTodos, newTodo]);
+    setActiveTodoForm(null);
   }
 
-  function showAddTodoForm() {
-    setIsAddTodoFormOpen((prev) => !prev);
-  }
-
-  function hideAddTodoForm() {
-    setIsAddTodoFormOpen(false);
+  function editTodo(editedTodo: Todo) {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo)),
+    );
+    setActiveTodoForm(null);
   }
 
   function selectTodo(id: number) {
     setSelectedTodo(todos.find((todo) => todo.id === id));
     setIsTodoModalOpen(true);
-  }
-
-  function hideEditTodoModal() {
-    setIsTodoModalOpen(false);
-  }
-
-  function handleEditTodo(editedTodo: Todo) {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo)),
-    );
   }
 
   return (
@@ -56,17 +48,21 @@ function App() {
           onSetTodos={setTodos}
           onToggleCompleted={toggleCompleted}
           onTodoSelect={selectTodo}
-          onEditTodo={handleEditTodo}
+          onEditTodo={editTodo}
+          activeTodoForm={activeTodoForm}
+          setActiveTodoForm={setActiveTodoForm}
         />
 
-        {!isAddTodoFormOpen && (
-          <AddTodoButton handleAddTodoButtonClick={showAddTodoForm} />
+        {activeTodoForm !== "add" && (
+          <AddTodoButton
+            handleAddTodoButtonClick={() => setActiveTodoForm("add")}
+          />
         )}
 
-        {isAddTodoFormOpen && (
-          <AddTodoForm
-            handleAddTodo={addTodo}
-            handleCancelAddTodo={hideAddTodoForm}
+        {activeTodoForm === "add" && (
+          <TodoForm
+            onSubmit={addTodo}
+            onCancel={() => setActiveTodoForm(null)}
           />
         )}
       </div>
@@ -75,7 +71,7 @@ function App() {
         <TodoModal
           todo={selectedTodo}
           onToggleCompleted={toggleCompleted}
-          onCloseClick={hideEditTodoModal}
+          onCloseClick={() => setIsTodoModalOpen(false)}
         />
       )}
     </main>

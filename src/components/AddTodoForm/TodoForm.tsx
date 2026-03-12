@@ -10,24 +10,27 @@ import RemindersDropdown from "./dropdowns/RemindersDropdown";
 import type { ActiveDropdown } from "../../types/ui";
 import type Todo from "../../types/todo";
 
-interface AddTodoFormProps {
-  handleAddTodo: (todo: Todo) => void;
-  handleCancelAddTodo: () => void;
+const EMPTY_TODO: Todo = {
+  id: 0,
+  title: "",
+  description: "",
+  completed: false,
+  dueDate: undefined,
+  priority: 4,
+};
+
+interface TodoFormProps {
+  initialTodo?: Todo;
+  onSubmit: (todo: Todo) => void;
+  onCancel: () => void;
 }
 
-export default function AddTodoForm({
-  handleAddTodo,
-  handleCancelAddTodo,
-}: AddTodoFormProps) {
-  const initialTodo: Todo = {
-    id: 0,
-    title: "",
-    description: "",
-    completed: false,
-    dueDate: undefined,
-    priority: 4,
-  };
-  const [todo, setTodo] = useState<Todo>(initialTodo);
+export default function TodoForm({
+  initialTodo,
+  onSubmit,
+  onCancel,
+}: TodoFormProps) {
+  const [todo, setTodo] = useState<Todo>(initialTodo ?? EMPTY_TODO);
   const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -35,8 +38,8 @@ export default function AddTodoForm({
 
     if (!todo.title.trim()) return;
 
-    handleAddTodo(todo);
-    setTodo(initialTodo);
+    onSubmit(todo);
+    setTodo(initialTodo ?? EMPTY_TODO);
   }
 
   function handleDropdownClick(type: Exclude<ActiveDropdown, null>) {
@@ -94,12 +97,12 @@ export default function AddTodoForm({
         </div>
 
         <div className="border-t border-gray-300 p-2 flex justify-end gap-2.5">
-          <button onClick={handleCancelAddTodo} className="cancel_button">
+          <button onClick={onCancel} className="cancel_button">
             Cancel
           </button>
 
           <button type="submit" className="add_button">
-            Add task
+            {initialTodo === undefined ? `Add task` : `Save`}
           </button>
         </div>
       </form>

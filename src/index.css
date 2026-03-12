@@ -6,7 +6,7 @@
   }
 
   .add_button {
-    @apply px-3 py-2 rounded-md bg-slate-600 hover:bg-slate-700 text-sm text-white font-medium cursor-pointer;
+    @apply min-w-18 px-3 py-1.5 rounded-md bg-slate-600 hover:bg-slate-700 text-sm text-white font-medium cursor-pointer;
   }
 
   .cancel_button {

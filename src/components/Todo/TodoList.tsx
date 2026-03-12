@@ -15,6 +15,8 @@ interface TodoListProps {
   onTodoSelect: (id: number) => void;
   onSetTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   onEditTodo: (editedTodo: Todo) => void;
+  activeTodoForm: "add" | number | null;
+  setActiveTodoForm: (form: "add" | number | null) => void;
 }
 
 export default function TodoList({
@@ -23,6 +25,8 @@ export default function TodoList({
   onTodoSelect,
   onSetTodos,
   onEditTodo,
+  activeTodoForm,
+  setActiveTodoForm,
 }: TodoListProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -55,6 +59,8 @@ export default function TodoList({
                 onToggleCompleted={onToggleCompleted}
                 onTodoSelect={onTodoSelect}
                 onEditTodo={onEditTodo}
+                activeTodoForm={activeTodoForm}
+                setActiveTodoForm={setActiveTodoForm}
                 key={todo.id}
               />
             );

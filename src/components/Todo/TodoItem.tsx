@@ -6,15 +6,15 @@ import TodoCheckbox from "./TodoCheckbox";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TodoItemActions from "./TodoItemActions";
-import { useState } from "react";
-import AddTodoForm from "../AddTodoForm/AddTodoForm";
-import DateDropdown from "../AddTodoForm/dropdowns/DateDropdown/DateDropdown";
+import TodoForm from "../AddTodoForm/TodoForm";
 
 interface TodoItemProps {
   todo: Todo;
   onToggleCompleted: (id: number, completed: boolean) => void;
   onTodoSelect: (id: number) => void;
   onEditTodo: (editedTodo: Todo) => void;
+  activeTodoForm: "add" | number | null;
+  setActiveTodoForm: (form: "add" | number | null) => void;
 }
 
 export default function TodoItem({
@@ -22,9 +22,9 @@ export default function TodoItem({
   onToggleCompleted,
   onTodoSelect,
   onEditTodo,
+  activeTodoForm,
+  setActiveTodoForm,
 }: TodoItemProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [isDueDateMenuOpen, setIsDueDateMenuOpen] = useState(false);
   const { label, category } = dueDateHelper(todo.dueDate);
   const color = dueDateColors[category];
   const {
@@ -51,13 +51,7 @@ export default function TodoItem({
     });
   }
 
-  function handleEditTodo(status: boolean) {
-    setIsEditing(status);
-  }
-
-  function editTodo(editedTodo: Todo) {
-    onEditTodo(editedTodo);
-  }
+  const isEditing = activeTodoForm === todo.id;
 
   return (
     <>
@@ -103,33 +97,24 @@ export default function TodoItem({
                   </span>
                 )}
               </div>
-              <div>{todo.priority ? todo.priority : ""}</div>
+              <div>{todo.priority ?? ""}</div>
             </div>
           </div>
+
           {!isSorting && (
             <TodoItemActions
-              onEditTodo={handleEditTodo}
-              onDueDateClick={setIsDueDateMenuOpen}
+              onEditTodo={() => setActiveTodoForm(todo.id)}
+              onDueDateClick={() => {}}
             />
           )}
         </div>
       )}
 
       {isEditing && (
-        <AddTodoForm
-          handleAddTodo={editTodo}
-          handleCancelAddTodo={() => setIsEditing(false)}
-        />
-      )}
-
-      {isDueDateMenuOpen && (
-        <DateDropdown
-          handleSelectDate={function (dueDate: Date): void {
-            throw new Error("Function not implemented.");
-          }}
-          handleDeleteDate={function (): void {
-            throw new Error("Function not implemented.");
-          }}
+        <TodoForm
+          initialTodo={todo}
+          onSubmit={onEditTodo}
+          onCancel={() => setActiveTodoForm(null)}
         />
       )}
     </>
