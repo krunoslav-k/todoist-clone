@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
-import type Todo from "../types/todo";
-import { priorityStyles } from "../config/priorityStyles";
+import type Todo from "../../types/todo";
+import { priorityStyles } from "../../config/priorityStyles";
 
 interface TodoCheckboxProps {
   todo: Todo;

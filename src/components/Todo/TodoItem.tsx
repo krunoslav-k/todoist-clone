@@ -1,8 +1,10 @@
 import { Calendar } from "lucide-react";
-import { dueDateColors } from "../config/dueDateColors";
-import type Todo from "../types/todo";
-import { dueDateHelper } from "../utils/dueDateHelper";
+import { dueDateColors } from "../../config/dueDateColors";
+import type Todo from "../../types/todo";
+import { dueDateHelper } from "../../utils/dueDateHelper";
 import TodoCheckbox from "./TodoCheckbox";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface TodoItemProps {
   todo: Todo;
@@ -17,6 +19,12 @@ export default function TodoItem({
 }: TodoItemProps) {
   const { label, category } = dueDateHelper(todo.dueDate);
   const color = dueDateColors[category];
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: todo.id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   let dueDateTime = "";
   if (
@@ -30,7 +38,13 @@ export default function TodoItem({
   }
 
   return (
-    <div className="p-3 border-b border-gray-300">
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+      className="p-3 border-b border-gray-300"
+    >
       <div className="flex flex-col hover:cursor-pointer group">
         <div
           onClick={() => onTodoSelect(todo.id)}

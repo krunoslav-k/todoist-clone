@@ -1,10 +1,10 @@
 import { useState } from "react";
-import TodoItem from "./components/TodoItem";
 import { dummyData } from "./data/dummyData";
 import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
 import type Todo from "./types/todo";
 import AddTodoButton from "./components/AddTodoButton";
 import TodoModal from "./components/TodoModal/TodoModal";
+import TodoList from "./components/Todo/TodoList";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
@@ -45,16 +45,12 @@ function App() {
       <h1 className="p-10 font-bold text-2xl tracking-wide">Inbox</h1>
 
       <div className="w-3/5">
-        {todos.map((todo) => {
-          return (
-            <TodoItem
-              todo={todo}
-              onToggleCompleted={toggleCompleted}
-              onTodoSelect={selectTodo}
-              key={todo.id}
-            />
-          );
-        })}
+        <TodoList
+          todos={todos}
+          onSetTodos={setTodos}
+          onToggleCompleted={toggleCompleted}
+          onTodoSelect={selectTodo}
+        />
 
         {!isAddTodoFormOpen && (
           <AddTodoButton handleAddTodoButtonClick={showAddTodoForm} />
