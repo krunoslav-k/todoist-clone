@@ -7,8 +7,9 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TodoItemActions from "./TodoItemActions";
 import TodoForm from "./TodoForm/TodoForm";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DueDateMenu from "./TodoForm/menus/DueDateMenu/DueDateMenu";
+import useClickOutside from "../../hooks/useClickOutside";
 
 interface TodoItemProps {
   todo: Todo;
@@ -44,6 +45,9 @@ export default function TodoItem({
     transform: CSS.Transform.toString(transform),
     transition,
   };
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(menuRef, () => setIsDueDateMenuOpen(false));
 
   let dueDateTime = "";
   if (
@@ -132,6 +136,7 @@ export default function TodoItem({
           handleSelectDate={handleSelectDate}
           handleDeleteDate={() => handleSelectDate(undefined)}
           initialDueDate={todo.dueDate}
+          ref={menuRef}
         />
       )}
 

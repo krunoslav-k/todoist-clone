@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { dummyData } from "./data/dummyData";
 import TodoForm from "./components/Todo/TodoForm/TodoForm";
 import type Todo from "./types/todo";
 import AddTodoButton from "./components/AddTodoButton";
 import TodoModal from "./components/Todo/TodoModal/TodoModal";
 import TodoList from "./components/Todo/TodoList";
+import useClickOutside from "./hooks/useClickOutside";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
@@ -13,6 +14,8 @@ function App() {
   );
   const [selectedTodo, setSelectedTodo] = useState<Todo | undefined>();
   const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  useClickOutside(modalRef, () => setIsTodoModalOpen(false));
 
   function toggleCompleted(id: number, completed: boolean) {
     setTodos((prevTodos) =>
@@ -81,6 +84,7 @@ function App() {
           todo={selectedTodo}
           onToggleCompleted={toggleCompleted}
           onCloseClick={() => setIsTodoModalOpen(false)}
+          ref={modalRef}
         />
       )}
     </main>
