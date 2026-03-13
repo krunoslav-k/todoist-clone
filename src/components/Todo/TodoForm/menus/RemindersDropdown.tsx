@@ -2,13 +2,18 @@ import { CircleQuestionMark } from "lucide-react";
 
 interface RemindersDropdownProps {
   onToggleReminder: () => void;
+  ref: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function RemindersDropdown({
   onToggleReminder,
+  ref,
 }: RemindersDropdownProps) {
   return (
-    <div className="w-fit px-2 py-3 border border-gray-300 rounded-lg bg-white shadow-xs relative left-43.5 bottom-15.5 z-10">
+    <div
+      ref={ref}
+      className="w-fit px-2 py-3 border border-gray-300 rounded-lg bg-white shadow-xs relative left-43.5 bottom-15.5 z-10"
+    >
       <p className="text-sm font-bold">Reminders</p>
 
       <div className="py-2">

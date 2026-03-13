@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DueDateMenu from "./menus/DueDateMenu/DueDateMenu";
 import DateButton from "./buttons/DateButton";
 import PriorityButton from "./buttons/PriorityButton";
 import RemindersButton from "./buttons/RemindersButton";
 import OptionsButton from "./buttons/OptionsButton";
-import PrioritySelector from "./menus/PriorityDropdown";
 import type { Priority } from "../../../types/todo";
 import RemindersDropdown from "./menus/RemindersDropdown";
 import type { ActiveDropdown } from "../../../types/ui";
 import type Todo from "../../../types/todo";
+import useClickOutside from "../../../hooks/useClickOutside";
+import PriorityDropdown from "./menus/PriorityDropdown";
 
 const EMPTY_TODO: Todo = {
   id: 0,
@@ -33,6 +34,9 @@ export default function TodoForm({
 }: TodoFormProps) {
   const [todo, setTodo] = useState<Todo>(initialTodo ?? EMPTY_TODO);
   const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(menuRef, () => setActiveDropdown(null));
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -118,11 +122,18 @@ export default function TodoForm({
         <DueDateMenu
           handleSelectDate={handleSelectDate}
           handleDeleteDate={handleDeleteDate}
+          ref={menuRef}
         />
       ) : activeDropdown === "priority" ? (
-        <PrioritySelector handlePrioritySelect={handlePrioritySelect} />
+        <PriorityDropdown
+          handlePrioritySelect={handlePrioritySelect}
+          ref={menuRef}
+        />
       ) : activeDropdown === "reminders" ? (
-        <RemindersDropdown onToggleReminder={handleToggleReminder} />
+        <RemindersDropdown
+          onToggleReminder={handleToggleReminder}
+          ref={menuRef}
+        />
       ) : null}
     </>
   );

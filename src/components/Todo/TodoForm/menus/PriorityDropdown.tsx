@@ -3,13 +3,18 @@ import type { Priority } from "../../../../types/todo";
 
 interface PriorityDropdownProps {
   handlePrioritySelect: (priority: Priority) => void;
+  ref: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function PriorityDropdown({
   handlePrioritySelect,
+  ref,
 }: PriorityDropdownProps) {
   return (
-    <div className="w-fit border border-gray-300 rounded-lg bg-white shadow-xs tracking-wide relative z-10 bottom-15.5 left-15">
+    <div
+      ref={ref}
+      className="w-fit border border-gray-300 rounded-lg bg-white shadow-xs tracking-wide relative z-10 bottom-15.5 left-15"
+    >
       <button
         onClick={() => handlePrioritySelect(1)}
         className="priority_button rounded-t-lg"
