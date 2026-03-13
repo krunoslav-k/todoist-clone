@@ -1,5 +1,5 @@
 import { AlarmClock } from "lucide-react";
-import type { ActiveDropdown } from "../../../types/ui";
+import type { ActiveDropdown } from "../../../../types/ui";
 
 interface RemindersButtonProps {
   handleRemindersButtonClick: (type: Exclude<ActiveDropdown, null>) => void;

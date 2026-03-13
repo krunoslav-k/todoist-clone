@@ -3,19 +3,19 @@ import { enGB } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 
-interface CalendarViewProps {
+interface DueDateMenuCalendarProps {
   displayedMonth: Date;
   setDisplayedMonth: (date: Date) => void;
   selectedDate: Date | undefined;
   handleDayPickerSelect: (date: Date | undefined) => void;
 }
 
-export default function CalendarView({
+export default function DueDateMenuCalendar({
   displayedMonth,
   setDisplayedMonth,
   selectedDate,
   handleDayPickerSelect,
-}: CalendarViewProps) {
+}: DueDateMenuCalendarProps) {
   return (
     <DayPicker
       animate

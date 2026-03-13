@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { dummyData } from "./data/dummyData";
-import TodoForm from "./components/AddTodoForm/TodoForm";
+import TodoForm from "./components/Todo/TodoForm/TodoForm";
 import type Todo from "./types/todo";
 import AddTodoButton from "./components/AddTodoButton";
-import TodoModal from "./components/TodoModal/TodoModal";
+import TodoModal from "./components/Todo/TodoModal/TodoModal";
 import TodoList from "./components/Todo/TodoList";
 
 function App() {

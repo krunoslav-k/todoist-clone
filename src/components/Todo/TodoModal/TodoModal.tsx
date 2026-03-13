@@ -1,4 +1,4 @@
-import type Todo from "../../types/todo";
+import type Todo from "../../../types/todo";
 import TodoModalHeader from "./TodoModalHeader";
 import TodoModalContent from "./TodoModalContent";
 import TodoModalSidebar from "./TodoModalSidebar";

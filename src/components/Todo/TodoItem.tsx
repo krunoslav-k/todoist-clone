@@ -6,9 +6,9 @@ import TodoCheckbox from "./TodoCheckbox";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import TodoItemActions from "./TodoItemActions";
-import TodoForm from "../AddTodoForm/TodoForm";
+import TodoForm from "./TodoForm/TodoForm";
 import { useState } from "react";
-import DateDropdown from "../AddTodoForm/dropdowns/DateDropdown/DateDropdown";
+import DueDateMenu from "./TodoForm/menus/DueDateMenu/DueDateMenu";
 
 interface TodoItemProps {
   todo: Todo;
@@ -128,7 +128,7 @@ export default function TodoItem({
       )}
 
       {isDueDateMenuOpen && (
-        <DateDropdown
+        <DueDateMenu
           handleSelectDate={handleSelectDate}
           handleDeleteDate={() => handleSelectDate(undefined)}
           initialDueDate={todo.dueDate}

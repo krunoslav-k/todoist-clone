@@ -1,14 +1,14 @@
 import { useState } from "react";
-import DateDropdown from "./dropdowns/DateDropdown/DateDropdown";
+import DueDateMenu from "./menus/DueDateMenu/DueDateMenu";
 import DateButton from "./buttons/DateButton";
 import PriorityButton from "./buttons/PriorityButton";
 import RemindersButton from "./buttons/RemindersButton";
 import OptionsButton from "./buttons/OptionsButton";
-import PrioritySelector from "./dropdowns/PrioritySelector";
-import type { Priority } from "../../types/todo";
-import RemindersDropdown from "./dropdowns/RemindersDropdown";
-import type { ActiveDropdown } from "../../types/ui";
-import type Todo from "../../types/todo";
+import PrioritySelector from "./menus/PriorityDropdown";
+import type { Priority } from "../../../types/todo";
+import RemindersDropdown from "./menus/RemindersDropdown";
+import type { ActiveDropdown } from "../../../types/ui";
+import type Todo from "../../../types/todo";
 
 const EMPTY_TODO: Todo = {
   id: 0,
@@ -115,7 +115,7 @@ export default function TodoForm({
       </form>
 
       {activeDropdown === "date" ? (
-        <DateDropdown
+        <DueDateMenu
           handleSelectDate={handleSelectDate}
           handleDeleteDate={handleDeleteDate}
         />

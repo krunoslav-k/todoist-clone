@@ -1,13 +1,13 @@
 import { Flag } from "lucide-react";
-import type { Priority } from "../../../types/todo";
+import type { Priority } from "../../../../types/todo";
 
-interface PrioritySelectorProps {
+interface PriorityDropdownProps {
   handlePrioritySelect: (priority: Priority) => void;
 }
 
-export default function PrioritySelector({
+export default function PriorityDropdown({
   handlePrioritySelect,
-}: PrioritySelectorProps) {
+}: PriorityDropdownProps) {
   return (
     <div className="w-fit border border-gray-300 rounded-lg bg-white shadow-xs tracking-wide relative z-10 bottom-15.5 left-15">
       <button

@@ -1,6 +1,6 @@
 import { Star } from "lucide-react";
 import { useState } from "react";
-import PremiumFeatureModal from "./PremiumFeatureModal";
+import PremiumFeatureModal from "../../../../../modals/PremiumFeatureModal";
 
 interface ScheduleOptionTimeProps {
   handleCancelClick: () => void;

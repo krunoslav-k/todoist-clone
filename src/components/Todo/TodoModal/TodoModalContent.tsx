@@ -1,6 +1,6 @@
 import { Check, Paperclip, Plus } from "lucide-react";
-import profileIcon from "../../assets/profile.svg";
-import type Todo from "../../types/todo";
+import profileIcon from "../../../assets/profile.svg";
+import type Todo from "../../../types/todo";
 
 interface TodoModalContentProps {
   todo: Todo;

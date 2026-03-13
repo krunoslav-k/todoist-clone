@@ -3,22 +3,22 @@ import { format } from "date-fns/format";
 import { CalendarPlus } from "lucide-react";
 import { useState } from "react";
 import "react-day-picker/style.css";
-import DateInput from "./DateInput";
-import QuickDates from "./QuickDates";
-import CalendarView from "./CalendarView";
-import ScheduleOptions from "./ScheduleOptions";
+import ScheduleOptions from "./ScheduleOptions/ScheduleOptions";
+import DueDateMenuInput from "./DueDateMenuInput";
+import DueDateMenuQuickDates from "./DueDateMenuQuickDates";
+import DueDateMenuCalendar from "./DueDateMenuCalendar";
 
-interface DateDropdownProps {
+interface DueDateMenuProps {
   handleSelectDate: (dueDate: Date) => void;
   handleDeleteDate: () => void;
   initialDueDate?: Date;
 }
 
-export default function DateDropdown({
+export default function DueDateMenu({
   handleSelectDate,
   handleDeleteDate,
   initialDueDate,
-}: DateDropdownProps) {
+}: DueDateMenuProps) {
   const [displayedMonth, setDisplayedMonth] = useState(
     initialDueDate ?? new Date(),
   );
@@ -87,7 +87,7 @@ export default function DateDropdown({
 
   return (
     <div className="flex flex-col p-3 pt-0 border border-gray-300 rounded-lg bg-white shadow w-fit relative z-10 bottom-50 left-19">
-      <DateInput
+      <DueDateMenuInput
         inputValue={inputValue}
         setInputValue={setInputValue}
         handleInputChange={handleInputChange}
@@ -110,13 +110,13 @@ export default function DateDropdown({
         </button>
       )}
 
-      <QuickDates
+      <DueDateMenuQuickDates
         selectedDate={selectedDate}
         handleSelectDate={handleSelectDate}
         handleNoDateClick={deleteDate}
       />
 
-      <CalendarView
+      <DueDateMenuCalendar
         displayedMonth={displayedMonth}
         setDisplayedMonth={setDisplayedMonth}
         selectedDate={selectedDate}

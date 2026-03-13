@@ -1,5 +1,5 @@
 import { Flag } from "lucide-react";
-import type { ActiveDropdown } from "../../../types/ui";
+import type { ActiveDropdown } from "../../../../types/ui";
 
 interface PriorityButtonProps {
   handlePriorityButtonClick: (type: Exclude<ActiveDropdown, null>) => void;

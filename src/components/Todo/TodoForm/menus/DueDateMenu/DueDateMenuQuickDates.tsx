@@ -18,7 +18,7 @@ import {
   Sun,
 } from "lucide-react";
 
-interface QuickDatesProps {
+interface DueDateMenuQuickDatesProps {
   selectedDate: Date | undefined;
   handleSelectDate: (dueDate: Date) => void;
   handleNoDateClick: () => void;
@@ -33,11 +33,11 @@ type QuickDateOption = {
   shouldShow: (selectedDate: Date | undefined) => boolean;
 };
 
-export default function QuickDates({
+export default function DueDateMenuQuickDates({
   selectedDate,
   handleSelectDate,
   handleNoDateClick,
-}: QuickDatesProps) {
+}: DueDateMenuQuickDatesProps) {
   const today = new Date();
   const tomorrow = addDays(today, 1);
   const saturday = nextSaturday(today);

@@ -1,16 +1,16 @@
 import { X } from "lucide-react";
 
-interface DateInputProps {
+interface DueDateMenuInputProps {
   inputValue: string;
   setInputValue: (value: string) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function DateInput({
+export default function DueDateMenuInput({
   inputValue,
   setInputValue,
   handleInputChange,
-}: DateInputProps) {
+}: DueDateMenuInputProps) {
   return (
     <div className="flex justify-between items-center">
       <input
