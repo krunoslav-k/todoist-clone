@@ -49,6 +49,29 @@ function App() {
     );
   }
 
+  function selectPreviousTodo() {
+    if (!selectedTodo) return;
+
+    const currentIndex = todos.findIndex((todo) => todo.id === selectedTodo.id);
+    if (currentIndex <= 0) return;
+
+    setSelectedTodo(todos[currentIndex - 1]);
+  }
+
+  function selectNextTodo() {
+    if (!selectedTodo) return;
+
+    const currentIndex = todos.findIndex((todo) => todo.id === selectedTodo.id);
+    if (currentIndex === -1 || currentIndex >= todos.length - 1) return;
+
+    setSelectedTodo(todos[currentIndex + 1]);
+  }
+
+  function getSelectedTodoIndex() {
+    if (!selectedTodo) return 0;
+    return todos.findIndex((todo) => todo.id === selectedTodo.id);
+  }
+
   return (
     <main className="flex flex-col justify-center items-center py-8">
       <h1 className="p-10 font-bold text-2xl tracking-wide">Inbox</h1>
@@ -81,10 +104,14 @@ function App() {
 
       {selectedTodo && isTodoModalOpen && (
         <TodoModal
+          todosLength={todos.length}
+          selectedTodoIndex={getSelectedTodoIndex()}
           todo={selectedTodo}
           onToggleCompleted={toggleCompleted}
           onCloseClick={() => setIsTodoModalOpen(false)}
           ref={modalRef}
+          onPreviousTodoClick={selectPreviousTodo}
+          onNextTodoClick={selectNextTodo}
         />
       )}
     </main>

@@ -4,16 +4,24 @@ import TodoModalContent from "./TodoModalContent";
 import TodoModalSidebar from "./TodoModalSidebar";
 
 interface TodoModalProps {
+  todosLength: number;
+  selectedTodoIndex: number;
   todo: Todo;
   onToggleCompleted: (id: number, completed: boolean) => void;
   onCloseClick: () => void;
+  onPreviousTodoClick: () => void;
+  onNextTodoClick: () => void;
   ref: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function TodoModal({
+  todosLength,
+  selectedTodoIndex,
   todo,
   onToggleCompleted,
   onCloseClick,
+  onPreviousTodoClick,
+  onNextTodoClick,
   ref,
 }: TodoModalProps) {
   return (
@@ -22,7 +30,13 @@ export default function TodoModal({
         ref={ref}
         className="w-4xl h-[85%] flex flex-col bg-white rounded-xl relative"
       >
-        <TodoModalHeader onCloseClick={onCloseClick} />
+        <TodoModalHeader
+          todosLength={todosLength}
+          selectedTodoIndex={selectedTodoIndex}
+          onCloseClick={onCloseClick}
+          onPreviousTodoClick={onPreviousTodoClick}
+          onNextTodoClick={onNextTodoClick}
+        />
 
         <div className="flex-1 flex">
           <TodoModalContent todo={todo} onToggleCompleted={onToggleCompleted} />
