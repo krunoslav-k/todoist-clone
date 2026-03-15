@@ -1,4 +1,6 @@
 import { ChevronDown, ChevronUp, Ellipsis, X } from "lucide-react";
+import { useState } from "react";
+import TodoModalActionsDropdown from "./TodoModalActionsDropdown";
 
 interface TodoModalHeaderProps {
   todosLength: number;
@@ -15,6 +17,12 @@ export default function TodoModalHeader({
   onPreviousTodoClick,
   onNextTodoClick,
 }: TodoModalHeaderProps) {
+  const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
+
+  function toggleActionsDropdown() {
+    setIsActionsDropdownOpen((prev) => !prev);
+  }
+
   return (
     <div className="p-2 flex justify-between items-center border-b border-gray-200">
       <button className="px-3 py-1 text-sm font-medium text-gray-500 hover:bg-gray-100 rounded-md group transition ease-in-out">
@@ -50,7 +58,7 @@ export default function TodoModalHeader({
           />
         </button>
 
-        <button className="icon_button group">
+        <button onClick={toggleActionsDropdown} className="icon_button group">
           <Ellipsis
             strokeWidth={1}
             className="text-[#666666] group-hover:text-black"
@@ -64,6 +72,8 @@ export default function TodoModalHeader({
           />
         </button>
       </div>
+
+      {isActionsDropdownOpen && <TodoModalActionsDropdown />}
     </div>
   );
 }
