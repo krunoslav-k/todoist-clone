@@ -6,6 +6,7 @@ export default interface Todo {
   dueDate?: Date;
   priority: Priority;
   hasReminder: boolean;
+  labels?: string[];
 }
 
 export type Priority = 1 | 2 | 3 | 4;

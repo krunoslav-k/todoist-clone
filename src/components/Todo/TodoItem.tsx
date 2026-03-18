@@ -1,4 +1,4 @@
-import { AlarmClock, Calendar, GripVertical } from "lucide-react";
+import { AlarmClock, Calendar, GripVertical, Tag } from "lucide-react";
 import { dueDateColors } from "../../config/dueDateColors";
 import type Todo from "../../types/todo";
 import { dueDateHelper } from "../../utils/dueDateHelper";
@@ -100,6 +100,7 @@ export default function TodoItem({
               <p className="ml-2 text-[0.8rem] text-gray-400">
                 {todo.description}
               </p>
+
               <div
                 className={`ml-2 flex items-center gap-2 text-[13px] font-light`}
               >
@@ -109,6 +110,7 @@ export default function TodoItem({
                     {dueDateTime}
                   </span>
                 )}
+
                 {todo.hasReminder && (
                   <span>
                     <AlarmClock
@@ -118,6 +120,16 @@ export default function TodoItem({
                     />
                   </span>
                 )}
+
+                {todo.labels &&
+                  todo.labels.map((label) => {
+                    return (
+                      <span className="flex justify-center items-center gap-1 text-[#808080] hover:underline">
+                        <Tag strokeWidth={1.6} size={12} />
+                        {label}
+                      </span>
+                    );
+                  })}
               </div>
             </div>
           </div>

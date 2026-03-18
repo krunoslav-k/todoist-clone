@@ -19,6 +19,7 @@ const EMPTY_TODO: Todo = {
   dueDate: undefined,
   priority: 4,
   hasReminder: false,
+  labels: [],
 };
 
 interface TodoFormProps {
