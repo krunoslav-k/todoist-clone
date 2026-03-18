@@ -1,66 +1,80 @@
-import { ChevronDown, LockKeyhole, Plus, Star } from "lucide-react";
+import { ChevronDown, LockKeyhole, Plus, type LucideIcon } from "lucide-react";
+import TodoModalSidebarItem from "./TodoModalSidebarItem";
+
+interface Item {
+  label: string | null;
+  buttonText: string;
+  hasStar: boolean;
+  Icon: LucideIcon;
+  iconClasses: string;
+}
 
 export default function TodoModalSidebar() {
+  const items: Item[] = [
+    {
+      label: "Project",
+      buttonText: "Inbox",
+      hasStar: false,
+      Icon: ChevronDown,
+      iconClasses: "opacity-0 group-hover:opacity-100",
+    },
+    {
+      label: null,
+      buttonText: "Date",
+      hasStar: false,
+      Icon: Plus,
+      iconClasses: "",
+    },
+    {
+      label: null,
+      buttonText: "Deadline",
+      hasStar: true,
+      Icon: LockKeyhole,
+      iconClasses: "",
+    },
+    {
+      label: "Priority",
+      buttonText: "P4",
+      hasStar: false,
+      Icon: ChevronDown,
+      iconClasses: "opacity-0 group-hover:opacity-100",
+    },
+    {
+      label: null,
+      buttonText: "Lables",
+      hasStar: false,
+      Icon: Plus,
+      iconClasses: "",
+    },
+    {
+      label: null,
+      buttonText: "Reminders",
+      hasStar: false,
+      Icon: Plus,
+      iconClasses: "",
+    },
+    {
+      label: null,
+      buttonText: "Location",
+      hasStar: true,
+      Icon: LockKeyhole,
+      iconClasses: "",
+    },
+  ];
+
   return (
     <div className="w-[30%] h-full p-4 flex flex-col justify-start items-start bg-gray-50 text-sm">
-      <p className="mb-2 font-medium text-gray-600">Project</p>
-      <button className="flex justify-between items-center w-full px-2 py-1 rounded-md font-light cursor-pointer hover:bg-gray-200 group">
-        Inbox
-        <ChevronDown
-          strokeWidth={1}
-          size={16}
-          className="opacity-0 group-hover:opacity-100"
-        />
-      </button>
-      <hr className="w-full my-3 text-gray-200" />
-
-      <button className="flex justify-between items-center w-full px-2 py-1 rounded-md font-medium text-gray-600 cursor-pointer hover:bg-gray-200">
-        Date
-        <Plus strokeWidth={1} size={18} />
-      </button>
-      <hr className="w-full my-3 text-gray-200" />
-
-      <button className="flex justify-between items-center w-full px-2 py-1 rounded-md font-medium text-gray-600 cursor-pointer hover:bg-gray-200">
-        <div className="flex justify-center items-center gap-1.5">
-          Deadline
-          <Star size={12} strokeWidth="4" color="#ee8100" />
-        </div>
-        <LockKeyhole strokeWidth={1} size={18} />
-      </button>
-      <hr className="w-full my-3 text-gray-200" />
-
-      <p className="mb-2 font-medium text-gray-600">Priority</p>
-      <button className="flex justify-between items-center w-full px-2 py-1 rounded-md font-light cursor-pointer hover:bg-gray-200 group">
-        P4
-        <ChevronDown
-          strokeWidth={1}
-          size={16}
-          className="opacity-0 group-hover:opacity-100"
-        />
-      </button>
-      <hr className="w-full my-3 text-gray-200" />
-
-      <button className="flex justify-between items-center w-full px-2 py-1 rounded-md font-medium text-gray-600 cursor-pointer hover:bg-gray-200">
-        Lables
-        <Plus strokeWidth={1} size={18} />
-      </button>
-      <hr className="w-full my-3 text-gray-200" />
-
-      <button className="flex justify-between items-center w-full px-2 py-1 rounded-md font-medium text-gray-600 cursor-pointer hover:bg-gray-200">
-        Reminders
-        <Plus strokeWidth={1} size={18} />
-      </button>
-      <hr className="w-full my-3 text-gray-200" />
-
-      <button className="flex justify-between items-center w-full px-2 py-1 rounded-md font-medium text-gray-600 cursor-pointer hover:bg-gray-200">
-        <div className="flex justify-center items-center gap-1.5">
-          Location
-          <Star size={12} strokeWidth="4" color="#ee8100" />
-        </div>
-
-        <LockKeyhole strokeWidth={1} size={18} />
-      </button>
-      <hr className="w-full my-3 text-gray-200" />
+      {items.map(({ label, buttonText, hasStar, Icon, iconClasses }) => {
+        return (
+          <TodoModalSidebarItem
+            label={label}
+            buttonText={buttonText}
+            hasStar={hasStar}
+            Icon={Icon}
+            iconClasses={iconClasses}
+          />
+        );
+      })}
     </div>
   );
 }
