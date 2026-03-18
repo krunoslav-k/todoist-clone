@@ -3,13 +3,15 @@ import DueDateMenu from "./menus/DueDateMenu/DueDateMenu";
 import DateButton from "./buttons/DateButton";
 import PriorityButton from "./buttons/PriorityButton";
 import RemindersButton from "./buttons/RemindersButton";
-import OptionsButton from "./buttons/OptionsButton";
 import type { Priority } from "../../../types/todo";
 import RemindersDropdown from "./menus/RemindersDropdown";
 import type { ActiveDropdown } from "../../../types/ui";
 import type Todo from "../../../types/todo";
 import useClickOutside from "../../../hooks/useClickOutside";
 import PriorityDropdown from "./menus/PriorityDropdown";
+import ActionsDropdown from "./menus/ActionsDropdown";
+import ActionsButton from "./buttons/ActionsButton";
+import LabelsDropdown from "./menus/LabelsDropdown";
 
 const EMPTY_TODO: Todo = {
   id: 0,
@@ -26,12 +28,14 @@ interface TodoFormProps {
   initialTodo?: Todo;
   onSubmit: (todo: Todo) => void;
   onCancel: () => void;
+  labels: string[];
 }
 
 export default function TodoForm({
   initialTodo,
   onSubmit,
   onCancel,
+  labels,
 }: TodoFormProps) {
   const [todo, setTodo] = useState<Todo>(initialTodo ?? EMPTY_TODO);
   const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);
@@ -75,8 +79,25 @@ export default function TodoForm({
     setActiveDropdown(null);
   }
 
+  function handleLabelsClick() {
+    handleDropdownClick("labels");
+  }
+
+  function handleLabelSelect(label: string) {
+    setTodo((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        labels: [...(prev.labels || []), label],
+      };
+    });
+
+    setActiveDropdown(null);
+  }
+
   return (
-    <>
+    <div className="relative">
       <form
         onSubmit={handleSubmit}
         className="w-full  border border-gray-300 rounded-lg flex flex-col"
@@ -105,7 +126,7 @@ export default function TodoForm({
           <DateButton handleDateButtonClick={handleDropdownClick} />
           <PriorityButton handlePriorityButtonClick={handleDropdownClick} />
           <RemindersButton handleRemindersButtonClick={handleDropdownClick} />
-          <OptionsButton />
+          <ActionsButton onActionsClick={handleDropdownClick} />
         </div>
 
         <div className="border-t border-gray-300 p-2 flex justify-end gap-2.5">
@@ -135,7 +156,15 @@ export default function TodoForm({
           onToggleReminder={handleToggleReminder}
           ref={menuRef}
         />
+      ) : activeDropdown === "actions" ? (
+        <ActionsDropdown onLabelsClick={handleLabelsClick} ref={menuRef} />
+      ) : activeDropdown === "labels" ? (
+        <LabelsDropdown
+          labels={labels}
+          onLabelSelect={handleLabelSelect}
+          ref={menuRef}
+        />
       ) : null}
-    </>
+    </div>
   );
 }

@@ -6,6 +6,7 @@ import AddTodoButton from "./components/AddTodoButton";
 import TodoModal from "./components/Todo/TodoModal/TodoModal";
 import TodoList from "./components/Todo/TodoList";
 import useClickOutside from "./hooks/useClickOutside";
+import { dummyLabels } from "./data/dummyLabels";
 
 function App() {
   const [todos, setTodos] = useState(dummyData);
@@ -14,6 +15,7 @@ function App() {
   );
   const [selectedTodo, setSelectedTodo] = useState<Todo | undefined>();
   const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
+  const [labels, setLabels] = useState<string[]>(dummyLabels);
   const modalRef = useRef<HTMLDivElement | null>(null);
   useClickOutside(modalRef, () => setIsTodoModalOpen(false));
 
@@ -98,6 +100,7 @@ function App() {
           <TodoForm
             onSubmit={addTodo}
             onCancel={() => setActiveTodoForm(null)}
+            labels={labels}
           />
         )}
       </div>

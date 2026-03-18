@@ -157,6 +157,7 @@ export default function TodoItem({
           initialTodo={todo}
           onSubmit={onEditTodo}
           onCancel={() => setActiveTodoForm(null)}
+          labels={todo.labels || []}
         />
       )}
     </>

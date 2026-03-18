@@ -2,5 +2,6 @@ export type ActiveDropdown =
   | "date"
   | "priority"
   | "reminders"
-  | "options"
+  | "actions"
+  | "labels"
   | null;
