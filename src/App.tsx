@@ -74,6 +74,12 @@ function App() {
     return todos.findIndex((todo) => todo.id === selectedTodo.id);
   }
 
+  function addNewLabel(label: string) {
+    setLabels((prev) => {
+      return [...prev, label];
+    });
+  }
+
   return (
     <main className="flex flex-col justify-center items-center py-8">
       <h1 className="p-10 font-bold text-2xl tracking-wide">Inbox</h1>
@@ -102,6 +108,7 @@ function App() {
             onSubmit={addTodo}
             onCancel={() => setActiveTodoForm(null)}
             labels={labels}
+            onAddNewLabel={addNewLabel}
           />
         )}
       </div>

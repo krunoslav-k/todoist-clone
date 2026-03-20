@@ -29,6 +29,7 @@ interface TodoFormProps {
   onSubmit: (todo: Todo) => void;
   onCancel: () => void;
   labels: string[];
+  onAddNewLabel: (label: string) => void;
 }
 
 export default function TodoForm({
@@ -36,10 +37,14 @@ export default function TodoForm({
   onSubmit,
   onCancel,
   labels,
+  onAddNewLabel,
 }: TodoFormProps) {
   const [todo, setTodo] = useState<Todo>(initialTodo ?? EMPTY_TODO);
   const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [isTypingLabel, setIsTypingLabel] = useState(false);
+  const [labelQuery, setLabelQuery] = useState("");
+  const [titleInput, setTitleInput] = useState("");
 
   useClickOutside(menuRef, () => setActiveDropdown(null));
 
@@ -65,7 +70,6 @@ export default function TodoForm({
 
   function handleSelectDate(dueDate: Date) {
     setTodo((prev) => ({ ...prev, dueDate }));
-    //setActiveDropdown(null);
   }
 
   function handleDeleteDate() {
@@ -94,6 +98,37 @@ export default function TodoForm({
     });
 
     setActiveDropdown(null);
+    setTitleInput((prev) => prev.split("@")[0]);
+  }
+
+  function handleInputChange(
+    e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
+  ) {
+    const input = e.target.value;
+    if (input.includes("@")) {
+      setIsTypingLabel(true);
+      setActiveDropdown("labels");
+    } else {
+      setIsTypingLabel(false);
+      setActiveDropdown(null);
+      setLabelQuery("");
+    }
+
+    if (isTypingLabel) {
+      const match = input.match(/@(\w+)/);
+      setLabelQuery(match ? match[1] : "");
+      setTitleInput(input);
+    }
+
+    if (!isTypingLabel) {
+      setTodo((prev) => ({ ...prev, title: input.replace("@", "") }));
+      setTitleInput(input);
+    }
+  }
+
+  function handleCreateLabel(labelQuery: string) {
+    onAddNewLabel(labelQuery);
+    handleLabelSelect(labelQuery);
   }
 
   return (
@@ -102,15 +137,23 @@ export default function TodoForm({
         onSubmit={handleSubmit}
         className="w-full  border border-gray-300 rounded-lg flex flex-col"
       >
-        <input
-          type="text"
-          value={todo.title}
-          onChange={(e) =>
-            setTodo((prev) => ({ ...prev, title: e.target.value }))
-          }
-          placeholder="Task name"
-          className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none"
-        />
+        <div contentEditable>
+          {todo.labels &&
+            todo.labels.map((label) => {
+              return (
+                <span className="ml-2 -mr-2 p-1 rounded-sm text-sm font-medium bg-gray-200">
+                  @{label}
+                </span>
+              );
+            })}
+          <input
+            type="text"
+            value={titleInput}
+            onChange={handleInputChange}
+            placeholder="Task name"
+            className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none"
+          />
+        </div>
 
         <input
           type="text"
@@ -163,6 +206,8 @@ export default function TodoForm({
           labels={labels}
           onLabelSelect={handleLabelSelect}
           ref={menuRef}
+          labelQuery={labelQuery}
+          onCreateLabel={handleCreateLabel}
         />
       ) : null}
     </div>
