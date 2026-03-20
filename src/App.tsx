@@ -88,6 +88,7 @@ function App() {
           activeTodoForm={activeTodoForm}
           setActiveTodoForm={setActiveTodoForm}
           onDueDateEdit={handleDueDateEdit}
+          labels={labels}
         />
 
         {activeTodoForm !== "add" && (

@@ -19,6 +19,7 @@ interface TodoItemProps {
   activeTodoForm: "add" | number | null;
   setActiveTodoForm: (form: "add" | number | null) => void;
   onDueDateEdit: (todoId: number, dueDate: Date) => void;
+  labels: string[];
 }
 
 export default function TodoItem({
@@ -29,6 +30,7 @@ export default function TodoItem({
   activeTodoForm,
   setActiveTodoForm,
   onDueDateEdit,
+  labels,
 }: TodoItemProps) {
   const [isDueDateMenuOpen, setIsDueDateMenuOpen] = useState(false);
   const { label, category } = dueDateHelper(todo.dueDate);
@@ -157,7 +159,7 @@ export default function TodoItem({
           initialTodo={todo}
           onSubmit={onEditTodo}
           onCancel={() => setActiveTodoForm(null)}
-          labels={todo.labels || []}
+          labels={labels}
         />
       )}
     </>
