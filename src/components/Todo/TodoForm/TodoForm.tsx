@@ -1,17 +1,17 @@
-import { useRef, useState } from "react";
 import DueDateMenu from "./menus/DueDateMenu/DueDateMenu";
 import DateButton from "./buttons/DateButton";
 import PriorityButton from "./buttons/PriorityButton";
 import RemindersButton from "./buttons/RemindersButton";
 import type { Priority } from "../../../types/todo";
 import RemindersDropdown from "./menus/RemindersDropdown";
-import type { ActiveDropdown } from "../../../types/ui";
+import type { Dropdown } from "../../../types/ui";
 import type Todo from "../../../types/todo";
-import useClickOutside from "../../../hooks/useClickOutside";
 import PriorityDropdown from "./menus/PriorityDropdown";
 import ActionsDropdown from "./menus/ActionsDropdown";
 import ActionsButton from "./buttons/ActionsButton";
 import LabelsDropdown from "./menus/LabelsDropdown";
+import { useState } from "react";
+import useDropdown from "../../../hooks/useDropdown";
 
 const EMPTY_TODO: Todo = {
   id: 0,
@@ -40,13 +40,46 @@ export default function TodoForm({
   onAddNewLabel,
 }: TodoFormProps) {
   const [todo, setTodo] = useState<Todo>(initialTodo ?? EMPTY_TODO);
-  const [activeDropdown, setActiveDropdown] = useState<ActiveDropdown>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const [isTypingLabel, setIsTypingLabel] = useState(false);
   const [labelQuery, setLabelQuery] = useState("");
   const [titleInput, setTitleInput] = useState("");
 
-  useClickOutside(menuRef, () => setActiveDropdown(null));
+  const { activeDropdown, toggleDropdown, closeDropdown, menuRef } =
+    useDropdown();
+
+  const dropdowns = {
+    date: (
+      <DueDateMenu
+        onSelectDate={handleSelectDate}
+        onDeleteDate={handleDeleteDate}
+        ref={menuRef}
+      />
+    ),
+    priority: (
+      <PriorityDropdown onPrioritySelect={handlePrioritySelect} ref={menuRef} />
+    ),
+    reminders: (
+      <RemindersDropdown
+        onToggleReminder={handleToggleReminder}
+        ref={menuRef}
+      />
+    ),
+    actions: (
+      <ActionsDropdown
+        onLabelsClick={() => toggleDropdown("labels")}
+        ref={menuRef}
+      />
+    ),
+    labels: (
+      <LabelsDropdown
+        labels={labels}
+        labelQuery={labelQuery}
+        onLabelSelect={handleLabelSelect}
+        onCreateLabel={handleCreateLabel}
+        ref={menuRef}
+      />
+    ),
+  };
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -57,15 +90,15 @@ export default function TodoForm({
     setTodo(initialTodo ?? EMPTY_TODO);
   }
 
-  function handleDropdownClick(type: Exclude<ActiveDropdown, null>) {
-    setActiveDropdown((prev) => (prev === type ? null : type));
+  function handleDropdownClick(type: Exclude<Dropdown, null>) {
+    toggleDropdown(type);
   }
 
   function handlePrioritySelect(priority: Priority) {
     setTodo((prev) => {
       return { ...prev, priority };
     });
-    setActiveDropdown(null);
+    closeDropdown();
   }
 
   function handleSelectDate(dueDate: Date) {
@@ -74,17 +107,13 @@ export default function TodoForm({
 
   function handleDeleteDate() {
     setTodo((prev) => ({ ...prev, dueDate: undefined }));
-    setActiveDropdown(null);
+    closeDropdown();
   }
 
   function handleToggleReminder() {
     const toggledReminder = !todo.hasReminder;
     setTodo((prev) => ({ ...prev, hasReminder: toggledReminder }));
-    setActiveDropdown(null);
-  }
-
-  function handleLabelsClick() {
-    handleDropdownClick("labels");
+    closeDropdown();
   }
 
   function handleLabelSelect(label: string) {
@@ -97,7 +126,7 @@ export default function TodoForm({
       };
     });
 
-    setActiveDropdown(null);
+    closeDropdown();
     setTitleInput((prev) => prev.split("@")[0]);
   }
 
@@ -107,10 +136,10 @@ export default function TodoForm({
     const input = e.target.value;
     if (input.includes("@")) {
       setIsTypingLabel(true);
-      setActiveDropdown("labels");
+      toggleDropdown("labels");
     } else {
       setIsTypingLabel(false);
-      setActiveDropdown(null);
+      closeDropdown();
       setLabelQuery("");
     }
 
@@ -151,7 +180,7 @@ export default function TodoForm({
             value={titleInput}
             onChange={handleInputChange}
             placeholder="Task name"
-            className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none"
+            className="w-full ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none"
           />
         </div>
 
@@ -183,33 +212,7 @@ export default function TodoForm({
         </div>
       </form>
 
-      {activeDropdown === "date" ? (
-        <DueDateMenu
-          handleSelectDate={handleSelectDate}
-          handleDeleteDate={handleDeleteDate}
-          ref={menuRef}
-        />
-      ) : activeDropdown === "priority" ? (
-        <PriorityDropdown
-          handlePrioritySelect={handlePrioritySelect}
-          ref={menuRef}
-        />
-      ) : activeDropdown === "reminders" ? (
-        <RemindersDropdown
-          onToggleReminder={handleToggleReminder}
-          ref={menuRef}
-        />
-      ) : activeDropdown === "actions" ? (
-        <ActionsDropdown onLabelsClick={handleLabelsClick} ref={menuRef} />
-      ) : activeDropdown === "labels" ? (
-        <LabelsDropdown
-          labels={labels}
-          onLabelSelect={handleLabelSelect}
-          ref={menuRef}
-          labelQuery={labelQuery}
-          onCreateLabel={handleCreateLabel}
-        />
-      ) : null}
+      {activeDropdown && dropdowns[activeDropdown]}
     </div>
   );
 }

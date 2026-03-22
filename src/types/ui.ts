@@ -1,4 +1,4 @@
-export type ActiveDropdown =
+export type Dropdown =
   | "date"
   | "priority"
   | "reminders"

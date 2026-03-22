@@ -9,15 +9,15 @@ import DueDateMenuQuickDates from "./DueDateMenuQuickDates";
 import DueDateMenuCalendar from "./DueDateMenuCalendar";
 
 interface DueDateMenuProps {
-  handleSelectDate: (dueDate: Date) => void;
-  handleDeleteDate: () => void;
+  onSelectDate: (dueDate: Date) => void;
+  onDeleteDate: () => void;
   initialDueDate?: Date;
   ref: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function DueDateMenu({
-  handleSelectDate,
-  handleDeleteDate,
+  onSelectDate,
+  onDeleteDate,
   initialDueDate,
   ref,
 }: DueDateMenuProps) {
@@ -50,7 +50,7 @@ export default function DueDateMenu({
       setSelectedDate(date);
       setDisplayedMonth(date);
       setInputValue(format(date, "d LLL"));
-      handleSelectDate(date);
+      onSelectDate(date);
     }
   };
 
@@ -77,7 +77,7 @@ export default function DueDateMenu({
     setDisplayedMonth(new Date());
     setSelectedDate(undefined);
     setInputValue("");
-    handleDeleteDate();
+    onDeleteDate();
   }
 
   function addTimeToDate(time: string) {
@@ -100,7 +100,7 @@ export default function DueDateMenu({
 
       {isDateCompleteAndValid && (
         <button
-          onClick={() => handleSelectDate(parsedDate)}
+          onClick={() => onSelectDate(parsedDate)}
           className="py-2 -mx-3 flex justify-start items-center border-t border-gray-200 hover:cursor-pointer"
         >
           <CalendarPlus
@@ -117,7 +117,7 @@ export default function DueDateMenu({
 
       <DueDateMenuQuickDates
         selectedDate={selectedDate}
-        handleSelectDate={handleSelectDate}
+        handleSelectDate={onSelectDate}
         handleNoDateClick={deleteDate}
       />
 
