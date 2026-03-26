@@ -68,6 +68,10 @@ export default function TodoItem({
     onDueDateEdit(todo.id, dueDate);
   }
 
+  function addNewLabel(label: string) {
+    return;
+  }
+
   return (
     <>
       {!isEditing && (
@@ -147,8 +151,8 @@ export default function TodoItem({
 
       {isDueDateMenuOpen && (
         <DueDateMenu
-          handleSelectDate={handleSelectDate}
-          handleDeleteDate={() => handleSelectDate(undefined)}
+          onSelectDate={handleSelectDate}
+          onDeleteDate={() => handleSelectDate(undefined)}
           initialDueDate={todo.dueDate}
           ref={menuRef}
         />
@@ -160,6 +164,7 @@ export default function TodoItem({
           onSubmit={onEditTodo}
           onCancel={() => setActiveTodoForm(null)}
           labels={labels}
+          onAddNewLabel={addNewLabel}
         />
       )}
     </>

@@ -7,6 +7,10 @@ export default interface Todo {
   priority: Priority;
   hasReminder: boolean;
   labels?: string[];
+  comments?: string[];
+
+  projectId?: string;
+  sectionId?: string;
 }
 
 export type Priority = 1 | 2 | 3 | 4;
