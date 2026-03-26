@@ -99,26 +99,29 @@ export default function TodoItem({
             </span>
           </div>
 
-          <div className="-ml-2 grow flex flex-col hover:cursor-pointer group">
+          <div className="-ml-2 grow flex flex-col">
             <div
               onClick={() => onTodoSelect(todo.id)}
-              className="flex items-center"
+              className="flex items-center cursor-pointer"
             >
               <TodoCheckbox
                 todo={todo}
-                onToggleCompleted={handleToggleCompleted}
+                onToggleCompleted={(id, completed) =>
+                  handleToggleCompleted(id, completed)
+                }
               />
               <p className="ml-2">{todo.title}</p>
             </div>
 
-            <div onClick={() => onTodoSelect(todo.id)} className="ml-6">
+            <div
+              onClick={() => onTodoSelect(todo.id)}
+              className="ml-6 cursor-pointer"
+            >
               <p className="ml-2 text-[0.8rem] text-gray-400">
                 {todo.description}
               </p>
 
-              <div
-                className={`ml-2 flex items-center gap-2 text-[13px] font-light`}
-              >
+              <div className="ml-2 flex items-center gap-2 text-[13px] font-light">
                 {todo.dueDate && (
                   <span className={`flex items-center gap-1 ${color}`}>
                     <Calendar strokeWidth={1.6} size={12} /> {label}{" "}
@@ -137,14 +140,15 @@ export default function TodoItem({
                 )}
 
                 {todo.labels &&
-                  todo.labels.map((label) => {
-                    return (
-                      <span className="flex justify-center items-center gap-1 text-[#808080] hover:underline">
-                        <Tag strokeWidth={1.6} size={12} />
-                        {label}
-                      </span>
-                    );
-                  })}
+                  todo.labels.map((label) => (
+                    <span
+                      key={label}
+                      className="flex justify-center items-center gap-1 text-[#808080] hover:underline"
+                    >
+                      <Tag strokeWidth={1.6} size={12} />
+                      {label}
+                    </span>
+                  ))}
               </div>
             </div>
           </div>
