@@ -1,9 +1,9 @@
 import { ChevronDown, ChevronUp, Ellipsis, X } from "lucide-react";
 import { useState } from "react";
 import TodoModalActionsDropdown from "./TodoModalActionsDropdown";
+import { useAppSelector } from "../../../hooks/reduxHooks";
 
 interface TodoModalHeaderProps {
-  todosLength: number;
   selectedTodoIndex: number;
   onCloseClick: () => void;
   onPreviousTodoClick: () => void;
@@ -11,13 +11,16 @@ interface TodoModalHeaderProps {
 }
 
 export default function TodoModalHeader({
-  todosLength,
   selectedTodoIndex,
   onCloseClick,
   onPreviousTodoClick,
   onNextTodoClick,
 }: TodoModalHeaderProps) {
   const [isActionsDropdownOpen, setIsActionsDropdownOpen] = useState(false);
+
+  const todosLength = useAppSelector((state) =>
+    state.todos.ids.map((id) => state.todos.entities[id]),
+  ).length;
 
   function toggleActionsDropdown() {
     setIsActionsDropdownOpen((prev) => !prev);

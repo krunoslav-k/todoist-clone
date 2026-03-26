@@ -1,23 +1,38 @@
 import { Check, Paperclip, Plus } from "lucide-react";
 import profileIcon from "../../../assets/profile.svg";
-import type Todo from "../../../types/todo";
+import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
+import { updateTodo } from "../../../features/todos/todosSlice";
 
 interface TodoModalContentProps {
-  todo: Todo;
-  onToggleCompleted: (id: number, completed: boolean) => void;
+  selectedTodoIndex: number;
 }
 
 export default function TodoModalContent({
-  todo,
-  onToggleCompleted,
+  selectedTodoIndex,
 }: TodoModalContentProps) {
+  const todo = useAppSelector((state) => {
+    const id = state.todos.ids[selectedTodoIndex];
+    return state.todos.entities[id];
+  });
+
+  const dispatch = useAppDispatch();
+
+  function toggleCompleted(checked: boolean) {
+    dispatch(
+      updateTodo({
+        id: todo.id,
+        changes: { completed: checked },
+      }),
+    );
+  }
+
   return (
     <div className="w-[70%] h-full p-3 pl-13">
       <label className="-ml-8 pb-1 flex items-center justify-start hover:cursor-pointer group">
         <input
           type="checkbox"
           checked={todo.completed}
-          onChange={(e) => onToggleCompleted(todo.id, e.target.checked)}
+          onChange={(e) => toggleCompleted(e.target.checked)}
           className="hidden"
         />
 

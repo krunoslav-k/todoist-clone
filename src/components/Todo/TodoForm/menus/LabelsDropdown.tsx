@@ -1,20 +1,29 @@
 import { Tag } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
+import { addLabel } from "../../../../features/labels/labelsSlice";
 
 interface LabelsDropdownProps {
-  labels: string[];
   onLabelSelect: (label: string) => void;
   ref: React.RefObject<HTMLDivElement | null>;
   labelQuery: string;
-  onCreateLabel: (label: string) => void;
+  onClose: () => void;
 }
 
 export default function LabelsDropdown({
-  labels,
   onLabelSelect,
   ref,
   labelQuery,
-  onCreateLabel,
+  onClose,
 }: LabelsDropdownProps) {
+  const labels = useAppSelector((state) => state.labels.labels);
+
+  const dispatch = useAppDispatch();
+
+  function handleCreateLabel(label: string) {
+    dispatch(addLabel(label));
+    onClose();
+  }
+
   return (
     <div ref={ref}>
       <ul className="w-[98%] rounded-md bg-white border border-gray-200 shadow-xl z-20 absolute top-11.5 left-2">
@@ -33,8 +42,9 @@ export default function LabelsDropdown({
               </li>
             );
           })}
+
         <li className="px-5 py-1.5 flex justify-start items-center gap-3 text-sm font-light hover:bg-gray-100 first:rounded-t-md last:rounded-b-md">
-          <button onClick={() => onCreateLabel(labelQuery)}>
+          <button onClick={() => handleCreateLabel(labelQuery)}>
             Create label {labelQuery}
           </button>
         </li>

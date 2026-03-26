@@ -1,13 +1,9 @@
-import type Todo from "../../../types/todo";
 import TodoModalHeader from "./TodoModalHeader";
 import TodoModalContent from "./TodoModalContent";
 import TodoModalSidebar from "./TodoModalSidebar";
 
 interface TodoModalProps {
-  todosLength: number;
   selectedTodoIndex: number;
-  todo: Todo;
-  onToggleCompleted: (id: number, completed: boolean) => void;
   onCloseClick: () => void;
   onPreviousTodoClick: () => void;
   onNextTodoClick: () => void;
@@ -15,10 +11,7 @@ interface TodoModalProps {
 }
 
 export default function TodoModal({
-  todosLength,
   selectedTodoIndex,
-  todo,
-  onToggleCompleted,
   onCloseClick,
   onPreviousTodoClick,
   onNextTodoClick,
@@ -31,7 +24,6 @@ export default function TodoModal({
         className="w-4xl h-[85%] flex flex-col bg-white rounded-xl relative"
       >
         <TodoModalHeader
-          todosLength={todosLength}
           selectedTodoIndex={selectedTodoIndex}
           onCloseClick={onCloseClick}
           onPreviousTodoClick={onPreviousTodoClick}
@@ -39,7 +31,7 @@ export default function TodoModal({
         />
 
         <div className="flex-1 flex">
-          <TodoModalContent todo={todo} onToggleCompleted={onToggleCompleted} />
+          <TodoModalContent selectedTodoIndex={selectedTodoIndex} />
 
           <TodoModalSidebar />
         </div>

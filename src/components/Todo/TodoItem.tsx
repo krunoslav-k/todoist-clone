@@ -10,27 +10,21 @@ import TodoForm from "./TodoForm/TodoForm";
 import { useRef, useState } from "react";
 import DueDateMenu from "./TodoForm/menus/DueDateMenu/DueDateMenu";
 import useClickOutside from "../../hooks/useClickOutside";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { updateTodo } from "../../features/todos/todosSlice";
 
 interface TodoItemProps {
   todo: Todo;
-  onToggleCompleted: (id: number, completed: boolean) => void;
   onTodoSelect: (id: number) => void;
-  onEditTodo: (editedTodo: Todo) => void;
   activeTodoForm: "add" | number | null;
   setActiveTodoForm: (form: "add" | number | null) => void;
-  onDueDateEdit: (todoId: number, dueDate: Date) => void;
-  labels: string[];
 }
 
 export default function TodoItem({
   todo,
-  onToggleCompleted,
   onTodoSelect,
-  onEditTodo,
   activeTodoForm,
   setActiveTodoForm,
-  onDueDateEdit,
-  labels,
 }: TodoItemProps) {
   const [isDueDateMenuOpen, setIsDueDateMenuOpen] = useState(false);
   const { label, category } = dueDateHelper(todo.dueDate);
@@ -49,6 +43,8 @@ export default function TodoItem({
   };
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const dispatch = useAppDispatch();
+
   useClickOutside(menuRef, () => setIsDueDateMenuOpen(false));
 
   let dueDateTime = "";
@@ -65,11 +61,21 @@ export default function TodoItem({
   const isEditing = activeTodoForm === todo.id;
 
   function handleSelectDate(dueDate: Date) {
-    onDueDateEdit(todo.id, dueDate);
+    handleUpdateTodo({ dueDate: dueDate });
   }
 
-  function addNewLabel(label: string) {
-    return;
+  function handleToggleCompleted(id: number, completed: boolean) {
+    console.log(typeof todo.dueDate, todo.dueDate);
+    dispatch(
+      updateTodo({
+        id: id,
+        changes: { completed: completed },
+      }),
+    );
+  }
+
+  function handleUpdateTodo(change: Partial<Todo>) {
+    dispatch(updateTodo({ id: todo.id, changes: change }));
   }
 
   return (
@@ -98,7 +104,10 @@ export default function TodoItem({
               onClick={() => onTodoSelect(todo.id)}
               className="flex items-center"
             >
-              <TodoCheckbox todo={todo} onToggleCompleted={onToggleCompleted} />
+              <TodoCheckbox
+                todo={todo}
+                onToggleCompleted={handleToggleCompleted}
+              />
               <p className="ml-2">{todo.title}</p>
             </div>
 
@@ -152,20 +161,14 @@ export default function TodoItem({
       {isDueDateMenuOpen && (
         <DueDateMenu
           onSelectDate={handleSelectDate}
-          onDeleteDate={() => handleSelectDate(undefined)}
+          onDeleteDate={() => handleUpdateTodo({ dueDate: undefined })}
           initialDueDate={todo.dueDate}
           ref={menuRef}
         />
       )}
 
       {isEditing && (
-        <TodoForm
-          initialTodo={todo}
-          onSubmit={onEditTodo}
-          onCancel={() => setActiveTodoForm(null)}
-          labels={labels}
-          onAddNewLabel={addNewLabel}
-        />
+        <TodoForm initialTodo={todo} onClose={() => setActiveTodoForm(null)} />
       )}
     </>
   );

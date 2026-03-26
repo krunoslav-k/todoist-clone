@@ -12,6 +12,8 @@ import ActionsButton from "./buttons/ActionsButton";
 import LabelsDropdown from "./menus/LabelsDropdown";
 import { useState } from "react";
 import useDropdown from "../../../hooks/useDropdown";
+import { useAppDispatch } from "../../../hooks/reduxHooks";
+import { addTodo } from "../../../features/todos/todosSlice";
 
 const EMPTY_TODO: Todo = {
   id: 0,
@@ -26,23 +28,16 @@ const EMPTY_TODO: Todo = {
 
 interface TodoFormProps {
   initialTodo?: Todo;
-  onSubmit: (todo: Todo) => void;
-  onCancel: () => void;
-  labels: string[];
-  onAddNewLabel: (label: string) => void;
+  onClose: () => void;
 }
 
-export default function TodoForm({
-  initialTodo,
-  onSubmit,
-  onCancel,
-  labels,
-  onAddNewLabel,
-}: TodoFormProps) {
+export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
   const [todo, setTodo] = useState<Todo>(initialTodo ?? EMPTY_TODO);
   const [isTypingLabel, setIsTypingLabel] = useState(false);
   const [labelQuery, setLabelQuery] = useState("");
   const [titleInput, setTitleInput] = useState("");
+
+  const dispatch = useAppDispatch();
 
   const { activeDropdown, toggleDropdown, closeDropdown, menuRef } =
     useDropdown();
@@ -72,11 +67,10 @@ export default function TodoForm({
     ),
     labels: (
       <LabelsDropdown
-        labels={labels}
         labelQuery={labelQuery}
         onLabelSelect={handleLabelSelect}
-        onCreateLabel={handleCreateLabel}
         ref={menuRef}
+        onClose={closeDropdown}
       />
     ),
   };
@@ -86,8 +80,11 @@ export default function TodoForm({
 
     if (!todo.title.trim()) return;
 
-    onSubmit(todo);
+    dispatch(addTodo(todo));
+
     setTodo(initialTodo ?? EMPTY_TODO);
+
+    onClose();
   }
 
   function handleDropdownClick(type: Exclude<Dropdown, null>) {
@@ -118,11 +115,12 @@ export default function TodoForm({
 
   function handleLabelSelect(label: string) {
     setTodo((prev) => {
-      if (!prev) return prev;
+      const labels = prev.labels ?? [];
+      if (labels.includes(label)) return prev;
 
       return {
         ...prev,
-        labels: [...(prev.labels || []), label],
+        labels: [...labels, label],
       };
     });
 
@@ -153,11 +151,6 @@ export default function TodoForm({
       setTodo((prev) => ({ ...prev, title: input.replace("@", "") }));
       setTitleInput(input);
     }
-  }
-
-  function handleCreateLabel(labelQuery: string) {
-    onAddNewLabel(labelQuery);
-    handleLabelSelect(labelQuery);
   }
 
   return (
@@ -202,7 +195,7 @@ export default function TodoForm({
         </div>
 
         <div className="border-t border-gray-300 p-2 flex justify-end gap-2.5">
-          <button onClick={onCancel} className="cancel_button">
+          <button onClick={onClose} className="cancel_button">
             Cancel
           </button>
 

@@ -4,34 +4,27 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import type Todo from "../../types/todo";
 import TodoItem from "./TodoItem";
-import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { SortableContext } from "@dnd-kit/sortable";
 import type { DragEndEvent } from "@dnd-kit/core";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { reorderTodos } from "../../features/todos/todosSlice";
 
 interface TodoListProps {
-  todos: Todo[];
-  onToggleCompleted: (id: number, completed: boolean) => void;
   onTodoSelect: (id: number) => void;
-  onSetTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
-  onEditTodo: (editedTodo: Todo) => void;
   activeTodoForm: "add" | number | null;
   setActiveTodoForm: (form: "add" | number | null) => void;
-  onDueDateEdit: (todoId: number, dueDate: Date) => void;
-  labels: string[];
 }
 
 export default function TodoList({
-  todos,
-  onToggleCompleted,
   onTodoSelect,
-  onSetTodos,
-  onEditTodo,
   activeTodoForm,
   setActiveTodoForm,
-  onDueDateEdit,
-  labels,
 }: TodoListProps) {
+  const todos = useAppSelector((state) =>
+    state.todos.ids.map((id) => state.todos.entities[id]),
+  );
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -40,15 +33,16 @@ export default function TodoList({
     }),
   );
 
+  const dispatch = useAppDispatch();
+
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      onSetTodos((todos) => {
-        const oldIndex = todos.findIndex((todo) => todo.id === active.id);
-        const newIndex = todos.findIndex((todo) => todo.id === over.id);
-        return arrayMove<Todo>(todos, oldIndex, newIndex);
-      });
+      const oldIndex = todos.findIndex((todo) => todo.id === active.id);
+      const newIndex = todos.findIndex((todo) => todo.id === over.id);
+
+      dispatch(reorderTodos({ oldIndex, newIndex }));
     }
   }
 
@@ -60,14 +54,10 @@ export default function TodoList({
             return (
               <TodoItem
                 todo={todo}
-                onToggleCompleted={onToggleCompleted}
                 onTodoSelect={onTodoSelect}
-                onEditTodo={onEditTodo}
                 activeTodoForm={activeTodoForm}
                 setActiveTodoForm={setActiveTodoForm}
-                onDueDateEdit={onDueDateEdit}
                 key={todo.id}
-                labels={labels}
               />
             );
           })}
