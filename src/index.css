@@ -20,4 +20,8 @@
   .icon_button {
     @apply p-0.5 hover:bg-gray-100 rounded-md transition ease-in-out;
   }
+
+  .sidebar_button {
+    @apply flex justify-start items-center gap-2 px-2.5 py-1.75 font-light rounded-md hover:bg-gray-100;
+  }
 }
