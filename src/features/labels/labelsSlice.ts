@@ -24,6 +24,6 @@ const labelsSlice = createSlice({
   },
 });
 
-export const { addLabel } = labelsSlice.actions;
+export const { addLabel, removeLabel } = labelsSlice.actions;
 
 export default labelsSlice.reducer;
