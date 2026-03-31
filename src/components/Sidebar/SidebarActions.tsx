@@ -1,13 +1,15 @@
 import { CirclePlus, Search } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function SidebarActions() {
+  const location = useLocation();
   const navigate = useNavigate();
+  const pathname = location.pathname;
 
   return (
     <>
       <button
-        onClick={() => navigate("/inbox?modal=add-task")}
+        onClick={() => navigate(`${pathname}?modal=add-task`)}
         className="sidebar_button"
       >
         <CirclePlus
@@ -20,7 +22,10 @@ export default function SidebarActions() {
         Add Task
       </button>
 
-      <button className="sidebar_button cursor-pointer">
+      <button
+        onClick={() => navigate(`${pathname}?modal=search`)}
+        className="sidebar_button cursor-pointer"
+      >
         <Search size={20} strokeWidth={1.3} /> Search
       </button>
     </>
