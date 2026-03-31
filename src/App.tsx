@@ -50,10 +50,12 @@ function App() {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center py-8">
-      <h1 className="p-10 font-bold text-2xl tracking-wide">Inbox</h1>
+    <main className="flex flex-col justify-center items-center px-28">
+      <h1 className="self-start py-8 font-bold text-2xl tracking-wide">
+        Inbox
+      </h1>
 
-      <div className="w-3/5">
+      <div className="w-full">
         <TodoList
           onTodoSelect={selectTodo}
           activeTodoForm={activeTodoForm}
