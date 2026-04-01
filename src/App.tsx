@@ -1,37 +1,13 @@
-import TodoForm from "./components/Todo/TodoForm/TodoForm";
-import AddTodoButton from "./components/AddTodoButton";
-import TodoList from "./components/Todo/TodoList";
-import { useState } from "react";
+import TodosPageView from "./components/TodosPageView";
+import { useAppSelector } from "./hooks/reduxHooks";
 
 function App() {
-  const [activeTodoForm, setActiveTodoForm] = useState<"add" | number | null>(
-    null,
+  const todos = useAppSelector((state) =>
+    state.todos.ids.map((id) => state.todos.entities[id]),
   );
+  const inboxTodos = todos.filter((todo) => !todo.projectId);
 
-  return (
-    <main className="flex flex-col justify-center items-center px-28">
-      <h1 className="self-start py-8 font-bold text-2xl tracking-wide">
-        Inbox
-      </h1>
-
-      <div className="w-full">
-        <TodoList
-          activeTodoForm={activeTodoForm}
-          setActiveTodoForm={setActiveTodoForm}
-        />
-
-        {activeTodoForm !== "add" && (
-          <AddTodoButton
-            handleAddTodoButtonClick={() => setActiveTodoForm("add")}
-          />
-        )}
-
-        {activeTodoForm === "add" && (
-          <TodoForm onClose={() => setActiveTodoForm(null)} />
-        )}
-      </div>
-    </main>
-  );
+  return <TodosPageView title="Inbox" todos={inboxTodos} />;
 }
 
 export default App;

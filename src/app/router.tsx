@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import InboxPage from "../pages/InboxPage";
 import RootLayout from "../layouts/RootLayout";
+import TodayPage from "../pages/TodayPage";
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "today",
-        element: <div>today</div>,
+        element: <TodayPage />,
       },
     ],
   },

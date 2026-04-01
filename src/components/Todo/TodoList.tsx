@@ -7,22 +7,21 @@ import {
 import TodoItem from "./TodoItem";
 import { SortableContext } from "@dnd-kit/sortable";
 import type { DragEndEvent } from "@dnd-kit/core";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 import { reorderTodos } from "../../features/todos/todosSlice";
+import type Todo from "../../types/todo";
 
 interface TodoListProps {
+  todos: Todo[];
   activeTodoForm: "add" | number | null;
   setActiveTodoForm: (form: "add" | number | null) => void;
 }
 
 export default function TodoList({
+  todos,
   activeTodoForm,
   setActiveTodoForm,
 }: TodoListProps) {
-  const todos = useAppSelector((state) =>
-    state.todos.ids.map((id) => state.todos.entities[id]),
-  );
-
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
