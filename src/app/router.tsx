@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import InboxPage from "../pages/InboxPage";
 import RootLayout from "../layouts/RootLayout";
 import TodayPage from "../pages/TodayPage";
+import UpcomingPage from "../pages/UpcomingPage";
+import CompletedPage from "../pages/CompletedPage";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +21,18 @@ export const router = createBrowserRouter([
       {
         path: "today",
         element: <TodayPage />,
+      },
+      {
+        path: "upcoming",
+        element: <UpcomingPage />,
+      },
+      {
+        path: "filters&labels",
+        element: <div>empty</div>,
+      },
+      {
+        path: "completed",
+        element: <CompletedPage />,
       },
     ],
   },
