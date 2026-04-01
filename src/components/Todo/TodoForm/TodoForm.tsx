@@ -75,12 +75,17 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     ),
   };
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e) {
     e.preventDefault();
 
     if (!todo.title.trim()) return;
 
-    dispatch(addTodo(todo));
+    const newTodo = {
+      ...todo,
+      id: Date.now(),
+    };
+
+    dispatch(addTodo(newTodo));
 
     setTodo(initialTodo ?? EMPTY_TODO);
 
