@@ -11,13 +11,11 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { reorderTodos } from "../../features/todos/todosSlice";
 
 interface TodoListProps {
-  onTodoSelect: (id: number) => void;
   activeTodoForm: "add" | number | null;
   setActiveTodoForm: (form: "add" | number | null) => void;
 }
 
 export default function TodoList({
-  onTodoSelect,
   activeTodoForm,
   setActiveTodoForm,
 }: TodoListProps) {
@@ -54,7 +52,6 @@ export default function TodoList({
             return (
               <TodoItem
                 todo={todo}
-                onTodoSelect={onTodoSelect}
                 activeTodoForm={activeTodoForm}
                 setActiveTodoForm={setActiveTodoForm}
                 key={todo.id}

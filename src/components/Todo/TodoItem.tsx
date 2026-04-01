@@ -12,17 +12,16 @@ import DueDateMenu from "./TodoForm/menus/DueDateMenu/DueDateMenu";
 import useClickOutside from "../../hooks/useClickOutside";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { updateTodo } from "../../features/todos/todosSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface TodoItemProps {
   todo: Todo;
-  onTodoSelect: (id: number) => void;
   activeTodoForm: "add" | number | null;
   setActiveTodoForm: (form: "add" | number | null) => void;
 }
 
 export default function TodoItem({
   todo,
-  onTodoSelect,
   activeTodoForm,
   setActiveTodoForm,
 }: TodoItemProps) {
@@ -42,6 +41,8 @@ export default function TodoItem({
     transition,
   };
   const menuRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -78,6 +79,14 @@ export default function TodoItem({
     dispatch(updateTodo({ id: todo.id, changes: change }));
   }
 
+  function handleSelectTodo(id: number) {
+    const params = new URLSearchParams(location.search);
+    params.set("modal", "task");
+    params.set("id", id.toString());
+
+    navigate({ pathname: location.pathname, search: params.toString() });
+  }
+
   return (
     <>
       {!isEditing && (
@@ -101,7 +110,7 @@ export default function TodoItem({
 
           <div className="-ml-2 grow flex flex-col">
             <div
-              onClick={() => onTodoSelect(todo.id)}
+              onClick={() => handleSelectTodo(todo.id)}
               className="flex items-center cursor-pointer"
             >
               <TodoCheckbox
@@ -114,7 +123,7 @@ export default function TodoItem({
             </div>
 
             <div
-              onClick={() => onTodoSelect(todo.id)}
+              onClick={() => handleSelectTodo(todo.id)}
               className="ml-6 cursor-pointer"
             >
               <p className="ml-2 text-[0.8rem] text-gray-400">

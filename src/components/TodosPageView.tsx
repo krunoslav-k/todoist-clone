@@ -1,13 +1,4 @@
-import TodoForm from "./components/Todo/TodoForm/TodoForm";
-import AddTodoButton from "./components/AddTodoButton";
-import TodoList from "./components/Todo/TodoList";
-import { useState } from "react";
-
-function App() {
-  const [activeTodoForm, setActiveTodoForm] = useState<"add" | number | null>(
-    null,
-  );
-
+export default function TodosPageView() {
   return (
     <main className="flex flex-col justify-center items-center px-28">
       <h1 className="self-start py-8 font-bold text-2xl tracking-wide">
@@ -16,6 +7,7 @@ function App() {
 
       <div className="w-full">
         <TodoList
+          onTodoSelect={selectTodo}
           activeTodoForm={activeTodoForm}
           setActiveTodoForm={setActiveTodoForm}
         />
@@ -30,8 +22,16 @@ function App() {
           <TodoForm onClose={() => setActiveTodoForm(null)} />
         )}
       </div>
+
+      {selectedTodo && isTodoModalOpen && (
+        <TodoModal
+          selectedTodoIndex={getSelectedTodoIndex()}
+          onPreviousTodoClick={selectPreviousTodo}
+          onNextTodoClick={selectNextTodo}
+          onCloseClick={() => setIsTodoModalOpen(false)}
+          ref={modalRef}
+        />
+      )}
     </main>
   );
 }
-
-export default App;

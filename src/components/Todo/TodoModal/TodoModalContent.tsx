@@ -1,19 +1,17 @@
 import { Check, Paperclip, Plus } from "lucide-react";
 import profileIcon from "../../../assets/profile.svg";
-import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
+import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { updateTodo } from "../../../features/todos/todosSlice";
+import type Todo from "../../../types/todo";
 
 interface TodoModalContentProps {
-  selectedTodoIndex: number;
+  selectedTodo: Todo;
 }
 
 export default function TodoModalContent({
-  selectedTodoIndex,
+  selectedTodo,
 }: TodoModalContentProps) {
-  const todo = useAppSelector((state) => {
-    const id = state.todos.ids[selectedTodoIndex];
-    return state.todos.entities[id];
-  });
+  const todo = selectedTodo;
 
   const dispatch = useAppDispatch();
 
