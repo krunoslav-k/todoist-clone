@@ -33,12 +33,16 @@ export default function TodoItem({
     listeners,
     setNodeRef,
     transform,
-    transition,
     isSorting,
+    isDragging,
   } = useSortable({ id: todo.id });
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: isDragging
+      ? "none"
+      : isSorting
+        ? "transform 150ms ease-out"
+        : "transform 250ms cubic-bezier(0.25, 0.8, 0.25, 1)",
   };
   const menuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -95,8 +99,13 @@ export default function TodoItem({
           {...attributes}
           {...listeners}
           style={style}
-          className="flex items-start p-3 border-b border-gray-300 relative group/todoitem"
+          className={`flex items-start p-3 border-b border-gray-200 relative group/todoitem ${isDragging ? "bg-gray-50 rounded-b-2xl" : ""}`}
         >
+          {isDragging && (
+            <div className="absolute top-0 left-0 w-full h-0.5 bg-slate-600 flex items-center">
+              <span className="-ml-2 w-2.25 h-2.25 rounded-full bg-white border-2 border-slate-600"></span>
+            </div>
+          )}
           <div className="absolute -left-8 top-2.75 w-8 h-full hidden group-hover/todoitem:block hover:block">
             <span
               {...attributes}
@@ -108,7 +117,9 @@ export default function TodoItem({
             </span>
           </div>
 
-          <div className="-ml-2 grow flex flex-col">
+          <div
+            className={`-ml-2 grow flex flex-col ${isDragging ? "opacity-0" : ""}`}
+          >
             <div
               onClick={() => handleSelectTodo(todo.id)}
               className="flex items-center cursor-pointer"
