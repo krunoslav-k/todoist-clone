@@ -1,7 +1,7 @@
 import { differenceInCalendarDays, isToday, isTomorrow } from "date-fns";
 import { format } from "date-fns";
 
-export function dueDateHelper(dueDate: Date | undefined): {
+export function categorizeDueDate(dueDate: Date | undefined): {
   label: string;
   category: "today" | "tomorrow" | "weekday" | "future";
 } {

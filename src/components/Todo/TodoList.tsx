@@ -5,7 +5,6 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import TodoItem from "./TodoItem";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -15,7 +14,8 @@ import { useAppDispatch } from "../../hooks/reduxHooks";
 import { reorderTodos } from "../../features/todos/todosSlice";
 import type Todo from "../../types/todo";
 import { useState } from "react";
-import TodoItemOverlay from "./TodoItemOverlay";
+import TodoItem from "./TodoItem/TodoItem";
+import TodoItemOverlay from "./TodoItem/TodoItemOverlay";
 
 interface TodoListProps {
   todos: Todo[];

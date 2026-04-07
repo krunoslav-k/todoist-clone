@@ -1,15 +1,15 @@
 import { AlarmClock, Calendar, Tag } from "lucide-react";
-import TodoCheckbox from "./TodoCheckbox";
-import { dueDateHelper } from "../../utils/dueDateHelper";
-import type Todo from "../../types/todo";
-import { dueDateColors } from "../../config/dueDateColors";
+import TodoCheckbox from "./TodoItemCheckbox";
+import { categorizeDueDate } from "../../../utils/categorizeDueDate";
+import type Todo from "../../../types/todo";
+import { dueDateColors } from "../../../config/dueDateColors";
 
 interface TodoItemOverlayProps {
   todo: Todo;
 }
 
 export default function TodoItemOverlay({ todo }: TodoItemOverlayProps) {
-  const { label, category } = dueDateHelper(todo.dueDate);
+  const { label, category } = categorizeDueDate(todo.dueDate);
   const color = dueDateColors[category];
   let dueDateTime = "";
   if (
@@ -22,8 +22,7 @@ export default function TodoItemOverlay({ todo }: TodoItemOverlayProps) {
     });
   }
 
-  function handleToggleCompleted(id: number, completed: boolean): void {
-    console.log(id);
+  function handleToggleCompleted(completed: boolean): void {
     console.log(completed);
   }
 
@@ -32,9 +31,7 @@ export default function TodoItemOverlay({ todo }: TodoItemOverlayProps) {
       <div className="flex items-center cursor-pointer">
         <TodoCheckbox
           todo={todo}
-          onToggleCompleted={(id, completed) =>
-            handleToggleCompleted(id, completed)
-          }
+          onToggleCompleted={(completed) => handleToggleCompleted(completed)}
         />
         <p className="ml-2">{todo.title}</p>
       </div>

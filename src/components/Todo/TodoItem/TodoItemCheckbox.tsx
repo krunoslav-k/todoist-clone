@@ -1,10 +1,10 @@
 import { Check } from "lucide-react";
-import type Todo from "../../types/todo";
-import { priorityStyles } from "../../config/priorityStyles";
+import type Todo from "../../../types/todo";
+import { priorityStyles } from "../../../config/priorityStyles";
 
 interface TodoCheckboxProps {
   todo: Todo;
-  onToggleCompleted: (id: number, completed: boolean) => void;
+  onToggleCompleted: (completed: boolean) => void;
 }
 
 export default function TodoCheckbox({
@@ -17,7 +17,7 @@ export default function TodoCheckbox({
     <span
       onClick={(e) => {
         e.stopPropagation();
-        onToggleCompleted(todo.id, !todo.completed);
+        onToggleCompleted(!todo.completed);
       }}
       className={`w-5 h-5 mr-1 rounded-full ${style.border} ${style.backgroundColor} ${style.hoverBackgroundColor} flex items-center justify-center cursor-pointer group/checkbox`}
     >
