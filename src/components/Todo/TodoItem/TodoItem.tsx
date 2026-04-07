@@ -124,6 +124,7 @@ export default function TodoItem({
       {isDueDateMenuOpen && (
         <DueDateMenu
           onSelectDate={handleSelectDate}
+          onSelectDateAndClose={handleSelectDate}
           onDeleteDate={() => handleUpdateTodo({ dueDate: undefined })}
           initialDueDate={todo.dueDate}
           ref={menuRef}

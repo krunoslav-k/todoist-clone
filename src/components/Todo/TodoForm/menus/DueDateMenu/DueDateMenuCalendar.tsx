@@ -7,14 +7,14 @@ interface DueDateMenuCalendarProps {
   displayedMonth: Date;
   setDisplayedMonth: (date: Date) => void;
   selectedDate: Date | undefined;
-  handleDayPickerSelect: (date: Date | undefined) => void;
+  onDayPickerSelect: (date: Date | undefined) => void;
 }
 
 export default function DueDateMenuCalendar({
   displayedMonth,
   setDisplayedMonth,
   selectedDate,
-  handleDayPickerSelect,
+  onDayPickerSelect,
 }: DueDateMenuCalendarProps) {
   return (
     <DayPicker
@@ -23,7 +23,7 @@ export default function DueDateMenuCalendar({
       onMonthChange={setDisplayedMonth}
       mode="single"
       selected={selectedDate}
-      onSelect={handleDayPickerSelect}
+      onSelect={onDayPickerSelect}
       weekStartsOn={1}
       locale={enGB}
       formatters={{

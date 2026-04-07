@@ -46,6 +46,7 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     date: (
       <DueDateMenu
         onSelectDate={handleSelectDate}
+        onSelectDateAndClose={handleSelectDateAndClose}
         onDeleteDate={handleDeleteDate}
         ref={menuRef}
       />
@@ -105,6 +106,11 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
 
   function handleSelectDate(dueDate: Date) {
     setTodo((prev) => ({ ...prev, dueDate }));
+  }
+
+  function handleSelectDateAndClose(dueDate: Date) {
+    handleSelectDate(dueDate);
+    closeDropdown();
   }
 
   function handleDeleteDate() {
@@ -193,7 +199,11 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
         />
 
         <div className="ml-2 mb-2 flex justify-start items-center gap-2">
-          <DateButton handleDateButtonClick={handleDropdownClick} />
+          <DateButton
+            dueDate={todo.dueDate}
+            onDateButtonClick={handleDropdownClick}
+            onDateButtonCloseClick={handleDeleteDate}
+          />
           <PriorityButton handlePriorityButtonClick={handleDropdownClick} />
           <RemindersButton handleRemindersButtonClick={handleDropdownClick} />
           <ActionsButton onActionsClick={handleDropdownClick} />

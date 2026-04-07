@@ -10,6 +10,7 @@ import DueDateMenuCalendar from "./DueDateMenuCalendar";
 
 interface DueDateMenuProps {
   onSelectDate: (dueDate: Date) => void;
+  onSelectDateAndClose: (dueDate: Date) => void;
   onDeleteDate: () => void;
   initialDueDate?: Date;
   ref: React.RefObject<HTMLDivElement | null>;
@@ -17,6 +18,7 @@ interface DueDateMenuProps {
 
 export default function DueDateMenu({
   onSelectDate,
+  onSelectDateAndClose,
   onDeleteDate,
   initialDueDate,
   ref,
@@ -117,15 +119,15 @@ export default function DueDateMenu({
 
       <DueDateMenuQuickDates
         selectedDate={selectedDate}
-        handleSelectDate={onSelectDate}
-        handleNoDateClick={deleteDate}
+        onSelectDate={onSelectDateAndClose}
+        onNoDateClick={deleteDate}
       />
 
       <DueDateMenuCalendar
         displayedMonth={displayedMonth}
         setDisplayedMonth={setDisplayedMonth}
         selectedDate={selectedDate}
-        handleDayPickerSelect={handleDayPickerSelect}
+        onDayPickerSelect={handleDayPickerSelect}
       />
 
       <ScheduleOptions

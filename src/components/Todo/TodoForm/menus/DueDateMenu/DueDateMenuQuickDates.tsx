@@ -20,8 +20,8 @@ import {
 
 interface DueDateMenuQuickDatesProps {
   selectedDate: Date | undefined;
-  handleSelectDate: (dueDate: Date) => void;
-  handleNoDateClick: () => void;
+  onSelectDate: (dueDate: Date) => void;
+  onNoDateClick: () => void;
 }
 
 type QuickDateOption = {
@@ -35,8 +35,8 @@ type QuickDateOption = {
 
 export default function DueDateMenuQuickDates({
   selectedDate,
-  handleSelectDate,
-  handleNoDateClick,
+  onSelectDate,
+  onNoDateClick,
 }: DueDateMenuQuickDatesProps) {
   const today = new Date();
   const tomorrow = addDays(today, 1);
@@ -102,7 +102,7 @@ export default function DueDateMenuQuickDates({
               className="flex justify-between items-stretch group"
             >
               <button
-                onClick={() => handleSelectDate(date)}
+                onClick={() => onSelectDate(date)}
                 className="w-full py-2 flex justify-start items-center text-sm group-hover:bg-gray-100 hover:cursor-pointer"
               >
                 <Icon
@@ -126,7 +126,7 @@ export default function DueDateMenuQuickDates({
       {selectedDate && (
         <div className="flex justify-between items-stretch group">
           <button
-            onClick={handleNoDateClick}
+            onClick={onNoDateClick}
             className="w-full py-2 flex justify-start items-center text-sm group-hover:bg-gray-100 hover:cursor-pointer"
           >
             <CircleOff
