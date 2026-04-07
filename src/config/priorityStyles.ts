@@ -38,3 +38,10 @@ export const priorityStyles: Record<Priority, PriorityStyle> = {
     strokeWidth: 2.5,
   },
 };
+
+export const priorityColors: Record<Priority, string> = {
+  1: "#d1453c",
+  2: "#eb890b",
+  3: "#2570e0",
+  4: "",
+};

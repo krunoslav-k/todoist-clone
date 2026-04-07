@@ -204,7 +204,11 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
             onDateButtonClick={handleDropdownClick}
             onDateButtonCloseClick={handleDeleteDate}
           />
-          <PriorityButton handlePriorityButtonClick={handleDropdownClick} />
+          <PriorityButton
+            priority={todo.priority}
+            handlePriorityButtonClick={handleDropdownClick}
+            onPriorityCloseClick={() => handlePrioritySelect(4)}
+          />
           <RemindersButton handleRemindersButtonClick={handleDropdownClick} />
           <ActionsButton onActionsClick={handleDropdownClick} />
         </div>
