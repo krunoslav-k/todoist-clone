@@ -60,6 +60,7 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     ),
     reminders: (
       <RemindersDropdown
+        hasReminder={todo.hasReminder}
         onToggleReminder={handleToggleReminder}
         ref={menuRef}
       />
@@ -213,7 +214,10 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
             handlePriorityButtonClick={handleDropdownClick}
             onPriorityCloseClick={() => handlePrioritySelect(4)}
           />
-          <RemindersButton handleRemindersButtonClick={handleDropdownClick} />
+          <RemindersButton
+            hasReminder={todo.hasReminder}
+            handleRemindersButtonClick={handleDropdownClick}
+          />
           <ActionsButton onActionsClick={handleDropdownClick} />
         </div>
 
