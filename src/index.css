@@ -14,7 +14,7 @@
   }
 
   .priority_button {
-    @apply pl-2 py-1.5 pr-9 flex justify-center items-center gap-2 text-sm font-light hover:bg-gray-100 cursor-pointer;
+    @apply w-full pl-2 py-1.5 pr-2 flex justify-center items-center gap-3 text-sm font-light hover:bg-gray-100 cursor-pointer;
   }
 
   .icon_button {

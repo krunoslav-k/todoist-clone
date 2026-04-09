@@ -1,31 +1,37 @@
-import { Flag } from "lucide-react";
+import { Check, Flag } from "lucide-react";
 import type { Priority } from "../../../../types/todo";
 
 interface PriorityDropdownProps {
   onPrioritySelect: (priority: Priority) => void;
+  currentPriority: Priority;
   ref: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function PriorityDropdown({
   onPrioritySelect,
+  currentPriority,
   ref,
 }: PriorityDropdownProps) {
-  const priorities: { value: Priority; color: string }[] = [
+  const priorities: { value: Priority; color: string; isCurrent: boolean }[] = [
     {
       value: 1,
       color: "#d1453c",
+      isCurrent: currentPriority === 1,
     },
     {
       value: 2,
       color: "#eb890b",
+      isCurrent: currentPriority === 2,
     },
     {
       value: 3,
       color: "#2570e0",
+      isCurrent: currentPriority === 3,
     },
     {
       value: 4,
       color: "#6a7282",
+      isCurrent: currentPriority === 4,
     },
   ];
 
@@ -39,7 +45,7 @@ export default function PriorityDropdown({
           <button
             key={index}
             onClick={() => onPrioritySelect(priority.value)}
-            className={`priority_button ${index === 0 ? "rounded-t-lg" : ""} ${index === 0 ? "rouned-b-lg" : ""}`}
+            className={`priority_button ${index === 0 ? "rounded-t-lg" : ""} ${index === priorities.length - 1 ? "rounded-b-lg" : ""}`}
           >
             <Flag
               strokeWidth={1.5}
@@ -47,7 +53,14 @@ export default function PriorityDropdown({
               color={priority.color}
               fill={priority.color === "#6a7282" ? "none" : priority.color}
             />
-            Priority {priority.value}
+
+            <span>Priority {priority.value}</span>
+
+            <Check
+              strokeWidth={2.75}
+              size={15}
+              className={priority.isCurrent ? "text-gray-600" : "invisible"}
+            />
           </button>
         );
       })}

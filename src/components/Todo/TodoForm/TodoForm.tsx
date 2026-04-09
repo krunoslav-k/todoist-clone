@@ -52,7 +52,11 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
       />
     ),
     priority: (
-      <PriorityDropdown onPrioritySelect={handlePrioritySelect} ref={menuRef} />
+      <PriorityDropdown
+        onPrioritySelect={handlePrioritySelect}
+        currentPriority={todo.priority}
+        ref={menuRef}
+      />
     ),
     reminders: (
       <RemindersDropdown
