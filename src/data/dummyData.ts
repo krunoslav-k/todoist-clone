@@ -36,4 +36,13 @@ export const dummyData: Todo[] = [
     hasReminder: false,
     projectId: "errands",
   },
+  {
+    id: 5,
+    title: "Moram testirati sekcije",
+    description: "samo da vidim radi li",
+    completed: false,
+    priority: 3,
+    hasReminder: false,
+    sectionId: "once",
+  },
 ];

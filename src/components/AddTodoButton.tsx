@@ -10,9 +10,9 @@ export default function AddTodoButton({
   return (
     <button
       onClick={handleAddTodoButtonClick}
-      className="flex items-start justify-center p-3 group hover:cursor-pointer"
+      className="flex items-start justify-center gap-3 py-3 px-0.5 group hover:cursor-pointer"
     >
-      <span className="w-5 h-5 mr-4 rounded-full border border-transparent flex items-center justify-center group-hover:border-gray-700 group-hover:bg-gray-700">
+      <span className="w-5 h-5 rounded-full border border-transparent flex items-center justify-center group-hover:border-gray-700 group-hover:bg-gray-700">
         <Plus
           size={28}
           strokeWidth={1}

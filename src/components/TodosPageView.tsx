@@ -6,7 +6,7 @@ import type Todo from "../types/todo";
 import AddSectionButton from "./Section/AddSectionButton";
 import AddSectionForm from "./Section/AddSectionForm";
 import { useAppSelector } from "../hooks/reduxHooks";
-import type Section from "../types/section";
+import Section from "./Section/Section";
 
 interface TodosPageViewProps {
   title: string;
@@ -18,7 +18,7 @@ export default function TodosPageView({ title, todos }: TodosPageViewProps) {
     null,
   );
   const [isAddSectionFormActive, setIsAddSectionFormActive] = useState(false);
-  const sections: Section[] = useAppSelector((state) =>
+  const sections = useAppSelector((state) =>
     state.sections.sections.map((section) => section),
   );
 
@@ -61,9 +61,14 @@ export default function TodosPageView({ title, todos }: TodosPageViewProps) {
         />
       )}
 
-      <div>
+      <div className="w-full">
         {sections.map((section) => (
-          <h3>{section.name}</h3>
+          <Section
+            section={section}
+            activeTodoForm={activeTodoForm}
+            setActiveTodoForm={setActiveTodoForm}
+            handleAddTodoButtonClick={() => setActiveTodoForm("add")}
+          />
         ))}
       </div>
     </main>

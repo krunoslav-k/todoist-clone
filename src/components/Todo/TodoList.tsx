@@ -53,7 +53,7 @@ export default function TodoList({
   }
 
   return (
-    <ul>
+    <ul className="w-full">
       <DndContext
         onDragStart={(event) => {
           setActiveId(event.active.id);
