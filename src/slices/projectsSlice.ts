@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { dummyProjects } from "../../data/dummyProjects";
+import { dummyProjects } from "../data/dummyProjects";
 
 const initialState = {
   projects: dummyProjects,

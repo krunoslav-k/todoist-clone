@@ -3,6 +3,10 @@ import AddTodoButton from "./AddTodoButton";
 import TodoForm from "./Todo/TodoForm/TodoForm";
 import TodoList from "./Todo/TodoList";
 import type Todo from "../types/todo";
+import AddSectionButton from "./Section/AddSectionButton";
+import AddSectionForm from "./Section/AddSectionForm";
+import { useAppSelector } from "../hooks/reduxHooks";
+import type Section from "../types/section";
 
 interface TodosPageViewProps {
   title: string;
@@ -13,6 +17,14 @@ export default function TodosPageView({ title, todos }: TodosPageViewProps) {
   const [activeTodoForm, setActiveTodoForm] = useState<"add" | number | null>(
     null,
   );
+  const [isAddSectionFormActive, setIsAddSectionFormActive] = useState(false);
+  const sections: Section[] = useAppSelector((state) =>
+    state.sections.sections.map((section) => section),
+  );
+
+  function toogleIsAddSectionFormActive() {
+    setIsAddSectionFormActive((prev) => !prev);
+  }
 
   return (
     <main className="flex flex-col justify-center items-center px-28">
@@ -36,6 +48,23 @@ export default function TodosPageView({ title, todos }: TodosPageViewProps) {
         {activeTodoForm === "add" && (
           <TodoForm onClose={() => setActiveTodoForm(null)} />
         )}
+      </div>
+
+      {isAddSectionFormActive ? (
+        <AddSectionForm
+          projectId="inbox"
+          onCancelAddSection={toogleIsAddSectionFormActive}
+        />
+      ) : (
+        <AddSectionButton
+          onAddSectionButtonClick={toogleIsAddSectionFormActive}
+        />
+      )}
+
+      <div>
+        {sections.map((section) => (
+          <h3>{section.name}</h3>
+        ))}
       </div>
     </main>
   );

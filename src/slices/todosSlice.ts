@@ -3,8 +3,8 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type Todo from "../../types/todo";
-import { dummyData } from "../../data/dummyData";
+import type Todo from "../types/todo";
+import { dummyData } from "../data/dummyData";
 import { arrayMove } from "@dnd-kit/sortable";
 
 const todosAdapter = createEntityAdapter<Todo>();

@@ -1,7 +1,6 @@
 import { Tag } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
-import { addLabel } from "../../../../features/labels/labelsSlice";
-
+import { addLabel } from "../../../../slices/labelsSlice";
 interface LabelsDropdownProps {
   onLabelSelect: (label: string) => void;
   ref: React.RefObject<HTMLDivElement | null>;

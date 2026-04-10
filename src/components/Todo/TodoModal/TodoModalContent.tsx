@@ -1,7 +1,7 @@
 import { Check, Paperclip, Plus } from "lucide-react";
 import profileIcon from "../../../assets/profile.svg";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import { updateTodo } from "../../../features/todos/todosSlice";
+import { updateTodo } from "../../../slices/todosSlice";
 import type Todo from "../../../types/todo";
 
 interface TodoModalContentProps {

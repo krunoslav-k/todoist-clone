@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import DueDateMenu from ".././TodoForm/menus/DueDateMenu/DueDateMenu";
 import useClickOutside from "../../../hooks/useClickOutside";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import { updateTodo } from "../../../features/todos/todosSlice";
+import { updateTodo } from "../../../slices/todosSlice";
 import DragHighlightLine from "./DragHighlightLine";
 import useTodoModal from "../../../hooks/useTodoModal";
 import TodoItemMeta from "./TodoItemMeta";

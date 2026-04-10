@@ -13,7 +13,7 @@ import LabelsDropdown from "./menus/LabelsDropdown";
 import { useState } from "react";
 import useDropdown from "../../../hooks/useDropdown";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import { addTodo } from "../../../features/todos/todosSlice";
+import { addTodo } from "../../../slices/todosSlice";
 
 const EMPTY_TODO: Todo = {
   id: 0,

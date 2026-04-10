@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import todosReducer from "../features/todos/todosSlice";
-import labelsReducer from "../features/labels/labelsSlice";
-import projectsReducer from "../features/projects/projectsSlice";
+import todosReducer from "../slices/todosSlice";
+import labelsReducer from "../slices/labelsSlice";
+import projectsReducer from "../slices/projectsSlice";
+import sectionsReducer from "../slices/sectionsSlice";
 
 export const store = configureStore({
   reducer: {
     todos: todosReducer,
     labels: labelsReducer,
     projects: projectsReducer,
+    sections: sectionsReducer,
   },
 });
 

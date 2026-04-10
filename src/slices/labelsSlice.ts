@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { dummyLabels } from "../../data/dummyLabels";
+import { dummyLabels } from "../data/dummyLabels";
 
 interface LabelsState {
   labels: string[];

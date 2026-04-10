@@ -11,7 +11,7 @@ import {
 } from "@dnd-kit/sortable";
 import type { DragEndEvent, UniqueIdentifier } from "@dnd-kit/core";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { reorderTodos } from "../../features/todos/todosSlice";
+import { reorderTodos } from "../../slices/todosSlice";
 import type Todo from "../../types/todo";
 import { useState } from "react";
 import TodoItem from "./TodoItem/TodoItem";
