@@ -3,14 +3,12 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { addLabel } from "../../../../slices/labelsSlice";
 interface LabelsDropdownProps {
   onLabelSelect: (label: string) => void;
-  ref: React.RefObject<HTMLDivElement | null>;
   labelQuery: string;
   onClose: () => void;
 }
 
 export default function LabelsDropdown({
   onLabelSelect,
-  ref,
   labelQuery,
   onClose,
 }: LabelsDropdownProps) {
@@ -24,8 +22,8 @@ export default function LabelsDropdown({
   }
 
   return (
-    <div ref={ref}>
-      <ul className="w-[98%] rounded-md bg-white border border-gray-200 shadow-xl z-20 absolute top-11.5 left-2">
+    <div>
+      <ul className="w-200 rounded-md bg-white border border-gray-200 drop-shadow-xl z-100">
         {labels
           .filter((label) => {
             if (label.includes(labelQuery)) return label;

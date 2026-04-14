@@ -1,5 +1,5 @@
 import * as Popover from "@radix-ui/react-popover";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import DueDateMenu from "./menus/DueDateMenu/DueDateMenu";
 import DateButton from "./buttons/DateButton";
@@ -16,6 +16,7 @@ import type Todo from "../../../types/todo";
 
 import { useAppDispatch } from "../../../hooks/reduxHooks";
 import { addTodo } from "../../../slices/todosSlice";
+import LabelsDropdown from "./menus/LabelsDropdown";
 
 const EMPTY_TODO: Todo = {
   id: 0,
@@ -41,6 +42,9 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
   const [priorityOpen, setPriorityOpen] = useState(false);
   const [remindersOpen, setRemindersOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
+  const [labelsOpen, setLabelsOpen] = useState(false);
+
+  const titleRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
 
@@ -83,6 +87,18 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     setRemindersOpen(false);
   }
 
+  function handleAddLabel(label: string) {
+    setTodo((prev) => {
+      const labels = prev.labels ?? [];
+
+      setLabelsOpen(false);
+
+      if (labels.includes(label)) return prev;
+
+      return { ...prev, labels: [...labels, label] };
+    });
+  }
+
   return (
     <div className="relative">
       <form
@@ -90,19 +106,43 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
         className="w-full border border-gray-300 rounded-lg flex flex-col"
       >
         {/* TITLE */}
-        <input
-          type="text"
-          value={titleInput}
-          onChange={(e) => {
-            setTitleInput(e.target.value);
-            setTodo((prev) => ({
-              ...prev,
-              title: e.target.value,
-            }));
-          }}
-          placeholder="Task name"
-          className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none"
-        />
+
+        <Popover.Root open={labelsOpen} onOpenChange={setLabelsOpen}>
+          <Popover.Anchor asChild>
+            <div className="w-full">
+              <input
+                ref={titleRef}
+                type="text"
+                value={titleInput}
+                onChange={(e) => {
+                  setTitleInput(e.target.value);
+                  setTodo((prev) => ({
+                    ...prev,
+                    title: e.target.value,
+                  }));
+                }}
+                placeholder="Task name"
+                className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none w-full"
+              />
+            </div>
+          </Popover.Anchor>
+
+          <Popover.Portal>
+            <Popover.Content
+              side="bottom"
+              align="center"
+              sideOffset={5}
+              onInteractOutside={(e) => e.preventDefault()}
+              onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+              <LabelsDropdown
+                onLabelSelect={handleAddLabel}
+                labelQuery={titleInput}
+                onClose={() => setLabelsOpen(false)}
+              />
+            </Popover.Content>
+          </Popover.Portal>
+        </Popover.Root>
 
         {/* DESCRIPTION */}
         <input
@@ -181,7 +221,14 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
 
             <Popover.Portal>
               <Popover.Content side="bottom" align="start" sideOffset={5}>
-                <ActionsDropdown />
+                <ActionsDropdown
+                  onOpenLabels={() => {
+                    setActionsOpen(false);
+                    setLabelsOpen(true);
+                    setTimeout(() => titleRef.current?.focus(), 0);
+                    console.log("otvori labels!");
+                  }}
+                />
               </Popover.Content>
             </Popover.Portal>
           </Popover.Root>

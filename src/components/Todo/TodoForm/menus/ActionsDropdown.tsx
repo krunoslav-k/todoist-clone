@@ -1,17 +1,17 @@
 import { Tag } from "lucide-react";
 
 interface ActionsDropdownProps {
-  onLabelsClick?: () => void;
+  onOpenLabels: () => void;
 }
 
 export default function ActionsDropdown({
-  onLabelsClick,
+  onOpenLabels,
 }: ActionsDropdownProps) {
   return (
     <div className="w-60 h-fit p-2 flex flex-col justify-start items-start bg-white border border-gray-100 rounded-xl shadow-md text-sm z-100">
       <button
         type="button"
-        onClick={onLabelsClick}
+        onClick={onOpenLabels}
         className="flex justify-between items-center w-full px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-100 font-light "
       >
         <span className="flex justify-center items-center gap-3">
