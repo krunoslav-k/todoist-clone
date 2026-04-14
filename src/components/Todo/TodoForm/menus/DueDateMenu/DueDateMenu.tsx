@@ -13,7 +13,6 @@ interface DueDateMenuProps {
   onSelectDateAndClose: (dueDate: Date) => void;
   onDeleteDate: () => void;
   initialDueDate?: Date;
-  ref: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function DueDateMenu({
@@ -21,7 +20,6 @@ export default function DueDateMenu({
   onSelectDateAndClose,
   onDeleteDate,
   initialDueDate,
-  ref,
 }: DueDateMenuProps) {
   const [displayedMonth, setDisplayedMonth] = useState(
     initialDueDate ?? new Date(),
@@ -90,10 +88,7 @@ export default function DueDateMenu({
   }
 
   return (
-    <div
-      ref={ref}
-      className="flex flex-col p-3 pt-0 border border-gray-300 rounded-lg bg-white shadow w-fit relative z-10 bottom-50 left-19"
-    >
+    <div className="flex flex-col p-3 pt-0 border border-gray-300 rounded-lg bg-white shadow w-fit z-100">
       <DueDateMenuInput
         inputValue={inputValue}
         setInputValue={setInputValue}

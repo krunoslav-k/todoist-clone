@@ -1,28 +1,22 @@
 import { Calendar, CalendarDays, X } from "lucide-react";
-import type { Dropdown } from "../../../../types/ui";
 import { categorizeDueDate } from "../../../../utils/categorizeDueDate";
 import { dueDateColors } from "../../../../config/dueDateColors";
 
 interface DateButtonProps {
   dueDate?: Date;
-  onDateButtonClick: (type: Exclude<Dropdown, null>) => void;
   onDateButtonCloseClick: () => void;
 }
 
 export default function DateButton({
   dueDate,
-  onDateButtonClick,
   onDateButtonCloseClick,
+  ...props
 }: DateButtonProps) {
   const { label, category } = categorizeDueDate(dueDate);
   const color = dueDateColors[category];
 
   return (
-    <button
-      type="button"
-      onClick={() => onDateButtonClick("date")}
-      className="button"
-    >
+    <button {...props} type="button" className="button">
       {!dueDate ? (
         <>
           <Calendar

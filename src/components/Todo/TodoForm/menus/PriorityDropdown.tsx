@@ -4,7 +4,7 @@ import type { Priority } from "../../../../types/todo";
 interface PriorityDropdownProps {
   onPrioritySelect: (priority: Priority) => void;
   currentPriority: Priority;
-  ref: React.RefObject<HTMLDivElement | null>;
+  ref?: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function PriorityDropdown({
@@ -38,7 +38,7 @@ export default function PriorityDropdown({
   return (
     <div
       ref={ref}
-      className="w-fit border border-gray-300 rounded-lg bg-white shadow-xs tracking-wide relative z-10 bottom-15.5 left-15"
+      className="w-fit border border-gray-300 rounded-lg bg-white shadow-xs tracking-wide z-100"
     >
       {priorities.map((priority, index) => {
         return (

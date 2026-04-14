@@ -3,7 +3,7 @@ import { CircleQuestionMark, Clock3, Star, X } from "lucide-react";
 interface RemindersDropdownProps {
   hasReminder: boolean;
   onToggleReminder: () => void;
-  ref: React.RefObject<HTMLDivElement | null>;
+  ref?: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function RemindersDropdown({
@@ -22,7 +22,7 @@ export default function RemindersDropdown({
   return (
     <div
       ref={ref}
-      className="max-w-70 flex flex-col justify-center items-stretch gap-3 px-2.5 py-3 border border-gray-300 rounded-lg bg-white shadow-xs relative left-43.5 bottom-15.5 z-10"
+      className="max-w-70 flex flex-col justify-center items-stretch gap-3 px-2.5 py-3 border border-gray-300 rounded-lg bg-white shadow-xs z-100"
     >
       <p className="text-sm font-medium">Reminders</p>
 

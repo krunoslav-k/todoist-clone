@@ -1,19 +1,14 @@
 import { Tag } from "lucide-react";
 
 interface ActionsDropdownProps {
-  onLabelsClick: () => void;
-  ref: React.RefObject<HTMLDivElement | null>;
+  onLabelsClick?: () => void;
 }
 
 export default function ActionsDropdown({
   onLabelsClick,
-  ref,
 }: ActionsDropdownProps) {
   return (
-    <div
-      ref={ref}
-      className="w-[30%] h-fit p-2 flex flex-col justify-start items-start bg-white border border-gray-100 rounded-xl shadow-md text-sm absolute top-26 left-70"
-    >
+    <div className="w-60 h-fit p-2 flex flex-col justify-start items-start bg-white border border-gray-100 rounded-xl shadow-md text-sm z-100">
       <button
         type="button"
         onClick={onLabelsClick}
