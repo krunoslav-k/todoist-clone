@@ -59,9 +59,9 @@ export default function TodoModal({
         />
 
         <div className="flex-1 flex">
-          <TodoModalContent selectedTodo={selectedTodo} />
+          <TodoModalContent selectedTodoId={selectedTodoId} />
 
-          <TodoModalSidebar />
+          <TodoModalSidebar selectedTodoId={selectedTodoId} />
         </div>
       </div>
     </div>
