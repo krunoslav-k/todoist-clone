@@ -11,14 +11,14 @@ import DueDateMenuCalendar from "./DueDateMenuCalendar";
 interface DueDateMenuProps {
   onSelectDate: (dueDate: Date) => void;
   onSelectDateAndClose: (dueDate: Date) => void;
-  onDeleteDate: () => void;
+  onRemoveDate: () => void;
   initialDueDate?: Date;
 }
 
 export default function DueDateMenu({
   onSelectDate,
   onSelectDateAndClose,
-  onDeleteDate,
+  onRemoveDate,
   initialDueDate,
 }: DueDateMenuProps) {
   const [displayedMonth, setDisplayedMonth] = useState(
@@ -77,7 +77,7 @@ export default function DueDateMenu({
     setDisplayedMonth(new Date());
     setSelectedDate(undefined);
     setInputValue("");
-    onDeleteDate();
+    onRemoveDate();
   }
 
   function addTimeToDate(time: string) {

@@ -13,6 +13,7 @@ import { updateTodo } from "../../../slices/todosSlice";
 import DragHighlightLine from "./DragHighlightLine";
 import useTodoModal from "../../../hooks/useTodoModal";
 import TodoItemMeta from "./TodoItemMeta";
+import * as Popover from "@radix-ui/react-popover";
 
 interface TodoItemProps {
   todo: Todo;
@@ -113,21 +114,34 @@ export default function TodoItem({
           </div>
 
           {!isSorting && (
-            <TodoItemActions
-              onEditTodo={() => setActiveTodoForm(todo.id)}
-              onDueDateClick={() => setIsDueDateMenuOpen(true)}
-            />
+            <Popover.Root
+              open={isDueDateMenuOpen}
+              onOpenChange={setIsDueDateMenuOpen}
+            >
+              <Popover.Anchor>
+                <TodoItemActions
+                  onEditTodo={() => setActiveTodoForm(todo.id)}
+                  onDueDateClick={() => setIsDueDateMenuOpen(true)}
+                />
+              </Popover.Anchor>
+              <Popover.Content
+                side="right"
+                align="start"
+                className="z-50 bg-white"
+              >
+                <DueDateMenu
+                  onSelectDate={handleSelectDate}
+                  onSelectDateAndClose={(dueDate) => {
+                    handleSelectDate(dueDate);
+                    setIsDueDateMenuOpen(false);
+                  }}
+                  onRemoveDate={() => handleUpdateTodo({ dueDate: undefined })}
+                  initialDueDate={todo.dueDate}
+                />
+              </Popover.Content>
+            </Popover.Root>
           )}
         </div>
-      )}
-
-      {isDueDateMenuOpen && (
-        <DueDateMenu
-          onSelectDate={handleSelectDate}
-          onSelectDateAndClose={handleSelectDate}
-          onDeleteDate={() => handleUpdateTodo({ dueDate: undefined })}
-          initialDueDate={todo.dueDate}
-        />
       )}
 
       {isEditing && (

@@ -30,7 +30,7 @@ export default function DatePopover({
             onSelectDate(dueDate);
             onOpenChange(false);
           }}
-          onDeleteDate={onRemoveDate}
+          onRemoveDate={onRemoveDate}
           initialDueDate={dueDate}
         />
       </Popover.Content>
