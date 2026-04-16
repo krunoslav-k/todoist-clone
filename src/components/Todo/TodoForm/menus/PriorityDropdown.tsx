@@ -43,6 +43,7 @@ export default function PriorityDropdown({
       {priorities.map((priority, index) => {
         return (
           <button
+            type="button"
             key={index}
             onClick={() => onPrioritySelect(priority.value)}
             className={`priority_button ${index === 0 ? "rounded-t-lg" : ""} ${index === priorities.length - 1 ? "rounded-b-lg" : ""}`}

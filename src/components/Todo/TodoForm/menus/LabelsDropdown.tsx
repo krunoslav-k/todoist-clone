@@ -41,7 +41,7 @@ export default function LabelsDropdown({
           })}
 
         <li className="px-5 py-1.5 flex justify-start items-center gap-3 text-sm font-light hover:bg-gray-100 first:rounded-t-md last:rounded-b-md">
-          <button onClick={() => handleCreateLabel(labelQuery)}>
+          <button type="button" onClick={() => handleCreateLabel(labelQuery)}>
             Create label {labelQuery}
           </button>
         </li>

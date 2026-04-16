@@ -4,10 +4,12 @@ import { priorityColors } from "../../../../config/priorityStyles";
 
 interface PriorityButtonProps {
   priority: Priority;
+  onPriorityReset: () => void;
 }
 
 export default function PriorityButton({
   priority,
+  onPriorityReset,
   ...props
 }: PriorityButtonProps) {
   const colors = priorityColors;
@@ -32,6 +34,7 @@ export default function PriorityButton({
           <span
             onClick={(e) => {
               e.stopPropagation();
+              onPriorityReset();
             }}
             role="button"
             className="ml-1 -mr-0.5 p-0.5 rounded-sm hover:bg-gray-200"

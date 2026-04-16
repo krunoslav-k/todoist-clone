@@ -1,22 +1,25 @@
-import { useRef, useState } from "react";
-import useClickOutside from "./useClickOutside";
+import { useState } from "react";
 import type { Dropdown } from "../types/ui";
 
 export default function useDropdown() {
   const [activeDropdown, setActiveDropdown] = useState<Dropdown>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
 
-  useClickOutside(menuRef, () => setActiveDropdown(null));
-
-  function toggleDropdown(type: Exclude<Dropdown, null>) {
-    setActiveDropdown((prev) => (prev === type ? null : type));
+  function openDropdown(key: Exclude<Dropdown, null>) {
+    setActiveDropdown(key);
   }
 
   function closeDropdown() {
     setActiveDropdown(null);
   }
 
-  useClickOutside(menuRef, closeDropdown);
+  function isOpen(key: Exclude<Dropdown, null>) {
+    return activeDropdown === key;
+  }
 
-  return { activeDropdown, toggleDropdown, closeDropdown, menuRef };
+  return {
+    activeDropdown,
+    openDropdown,
+    closeDropdown,
+    isOpen,
+  };
 }

@@ -74,7 +74,7 @@ export default function RemindersDropdown({
             className="text-gray-500"
           />
         </button>
-        <button onClick={handleClick} className="add_button">
+        <button type="button" onClick={handleClick} className="add_button">
           {hasReminder ? <>Upgrade for more</> : <>Add reminder</>}
         </button>
       </div>
