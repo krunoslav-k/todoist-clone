@@ -10,16 +10,16 @@ import ActionsButton from "./buttons/ActionsButton";
 import PriorityDropdown from "./menus/PriorityDropdown";
 import RemindersDropdown from "./menus/RemindersDropdown";
 import ActionsDropdown from "./menus/ActionsDropdown";
+import LabelsDropdown from "./menus/LabelsDropdown";
 
 import type { Priority } from "../../../types/todo";
 import type Todo from "../../../types/todo";
 
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import { addTodo } from "../../../slices/todosSlice";
-import LabelsDropdown from "./menus/LabelsDropdown";
+import { addTodo, updateTodo } from "../../../slices/todosSlice";
 
 const EMPTY_TODO: Todo = {
-  id: 0,
+  id: Date.now(),
   title: "",
   description: "",
   completed: false,
@@ -35,8 +35,9 @@ interface TodoFormProps {
 }
 
 export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
-  const [todo, setTodo] = useState<Todo>(initialTodo ?? EMPTY_TODO);
-  const [titleInput, setTitleInput] = useState("");
+  const [todo, setTodo] = useState<Todo>(
+    () => initialTodo ?? { ...EMPTY_TODO, id: Date.now() },
+  );
 
   const [dateOpen, setDateOpen] = useState(false);
   const [priorityOpen, setPriorityOpen] = useState(false);
@@ -53,14 +54,18 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
 
     if (!todo.title.trim()) return;
 
-    dispatch(
-      addTodo({
-        ...todo,
-      }),
-    );
+    if (initialTodo) {
+      dispatch(
+        updateTodo({
+          id: todo.id,
+          changes: todo,
+        }),
+      );
+    } else {
+      dispatch(addTodo(todo));
+    }
 
-    setTodo(initialTodo ?? EMPTY_TODO);
-    setTitleInput("");
+    setTodo({ ...EMPTY_TODO, id: Date.now() });
     onClose();
   }
 
@@ -90,13 +95,12 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
   function handleAddLabel(label: string) {
     setTodo((prev) => {
       const labels = prev.labels ?? [];
-
-      setLabelsOpen(false);
-
       if (labels.includes(label)) return prev;
 
       return { ...prev, labels: [...labels, label] };
     });
+
+    setLabelsOpen(false);
   }
 
   return (
@@ -105,26 +109,22 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
         onSubmit={handleSubmit}
         className="w-full border border-gray-300 rounded-lg flex flex-col"
       >
-        {/* TITLE */}
-
+        {/* TITLE + LABELS */}
         <Popover.Root open={labelsOpen} onOpenChange={setLabelsOpen}>
           <Popover.Anchor asChild>
-            <div className="w-full">
-              <input
-                ref={titleRef}
-                type="text"
-                value={titleInput}
-                onChange={(e) => {
-                  setTitleInput(e.target.value);
-                  setTodo((prev) => ({
-                    ...prev,
-                    title: e.target.value,
-                  }));
-                }}
-                placeholder="Task name"
-                className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none w-full"
-              />
-            </div>
+            <input
+              ref={titleRef}
+              type="text"
+              value={todo.title}
+              onChange={(e) =>
+                setTodo((prev) => ({
+                  ...prev,
+                  title: e.target.value,
+                }))
+              }
+              placeholder="Task name"
+              className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none w-full"
+            />
           </Popover.Anchor>
 
           <Popover.Portal>
@@ -134,10 +134,11 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               sideOffset={5}
               onInteractOutside={(e) => e.preventDefault()}
               onOpenAutoFocus={(e) => e.preventDefault()}
+              className="z-50 bg-white"
             >
               <LabelsDropdown
                 onLabelSelect={handleAddLabel}
-                labelQuery={titleInput}
+                labelQuery={todo.title}
                 onClose={() => setLabelsOpen(false)}
               />
             </Popover.Content>
@@ -169,16 +170,18 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               />
             </Popover.Trigger>
 
-            <Popover.Portal>
-              <Popover.Content side="right" align="start">
-                <DueDateMenu
-                  onSelectDate={handleSelectDate}
-                  onSelectDateAndClose={handleSelectDate}
-                  onDeleteDate={handleDeleteDate}
-                  initialDueDate={todo.dueDate}
-                />
-              </Popover.Content>
-            </Popover.Portal>
+            <Popover.Content
+              side="right"
+              align="start"
+              className="z-50 bg-white"
+            >
+              <DueDateMenu
+                onSelectDate={handleSelectDate}
+                onSelectDateAndClose={handleSelectDate}
+                onDeleteDate={handleDeleteDate}
+                initialDueDate={todo.dueDate}
+              />
+            </Popover.Content>
           </Popover.Root>
 
           {/* PRIORITY */}
@@ -187,14 +190,16 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               <PriorityButton priority={todo.priority} />
             </Popover.Trigger>
 
-            <Popover.Portal>
-              <Popover.Content side="bottom" align="center">
-                <PriorityDropdown
-                  currentPriority={todo.priority}
-                  onPrioritySelect={handlePrioritySelect}
-                />
-              </Popover.Content>
-            </Popover.Portal>
+            <Popover.Content
+              side="bottom"
+              align="center"
+              className="z-50 bg-white"
+            >
+              <PriorityDropdown
+                currentPriority={todo.priority}
+                onPrioritySelect={handlePrioritySelect}
+              />
+            </Popover.Content>
           </Popover.Root>
 
           {/* REMINDERS */}
@@ -203,14 +208,16 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               <RemindersButton hasReminder={todo.hasReminder} />
             </Popover.Trigger>
 
-            <Popover.Portal>
-              <Popover.Content side="bottom" align="start">
-                <RemindersDropdown
-                  hasReminder={todo.hasReminder}
-                  onToggleReminder={handleToggleReminder}
-                />
-              </Popover.Content>
-            </Popover.Portal>
+            <Popover.Content
+              side="bottom"
+              align="start"
+              className="z-50 bg-white"
+            >
+              <RemindersDropdown
+                hasReminder={todo.hasReminder}
+                onToggleReminder={handleToggleReminder}
+              />
+            </Popover.Content>
           </Popover.Root>
 
           {/* ACTIONS */}
@@ -219,18 +226,20 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               <ActionsButton />
             </Popover.Trigger>
 
-            <Popover.Portal>
-              <Popover.Content side="bottom" align="start" sideOffset={5}>
-                <ActionsDropdown
-                  onOpenLabels={() => {
-                    setActionsOpen(false);
-                    setLabelsOpen(true);
-                    setTimeout(() => titleRef.current?.focus(), 0);
-                    console.log("otvori labels!");
-                  }}
-                />
-              </Popover.Content>
-            </Popover.Portal>
+            <Popover.Content
+              side="bottom"
+              align="start"
+              sideOffset={5}
+              className="z-50 bg-white"
+            >
+              <ActionsDropdown
+                onOpenLabels={() => {
+                  setActionsOpen(false);
+                  setLabelsOpen(true);
+                  setTimeout(() => titleRef.current?.focus(), 0);
+                }}
+              />
+            </Popover.Content>
           </Popover.Root>
         </div>
 

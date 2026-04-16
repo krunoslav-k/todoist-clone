@@ -127,7 +127,6 @@ export default function TodoItem({
           onSelectDateAndClose={handleSelectDate}
           onDeleteDate={() => handleUpdateTodo({ dueDate: undefined })}
           initialDueDate={todo.dueDate}
-          ref={menuRef}
         />
       )}
 
