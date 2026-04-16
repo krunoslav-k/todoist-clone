@@ -1,4 +1,5 @@
 import { CircleQuestionMark, Clock3, Star, X } from "lucide-react";
+import { ComingSoonPopover } from "../../../ComingSoonPopover";
 
 interface RemindersDropdownProps {
   hasReminder: boolean;
@@ -46,11 +47,14 @@ export default function RemindersDropdown({
       ) : (
         <>
           <div className="flex justify-between items-center px-0.75 py-0.75 bg-gray-100 rounded-full">
-            <button className="px-5 py-0.75 text-sm text-gray-500 font-medium rounded-full cursor-pointer hover:text-black">
-              <span className="flex justify-center items-center gap-1">
-                Date & time <Star size={12} strokeWidth="4" color="#ee8100" />
-              </span>
-            </button>
+            <ComingSoonPopover>
+              <button className="px-5 py-0.75 text-sm text-gray-500 font-medium rounded-full cursor-pointer hover:text-black">
+                <span className="flex justify-center items-center gap-1">
+                  Date & time <Star size={12} strokeWidth="4" color="#ee8100" />
+                </span>
+              </button>
+            </ComingSoonPopover>
+
             <button className="px-5 py-1.25 text-sm font-medium bg-white rounded-full cursor-pointer">
               Before task
             </button>
@@ -67,13 +71,16 @@ export default function RemindersDropdown({
       )}
 
       <div className="flex justify-between items-center">
-        <button className="p-1.75 rounded-sm hover:bg-gray-100 cursor-pointer">
-          <CircleQuestionMark
-            size={20}
-            strokeWidth={1.5}
-            className="text-gray-500"
-          />
-        </button>
+        <ComingSoonPopover>
+          <button className="p-1.75 rounded-sm hover:bg-gray-100 cursor-pointer">
+            <CircleQuestionMark
+              size={20}
+              strokeWidth={1.5}
+              className="text-gray-500"
+            />
+          </button>
+        </ComingSoonPopover>
+
         <button type="button" onClick={handleClick} className="add_button">
           {hasReminder ? <>Upgrade for more</> : <>Add reminder</>}
         </button>

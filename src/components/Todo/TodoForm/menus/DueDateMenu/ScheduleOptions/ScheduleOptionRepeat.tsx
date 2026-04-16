@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { ComingSoonPopover } from "../../../../../ComingSoonPopover";
 
 interface ScheduleOptionRepeatProps {
   selectedDate: Date | undefined;
@@ -57,17 +58,19 @@ export default function ScheduleOptionRepeat({
     <ul className="w-70 p-1.75 bg-white border border-gray-200 rounded-md shadow-md absolute z-20 bottom-10 left-3 text-sm">
       {repeatOptions.map((option) => {
         return (
-          <li
-            key={option.id}
-            className="px-6 py-1.75 rounded-md hover:bg-gray-100"
-          >
-            {option.label}{" "}
-            {option.getSecondaryLabel && (
-              <span className="text-gray-500">
-                {option.getSecondaryLabel(selectedDate)}
-              </span>
-            )}
-          </li>
+          <ComingSoonPopover>
+            <li
+              key={option.id}
+              className="px-6 py-1.75 rounded-md hover:bg-gray-100 cursor-not-allowed"
+            >
+              {option.label}{" "}
+              {option.getSecondaryLabel && (
+                <span className="text-gray-500">
+                  {option.getSecondaryLabel(selectedDate)}
+                </span>
+              )}
+            </li>
+          </ComingSoonPopover>
         );
       })}
     </ul>

@@ -1,6 +1,7 @@
 import { Star } from "lucide-react";
 import { useState } from "react";
 import PremiumFeatureModal from "../../../../../modals/PremiumFeatureModal";
+import { ComingSoonPopover } from "../../../../../ComingSoonPopover";
 
 interface ScheduleOptionTimeProps {
   handleCancelClick: () => void;
@@ -112,12 +113,14 @@ export default function ScheduleOptionTime({
         <label htmlFor="time" className="text-sm text-gray-800 font-medium">
           Timezone
         </label>
-        <input
-          type="text"
-          readOnly
-          id="timezone"
-          className="w-50 px-1.75 py-1.25 border border-gray-300 rounded-sm text-sm text-gray-600 hover:border-gray-400 focus:outline-none bg-gray-100 cursor-no-drop"
-        />
+        <ComingSoonPopover>
+          <input
+            type="text"
+            readOnly
+            id="timezone"
+            className="w-50 px-1.75 py-1.25 border border-gray-300 rounded-sm text-sm text-gray-600 hover:border-gray-400 focus:outline-none bg-gray-100 cursor-not-allowed"
+          />
+        </ComingSoonPopover>
       </div>
 
       <div className="flex justify-end items-center gap-3">
