@@ -1,18 +1,20 @@
-import { Calendar, Ellipsis, MessageSquare, PenLine } from "lucide-react";
+import { Calendar, Ellipsis, Trash, PenLine } from "lucide-react";
 
 interface TodoItemActionsProps {
   onEditTodo: (status: boolean) => void;
   onDueDateClick: (status: boolean) => void;
+  onRemoveTodo: () => void;
 }
 
 export default function TodoItemActions({
   onEditTodo,
   onDueDateClick,
+  onRemoveTodo,
 }: TodoItemActionsProps) {
   const actions = [
     { Icon: PenLine, key: "edit", onClick: onEditTodo },
     { Icon: Calendar, key: "date", onClick: onDueDateClick },
-    { Icon: MessageSquare, key: "comment", onClick: onEditTodo },
+    { Icon: Trash, key: "comment", onClick: onRemoveTodo },
     { Icon: Ellipsis, strokeWidth: 2, key: "more", onClick: onEditTodo },
   ];
 
@@ -28,7 +30,7 @@ export default function TodoItemActions({
               <Icon
                 strokeWidth={strokeWidth ?? 1}
                 size={20}
-                className="text-gray-600 hover:text-black"
+                className={`text-gray-600 ${Icon === Trash ? "hover:text-red-700" : "hover:text-black"}`}
               ></Icon>
             </button>
           </li>

@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import DueDateMenu from ".././TodoForm/menus/DueDateMenu/DueDateMenu";
 import useClickOutside from "../../../hooks/useClickOutside";
 import { useAppDispatch } from "../../../hooks/reduxHooks";
-import { updateTodo } from "../../../slices/todosSlice";
+import { removeTodo, updateTodo } from "../../../slices/todosSlice";
 import DragHighlightLine from "./DragHighlightLine";
 import useTodoModal from "../../../hooks/useTodoModal";
 import TodoItemMeta from "./TodoItemMeta";
@@ -60,6 +60,10 @@ export default function TodoItem({
 
   function handleUpdateTodo(change: Partial<Todo>) {
     dispatch(updateTodo({ id: todo.id, changes: change }));
+  }
+
+  function handleRemoveTodo() {
+    dispatch(removeTodo(todo.id));
   }
 
   return (
@@ -122,6 +126,7 @@ export default function TodoItem({
                 <TodoItemActions
                   onEditTodo={() => setActiveTodoForm(todo.id)}
                   onDueDateClick={() => setIsDueDateMenuOpen(true)}
+                  onRemoveTodo={handleRemoveTodo}
                 />
               </Popover.Anchor>
               <Popover.Content
