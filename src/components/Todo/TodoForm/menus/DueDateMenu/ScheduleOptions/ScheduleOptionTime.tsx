@@ -99,6 +99,7 @@ export default function ScheduleOptionTime({
           Duration
         </label>
         <button
+          type="button"
           onClick={() => setIsPremiumFeatureModalOpen(true)}
           className="w-50 flex justify-between items-center px-1.75 py-1.25 bg-gray-100 border border-gray-300 rounded-sm text-sm text-gray-700 hover:border-gray-400 cursor-pointer"
         >
@@ -115,7 +116,7 @@ export default function ScheduleOptionTime({
           type="text"
           readOnly
           id="timezone"
-          className="w-50 px-1.75 py-1.25 border border-gray-300 rounded-sm text-sm text-gray-600 hover:border-gray-400 focus:outline-none"
+          className="w-50 px-1.75 py-1.25 border border-gray-300 rounded-sm text-sm text-gray-600 hover:border-gray-400 focus:outline-none bg-gray-100 cursor-no-drop"
         />
       </div>
 
@@ -127,7 +128,11 @@ export default function ScheduleOptionTime({
           Cancel
         </button>
         <button
-          onClick={() => handleAddTime(selectedTime)}
+          type="button"
+          onClick={() => {
+            handleAddTime(selectedTime);
+            handleCancelClick();
+          }}
           className="add_button w-18 py-1.75"
         >
           Save

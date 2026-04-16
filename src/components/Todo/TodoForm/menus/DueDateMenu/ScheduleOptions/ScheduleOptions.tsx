@@ -23,6 +23,7 @@ export default function ScheduleOptions({
   return (
     <div className="-mx-3 px-3 pt-3 flex flex-col items-stretch gap-3 border-t border-gray-200 relative">
       <button
+        type="button"
         onClick={() => setActivePopup("time")}
         className="py-1.5 flex justify-center items-center gap-2 border border-gray-300 rounded-md text-sm text-gray-500 font-medium cursor-pointer hover:bg-gray-100 hover:border-gray-300 hover:text-gray-800 transition-all ease-in-out group"
       >
@@ -34,6 +35,7 @@ export default function ScheduleOptions({
         Time
       </button>
       <button
+        type="button"
         onClick={() =>
           setActivePopup((prev) => (prev === "repeat" ? null : "repeat"))
         }

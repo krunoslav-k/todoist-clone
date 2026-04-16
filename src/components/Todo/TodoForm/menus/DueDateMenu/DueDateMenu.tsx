@@ -82,9 +82,14 @@ export default function DueDateMenu({
 
   function addTimeToDate(time: string) {
     const [hours, minutes] = time.split(":").map(Number);
-    if (selectedDate) {
-      selectedDate.setHours(hours, minutes, 0, 0);
-    }
+
+    if (!selectedDate) return;
+
+    const newDate = new Date(selectedDate);
+    newDate.setHours(hours, minutes, 0, 0);
+
+    setSelectedDate(newDate);
+    onSelectDate(newDate);
   }
 
   return (
