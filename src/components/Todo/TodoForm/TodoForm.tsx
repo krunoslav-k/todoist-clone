@@ -31,7 +31,7 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     <div className="relative">
       <form
         onSubmit={handleSubmit}
-        className="w-full border border-gray-300 rounded-lg flex flex-col"
+        className="w-full border border-gray-300 rounded-lg flex flex-col focus-within:border-gray-400"
       >
         {/* TITLE + LABELS */}
         <Popover.Root
