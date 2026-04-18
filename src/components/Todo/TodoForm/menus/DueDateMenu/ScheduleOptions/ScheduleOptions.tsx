@@ -1,20 +1,27 @@
-import { Clock, Repeat2 } from "lucide-react";
+import { Clock, Repeat2, X } from "lucide-react";
 import { useState } from "react";
+import { format } from "date-fns";
 import ScheduleOptionTime from "./ScheduleOptionTime";
 import ScheduleOptionRepeat from "./ScheduleOptionRepeat";
 
 interface ScheduleOptionsProps {
   selectedDate: Date | undefined;
-  handleAddTime: (time: string) => void;
+  onAddTime: (time: string) => void;
+  onClearTime: () => void;
 }
 
 export default function ScheduleOptions({
   selectedDate,
-  handleAddTime,
+  onAddTime,
+  onClearTime,
 }: ScheduleOptionsProps) {
   const [activePopup, setActivePopup] = useState<"time" | "repeat" | null>(
     null,
   );
+
+  const hasTime =
+    selectedDate &&
+    (selectedDate.getHours() !== 0 || selectedDate.getMinutes() !== 0);
 
   function handleCancelClick() {
     setActivePopup(null);
@@ -25,21 +32,43 @@ export default function ScheduleOptions({
       <button
         type="button"
         onClick={() => setActivePopup("time")}
-        className="py-1.5 flex justify-center items-center gap-2 border border-gray-300 rounded-md text-sm text-gray-500 font-medium cursor-pointer hover:bg-gray-100 hover:border-gray-300 hover:text-gray-800 transition-all ease-in-out group"
+        className="py-1.5 flex justify-center items-center gap-2 border border-gray-300 rounded-md text-sm text-gray-500 font-medium cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition-all group"
       >
         <Clock
           size={14}
-          strokeWidth={1.75}
-          className="text-gray-500 group-hover:text-gray-800"
+          strokeWidth={hasTime ? "2.25" : "1.75"}
+          className={`${hasTime ? "text-black" : "text-gray-500 group-hover:text-gray-800"}`}
         />
-        Time
+
+        {!hasTime ? (
+          "Time"
+        ) : (
+          <>
+            <span className="text-black">
+              {selectedDate ? format(selectedDate, "H:mm") : null}
+            </span>
+
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                onClearTime();
+                setActivePopup(null);
+              }}
+              role="button"
+              className="absolute right-5 p-0.75 rounded-sm hover:bg-gray-200"
+            >
+              <X strokeWidth={1.75} size={15} />
+            </span>
+          </>
+        )}
       </button>
+
       <button
         type="button"
         onClick={() =>
           setActivePopup((prev) => (prev === "repeat" ? null : "repeat"))
         }
-        className="py-1.5 flex justify-center items-center gap-2 border border-gray-300 rounded-md text-sm text-gray-500 font-medium cursor-pointer hover:bg-gray-100 hover:border-gray-300 hover:text-gray-800 transition-all ease-in-out group"
+        className="py-1.5 flex justify-center items-center gap-2 border border-gray-300 rounded-md text-sm text-gray-500 font-medium cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition-all group"
       >
         <Repeat2
           size={14}
@@ -51,10 +80,12 @@ export default function ScheduleOptions({
 
       {activePopup === "time" && (
         <ScheduleOptionTime
-          handleCancelClick={handleCancelClick}
-          handleAddTime={handleAddTime}
+          selectedDate={selectedDate}
+          onCancelClick={handleCancelClick}
+          onAddTime={onAddTime}
         />
       )}
+
       {activePopup === "repeat" && (
         <ScheduleOptionRepeat selectedDate={selectedDate} />
       )}

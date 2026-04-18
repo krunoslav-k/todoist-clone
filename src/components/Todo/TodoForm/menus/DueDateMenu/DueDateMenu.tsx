@@ -15,6 +15,12 @@ interface DueDateMenuProps {
   initialDueDate?: Date;
 }
 
+function normalizeDate(date: Date, keepTime = false) {
+  const newDate = new Date(date);
+  if (!keepTime) newDate.setHours(0, 0, 0, 0);
+  return newDate;
+}
+
 export default function DueDateMenu({
   onSelectDate,
   onSelectDateAndClose,
@@ -24,18 +30,20 @@ export default function DueDateMenu({
   const [displayedMonth, setDisplayedMonth] = useState(
     initialDueDate ?? new Date(),
   );
+
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    initialDueDate ?? undefined,
+    initialDueDate ? normalizeDate(initialDueDate, true) : undefined,
   );
+
   const [inputValue, setInputValue] = useState(
-    initialDueDate?.toDateString() ?? "",
+    initialDueDate ? format(initialDueDate, "d.M.yyyy") : "",
   );
 
   const parsedDate = (() => {
     const parts = inputValue.split(".");
     if (parts.length === 3 && parts[2].length === 4) {
       const date = parse(inputValue, "d.M.yyyy", new Date());
-      if (isValid(date)) return date;
+      if (isValid(date)) return normalizeDate(date);
     }
     return null;
   })();
@@ -47,10 +55,12 @@ export default function DueDateMenu({
       setInputValue("");
       setSelectedDate(undefined);
     } else {
-      setSelectedDate(date);
-      setDisplayedMonth(date);
-      setInputValue(format(date, "d LLL"));
-      onSelectDate(date);
+      const cleanDate = normalizeDate(date);
+
+      setSelectedDate(cleanDate);
+      setDisplayedMonth(cleanDate);
+      setInputValue(format(cleanDate, "d LLL"));
+      onSelectDate(cleanDate);
     }
   };
 
@@ -59,15 +69,16 @@ export default function DueDateMenu({
     setInputValue(newValue);
 
     const parts = newValue.split(".");
-    let parsedDate: Date | null = null;
+    let parsed: Date | null = null;
+
     if (parts.length === 3 && parts[2].length === 4) {
       const date = parse(newValue, "d.M.yyyy", new Date());
-      if (isValid(date)) parsedDate = date;
+      if (isValid(date)) parsed = normalizeDate(date);
     }
 
-    if (parsedDate) {
-      setSelectedDate(parsedDate);
-      setDisplayedMonth(parsedDate);
+    if (parsed) {
+      setSelectedDate(parsed);
+      setDisplayedMonth(parsed);
     } else {
       setSelectedDate(undefined);
     }
@@ -83,12 +94,27 @@ export default function DueDateMenu({
   function addTimeToDate(time: string) {
     const [hours, minutes] = time.split(":").map(Number);
 
-    if (!selectedDate) return;
+    if (isNaN(hours) || isNaN(minutes)) return;
 
-    const newDate = new Date(selectedDate);
+    const baseDate = selectedDate ?? parsedDate;
+    if (!baseDate) return;
+
+    const newDate = new Date(baseDate);
     newDate.setHours(hours, minutes, 0, 0);
 
     setSelectedDate(newDate);
+    onSelectDate(newDate);
+  }
+
+  function removeTimeFromDate() {
+    const baseDate = selectedDate ?? parsedDate;
+    if (!baseDate) return;
+
+    const newDate = new Date(baseDate);
+    newDate.setHours(0, 0, 0, 0);
+
+    setSelectedDate(newDate);
+
     onSelectDate(newDate);
   }
 
@@ -102,7 +128,7 @@ export default function DueDateMenu({
 
       {isDateCompleteAndValid && (
         <button
-          onClick={() => onSelectDate(parsedDate)}
+          onClick={() => onSelectDate(parsedDate!)}
           className="py-2 -mx-3 flex justify-start items-center border-t border-gray-200 hover:cursor-pointer"
         >
           <CalendarPlus
@@ -111,7 +137,9 @@ export default function DueDateMenu({
             className="-m-1 mx-3 text-gray-600"
           />
           <div className="flex flex-col justify-start items-start">
-            <p className="text-xs font-semibold">{parsedDate.toDateString()}</p>
+            <p className="text-xs font-semibold">
+              {parsedDate!.toDateString()}
+            </p>
             <p className="-mt-1 text-[0.7rem]">No tasks</p>
           </div>
         </button>
@@ -119,7 +147,10 @@ export default function DueDateMenu({
 
       <DueDateMenuQuickDates
         selectedDate={selectedDate}
-        onSelectDate={onSelectDateAndClose}
+        onSelectDate={(date) => {
+          const cleanDate = normalizeDate(date);
+          onSelectDateAndClose(cleanDate);
+        }}
         onNoDateClick={deleteDate}
       />
 
@@ -132,7 +163,8 @@ export default function DueDateMenu({
 
       <ScheduleOptions
         selectedDate={selectedDate}
-        handleAddTime={addTimeToDate}
+        onAddTime={addTimeToDate}
+        onClearTime={removeTimeFromDate}
       />
     </div>
   );

@@ -7,16 +7,29 @@ export function categorizeDueDate(dueDate: Date | undefined): {
 } {
   const today = new Date();
 
-  if (dueDate === undefined) return { label: "", category: "future" };
-  else if (isToday(dueDate)) return { label: "Today", category: "today" };
-  else if (isTomorrow(dueDate))
-    return { label: "Tomorrow", category: "tomorrow" };
-  else {
-    const daysDiff = differenceInCalendarDays(dueDate, today);
-    if (daysDiff >= 2 && daysDiff <= 7) {
-      const dayName = format(dueDate, "EEEE");
-      return { label: dayName, category: "weekday" };
-    }
+  if (!dueDate) return { label: "", category: "future" };
+
+  const hasTime = dueDate.getHours() !== 0 || dueDate.getMinutes() !== 0;
+
+  const timeLabel = hasTime ? ` ${format(dueDate, "H:mm")}` : "";
+
+  if (isToday(dueDate)) {
+    return { label: `Today${timeLabel}`, category: "today" };
   }
-  return { label: format(dueDate, "d LLL"), category: "future" };
+
+  if (isTomorrow(dueDate)) {
+    return { label: `Tomorrow${timeLabel}`, category: "tomorrow" };
+  }
+
+  const daysDiff = differenceInCalendarDays(dueDate, today);
+
+  if (daysDiff >= 2 && daysDiff <= 7) {
+    const dayName = format(dueDate, "EEEE");
+    return { label: `${dayName}${timeLabel}`, category: "weekday" };
+  }
+
+  return {
+    label: `${format(dueDate, "d LLL")}${timeLabel}`,
+    category: "future",
+  };
 }
