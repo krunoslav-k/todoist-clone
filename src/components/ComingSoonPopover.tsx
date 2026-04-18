@@ -1,8 +1,19 @@
 import * as Popover from "@radix-ui/react-popover";
+import { useEffect, useState } from "react";
 
 export function ComingSoonPopover({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const timer = setTimeout(() => setOpen(false), 2500);
+
+    return () => clearTimeout(timer);
+  }, [open]);
+
   return (
-    <Popover.Root>
+    <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger asChild>{children}</Popover.Trigger>
 
       <Popover.Portal>
