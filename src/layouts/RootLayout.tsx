@@ -27,7 +27,7 @@ export default function RootLayout() {
 
         {modal === "add-task" && (
           <div
-            className="w-full pt-[12vh] fixed inset-0 flex items-start justify-center z-60"
+            className="w-full pt-[12vh] fixed inset-0 flex items-start justify-center"
             onClick={closeModal}
           >
             <div

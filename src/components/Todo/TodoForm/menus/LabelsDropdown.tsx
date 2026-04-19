@@ -1,6 +1,9 @@
+import { Command } from "cmdk";
 import { Tag } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { addLabel } from "../../../../slices/labelsSlice";
+import { useMemo } from "react";
+
 interface LabelsDropdownProps {
   onLabelSelect: (label: string) => void;
   labelQuery: string;
@@ -13,39 +16,57 @@ export default function LabelsDropdown({
   onClose,
 }: LabelsDropdownProps) {
   const labels = useAppSelector((state) => state.labels.labels);
-
   const dispatch = useAppDispatch();
 
   function handleCreateLabel(label: string) {
+    if (!label.trim()) return;
     dispatch(addLabel(label));
+    onLabelSelect(label);
     onClose();
   }
 
-  return (
-    <div>
-      <ul className="w-200 rounded-md bg-white border border-gray-200 drop-shadow-xl z-100">
-        {labels
-          .filter((label) => {
-            if (label.includes(labelQuery)) return label;
-          })
-          .map((label) => {
-            return (
-              <li
-                onClick={() => onLabelSelect(label)}
-                className="px-3 py-1.5 flex justify-start items-center gap-3 text-sm font-light border-b border-gray-100 hover:bg-gray-100 first:rounded-t-md last:rounded-b-md"
-              >
-                <Tag size={18} strokeWidth={1.25} className="text-gray-500" />
-                {label}
-              </li>
-            );
-          })}
+  const filteredLabels = useMemo(() => {
+    return labels.filter((label) =>
+      label.toLowerCase().includes(labelQuery.toLowerCase()),
+    );
+  }, [labels, labelQuery]);
 
-        <li className="px-5 py-1.5 flex justify-start items-center gap-3 text-sm font-light hover:bg-gray-100 first:rounded-t-md last:rounded-b-md">
-          <button type="button" onClick={() => handleCreateLabel(labelQuery)}>
-            Create label {labelQuery}
-          </button>
-        </li>
-      </ul>
-    </div>
+  const showCreate =
+    labelQuery.trim().length > 0 &&
+    !labels.some((l) => l.toLowerCase() === labelQuery.trim().toLowerCase());
+
+  return (
+    <Command className="rounded-md border border-gray-200 bg-white shadow-md">
+      {/* Lista */}
+      <Command.List>
+        <Command.Empty className="px-3 py-2 text-sm text-gray-500">
+          No labels found
+        </Command.Empty>
+
+        {filteredLabels.map((label) => (
+          <Command.Item
+            key={label}
+            onSelect={() => {
+              onLabelSelect(label);
+              onClose();
+            }}
+            className="px-3 py-1.5 flex items-center gap-3 text-sm cursor-pointer hover:bg-gray-100"
+          >
+            <Tag size={18} strokeWidth={1.25} className="text-gray-500" />
+            {label}
+          </Command.Item>
+        ))}
+
+        {showCreate && (
+          <Command.Item
+            onSelect={() => handleCreateLabel(labelQuery)}
+            className="px-3 py-1.5 text-sm cursor-pointer hover:bg-gray-100"
+          >
+            Label not found.
+            <span className="font-semibold"> Create {labelQuery}</span>
+          </Command.Item>
+        )}
+      </Command.List>
+    </Command>
   );
 }

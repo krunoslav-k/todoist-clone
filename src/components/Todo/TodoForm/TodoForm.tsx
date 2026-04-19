@@ -7,6 +7,7 @@ import ReminderPopover from "./popovers/RemindersPopover";
 import ActionsPopover from "./popovers/ActionsPopover";
 import useTodoForm from "../../../hooks/useTodoForm";
 import useDropdown from "../../../hooks/useDropdown";
+import LabelButton from "./buttons/LabelButton";
 
 interface TodoFormProps {
   initialTodo?: Todo;
@@ -24,6 +25,8 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     handlePrioritySelect,
     handleToggleReminder,
     handleAddLabel,
+    handleRemoveLabel,
+    handleRemoveAllLabels,
   } = useTodoForm(initialTodo, onClose);
   const { openDropdown, closeDropdown, isOpen } = useDropdown();
 
@@ -52,7 +55,7 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
                 }))
               }
               placeholder="Task name"
-              className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none w-full"
+              className="ml-2.5 mr-2.5 mt-3 mb-1 text-[0.92rem] font-medium focus:outline-none flex-1"
             />
           </Popover.Anchor>
 
@@ -63,7 +66,7 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               sideOffset={5}
               onInteractOutside={(e) => e.preventDefault()}
               onOpenAutoFocus={(e) => e.preventDefault()}
-              className="z-50 bg-white"
+              className="w-200 bg-white"
             >
               <LabelsDropdown
                 onLabelSelect={handleAddLabel}
@@ -120,6 +123,19 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               closeDropdown();
             }}
           />
+
+          {todo.labels && todo.labels.length < 4 ? (
+            todo.labels?.map((label) => {
+              return (
+                <LabelButton label={label} onRemoveLabel={handleRemoveLabel} />
+              );
+            })
+          ) : (
+            <LabelButton
+              label={todo.labels!.length.toString()}
+              onRemoveLabel={handleRemoveAllLabels}
+            />
+          )}
 
           <ActionsPopover
             actionsOpen={isOpen("actions")}

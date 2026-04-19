@@ -74,6 +74,16 @@ export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
     closeDropdown();
   }
 
+  function handleRemoveLabel(label: string) {
+    updateField(
+      "labels",
+      (todo.labels ?? []).filter((l) => l !== label),
+    );
+  }
+  function handleRemoveAllLabels() {
+    updateField("labels", []);
+  }
+
   return {
     todo,
     setTodo,
@@ -87,5 +97,7 @@ export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
     handlePrioritySelect,
     handleToggleReminder,
     handleAddLabel,
+    handleRemoveLabel,
+    handleRemoveAllLabels,
   };
 }
