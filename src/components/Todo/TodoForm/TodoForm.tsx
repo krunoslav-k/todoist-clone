@@ -32,7 +32,7 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     openDropdown,
     closeDropdown,
   } = useTodoForm(initialTodo, onClose);
-
+  const labels = todo.labels ?? [];
   return (
     <div className="relative">
       <form
@@ -105,7 +105,6 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
             onSelectDate={handleSelectDate}
             onRemoveDate={handleRemoveDate}
           />
-
           <PriorityPopover
             priorityOpen={isOpen("priority")}
             onOpenChange={(open) =>
@@ -114,7 +113,6 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
             priority={todo.priority}
             onPrioritySelect={handlePrioritySelect}
           />
-
           <ReminderPopover
             remindersOpen={isOpen("reminders")}
             onOpenChange={(open) =>
@@ -127,19 +125,20 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
             }}
           />
 
-          {todo.labels && todo.labels.length < 4 ? (
-            todo.labels?.map((label) => {
-              return (
-                <LabelButton label={label} onRemoveLabel={handleRemoveLabel} />
-              );
-            })
+          {labels.length < 4 ? (
+            labels.map((label) => (
+              <LabelButton
+                key={label}
+                label={label}
+                onRemoveLabel={handleRemoveLabel}
+              />
+            ))
           ) : (
             <LabelButton
-              label={todo.labels!.length.toString()}
+              label={labels.length.toString()}
               onRemoveLabel={handleRemoveAllLabels}
             />
           )}
-
           <ActionsPopover
             actionsOpen={isOpen("actions")}
             onOpenChange={(open) =>
