@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type Todo from "../types/todo";
 import { useAppDispatch } from "./reduxHooks";
 import { addTodo, updateTodo } from "../slices/todosSlice";
@@ -22,7 +22,17 @@ export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
   );
   const titleRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
-  const { closeDropdown } = useDropdown();
+  const { isOpen, openDropdown, closeDropdown } = useDropdown();
+
+  useEffect(() => {
+    const hasActiveMention = /@[^@]*$/.test(todo.title);
+
+    if (hasActiveMention) {
+      openDropdown("labels");
+    } else {
+      closeDropdown();
+    }
+  }, [todo.title]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -66,12 +76,21 @@ export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
     closeDropdown();
   }
 
-  function handleAddLabel(label: string) {
+  function handleSelectLabel(label: string) {
     const labels = todo.labels ?? [];
-    if (labels.includes(label)) return;
+    if (!labels.includes(label)) {
+      updateField("labels", [...labels, label]);
+    }
 
-    updateField("labels", [...labels, label]);
+    const cleanedTitle = todo.title.replace(/@[^@]*$/, "").trimEnd();
+
+    setTodo((prev) => ({
+      ...prev,
+      title: cleanedTitle + " ",
+    }));
+
     closeDropdown();
+    titleRef.current?.focus();
   }
 
   function handleRemoveLabel(label: string) {
@@ -80,8 +99,28 @@ export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
       (todo.labels ?? []).filter((l) => l !== label),
     );
   }
+
   function handleRemoveAllLabels() {
     updateField("labels", []);
+  }
+
+  function getLabelQuery(title: string) {
+    const match = title.match(/@([^@]*)$/);
+    return match ? match[1] : "";
+  }
+
+  function handleOpenLabels() {
+    setTodo((prev) => {
+      if (prev.title.includes("@")) return prev;
+
+      return {
+        ...prev,
+        title: prev.title.trimEnd() + " @",
+      };
+    });
+
+    titleRef.current?.focus();
+    openDropdown("labels");
   }
 
   return {
@@ -96,8 +135,14 @@ export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
     handleRemoveDate,
     handlePrioritySelect,
     handleToggleReminder,
-    handleAddLabel,
+    handleSelectLabel,
     handleRemoveLabel,
     handleRemoveAllLabels,
+    getLabelQuery,
+    handleOpenLabels,
+
+    isOpen,
+    openDropdown,
+    closeDropdown,
   };
 }

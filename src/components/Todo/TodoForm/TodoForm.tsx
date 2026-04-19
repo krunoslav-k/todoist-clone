@@ -6,7 +6,6 @@ import PriorityPopover from "./popovers/PriorityPopover";
 import ReminderPopover from "./popovers/RemindersPopover";
 import ActionsPopover from "./popovers/ActionsPopover";
 import useTodoForm from "../../../hooks/useTodoForm";
-import useDropdown from "../../../hooks/useDropdown";
 import LabelButton from "./buttons/LabelButton";
 
 interface TodoFormProps {
@@ -24,11 +23,15 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     handleRemoveDate,
     handlePrioritySelect,
     handleToggleReminder,
-    handleAddLabel,
+    handleSelectLabel,
     handleRemoveLabel,
     handleRemoveAllLabels,
+    getLabelQuery,
+    handleOpenLabels,
+    isOpen,
+    openDropdown,
+    closeDropdown,
   } = useTodoForm(initialTodo, onClose);
-  const { openDropdown, closeDropdown, isOpen } = useDropdown();
 
   return (
     <div className="relative">
@@ -66,11 +69,11 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               sideOffset={5}
               onInteractOutside={(e) => e.preventDefault()}
               onOpenAutoFocus={(e) => e.preventDefault()}
-              className="w-200 bg-white"
+              className="w-[var(--radix-popover-trigger-width)]"
             >
               <LabelsDropdown
-                onLabelSelect={handleAddLabel}
-                labelQuery={todo.title}
+                onLabelSelect={handleSelectLabel}
+                labelQuery={getLabelQuery(todo.title)}
                 onClose={() => closeDropdown()}
               />
             </Popover.Content>
@@ -143,7 +146,7 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
               open ? openDropdown("actions") : closeDropdown()
             }
             onOpenLabels={(open) =>
-              open ? openDropdown("labels") : closeDropdown()
+              open ? handleOpenLabels() : closeDropdown()
             }
             titleRef={titleRef}
           />

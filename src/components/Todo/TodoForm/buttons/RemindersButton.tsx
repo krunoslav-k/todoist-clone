@@ -12,7 +12,7 @@ export default function RemindersButton({
     <button {...props} type="button" className="button">
       {hasReminder ? (
         <div className="flex items-center gap-1.5">
-          <div className="relative w-[15px] h-[15px]">
+          <div className="relative w-3.75 h-3.75">
             <AlarmClock
               strokeWidth={1.5}
               size={15}
