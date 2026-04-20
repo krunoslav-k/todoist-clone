@@ -27,6 +27,7 @@ export default function AddSectionForm({
     );
 
     setName("");
+    onCancelAddSection();
   }
 
   function handleCancel() {
