@@ -58,7 +58,6 @@ export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
 
   function handleSelectDate(date: Date) {
     updateField("dueDate", date);
-    closeDropdown();
   }
 
   function handleRemoveDate() {
