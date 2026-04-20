@@ -9,8 +9,8 @@ export default interface Todo {
   labels?: string[];
   comments?: string[];
 
-  projectId?: string;
-  sectionId?: string;
+  projectId?: string | null;
+  sectionId?: string | null;
 }
 
 export type Priority = 1 | 2 | 3 | 4;

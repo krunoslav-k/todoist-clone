@@ -16,11 +16,12 @@ import type Todo from "../../types/todo";
 import { useState } from "react";
 import TodoItem from "./TodoItem/TodoItem";
 import TodoItemOverlay from "./TodoItem/TodoItemOverlay";
+import type { ActiveTodoForm } from "../TodosPageView";
 
 interface TodoListProps {
   todos: Todo[];
-  activeTodoForm: "add" | number | null;
-  setActiveTodoForm: (form: "add" | number | null) => void;
+  activeTodoForm: ActiveTodoForm;
+  setActiveTodoForm: (form: ActiveTodoForm) => void;
 }
 
 export default function TodoList({

@@ -6,71 +6,88 @@ import type Todo from "../types/todo";
 import AddSectionButton from "./Section/AddSectionButton";
 import AddSectionForm from "./Section/AddSectionForm";
 import { useAppSelector } from "../hooks/reduxHooks";
-import Section from "./Section/Section";
+import SectionItem from "./Section/SectionItem";
+
+export type ActiveTodoForm =
+  | { type: "add"; sectionId: string | null }
+  | { type: "edit"; todoId: number }
+  | null;
 
 interface TodosPageViewProps {
   title: string;
   todos: Todo[];
 }
 
-export default function TodosPageView({ title, todos }: TodosPageViewProps) {
-  const [activeTodoForm, setActiveTodoForm] = useState<"add" | number | null>(
-    null,
+function isAddOpen(activeTodoForm: ActiveTodoForm, sectionId: string | null) {
+  return (
+    activeTodoForm?.type === "add" && activeTodoForm.sectionId === sectionId
   );
-  const [isAddSectionFormActive, setIsAddSectionFormActive] = useState(false);
-  const sections = useAppSelector((state) =>
-    state.sections.sections.map((section) => section),
-  );
+}
 
-  function toogleIsAddSectionFormActive() {
+export default function TodosPageView({ title, todos }: TodosPageViewProps) {
+  const [activeTodoForm, setActiveTodoForm] = useState<ActiveTodoForm>(null);
+  const [isAddSectionFormActive, setIsAddSectionFormActive] = useState(false);
+
+  const sections = useAppSelector((state) => state.sections.sections);
+
+  const toggleSectionForm = () => {
     setIsAddSectionFormActive((prev) => !prev);
-  }
+  };
+
+  const openGlobalAdd = () =>
+    setActiveTodoForm({ type: "add", sectionId: null });
+
+  const closeForm = () => setActiveTodoForm(null);
+
+  const isGlobalAddOpen = isAddOpen(activeTodoForm, null);
 
   return (
-    <main className="flex flex-col justify-center items-center px-28">
+    <main className="flex flex-col items-center px-28">
+      {/* HEADER */}
       <h1 className="self-start py-8 font-bold text-2xl tracking-wide">
         {title}
       </h1>
 
-      <div className="w-full">
+      {/* INBOX / GLOBAL TODO LIST */}
+      <section className="w-full">
         <TodoList
           todos={todos}
           activeTodoForm={activeTodoForm}
           setActiveTodoForm={setActiveTodoForm}
         />
 
-        {activeTodoForm !== "add" && (
-          <AddTodoButton
-            handleAddTodoButtonClick={() => setActiveTodoForm("add")}
+        {!isGlobalAddOpen && (
+          <AddTodoButton handleAddTodoButtonClick={openGlobalAdd} />
+        )}
+
+        {isGlobalAddOpen && (
+          <TodoForm projectId={null} sectionId={null} onClose={closeForm} />
+        )}
+      </section>
+
+      {/* SECTION FORM */}
+      <section className="w-full">
+        {isAddSectionFormActive ? (
+          <AddSectionForm
+            projectId="inbox"
+            onCancelAddSection={toggleSectionForm}
           />
+        ) : (
+          <AddSectionButton onAddSectionButtonClick={toggleSectionForm} />
         )}
+      </section>
 
-        {activeTodoForm === "add" && (
-          <TodoForm onClose={() => setActiveTodoForm(null)} />
-        )}
-      </div>
-
-      {isAddSectionFormActive ? (
-        <AddSectionForm
-          projectId="inbox"
-          onCancelAddSection={toogleIsAddSectionFormActive}
-        />
-      ) : (
-        <AddSectionButton
-          onAddSectionButtonClick={toogleIsAddSectionFormActive}
-        />
-      )}
-
-      <div className="w-full">
+      {/* SECTIONS */}
+      <section className="w-full">
         {sections.map((section) => (
-          <Section
+          <SectionItem
+            key={section.id}
             section={section}
             activeTodoForm={activeTodoForm}
             setActiveTodoForm={setActiveTodoForm}
-            handleAddTodoButtonClick={() => setActiveTodoForm("add")}
           />
         ))}
-      </div>
+      </section>
     </main>
   );
 }

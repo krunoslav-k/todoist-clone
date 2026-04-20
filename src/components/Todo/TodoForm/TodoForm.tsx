@@ -11,9 +11,16 @@ import LabelButton from "./buttons/LabelButton";
 interface TodoFormProps {
   initialTodo?: Todo;
   onClose: () => void;
+  projectId: string | null;
+  sectionId: string | null;
 }
 
-export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
+export default function TodoForm({
+  initialTodo,
+  onClose,
+  projectId,
+  sectionId,
+}: TodoFormProps) {
   const {
     todo,
     setTodo,
@@ -31,7 +38,7 @@ export default function TodoForm({ initialTodo, onClose }: TodoFormProps) {
     isOpen,
     openDropdown,
     closeDropdown,
-  } = useTodoForm(initialTodo, onClose);
+  } = useTodoForm(projectId, sectionId, initialTodo, onClose);
   const labels = todo.labels ?? [];
   return (
     <div className="relative">

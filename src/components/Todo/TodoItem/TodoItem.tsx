@@ -14,11 +14,12 @@ import DragHighlightLine from "./DragHighlightLine";
 import useTodoModal from "../../../hooks/useTodoModal";
 import TodoItemMeta from "./TodoItemMeta";
 import * as Popover from "@radix-ui/react-popover";
+import type { ActiveTodoForm } from "../../TodosPageView";
 
 interface TodoItemProps {
   todo: Todo;
-  activeTodoForm: "add" | number | null;
-  setActiveTodoForm: (form: "add" | number | null) => void;
+  activeTodoForm: ActiveTodoForm;
+  setActiveTodoForm: (form: ActiveTodoForm) => void;
 }
 
 export default function TodoItem({
@@ -50,7 +51,8 @@ export default function TodoItem({
 
   useClickOutside(menuRef, () => setIsDueDateMenuOpen(false));
 
-  const isEditing = activeTodoForm === todo.id;
+  const isEditing =
+    activeTodoForm?.type === "edit" && activeTodoForm?.todoId === todo.id;
 
   const { openTodoModal } = useTodoModal();
 
@@ -124,7 +126,9 @@ export default function TodoItem({
             >
               <Popover.Anchor>
                 <TodoItemActions
-                  onEditTodo={() => setActiveTodoForm(todo.id)}
+                  onEditTodo={() =>
+                    setActiveTodoForm({ type: "edit", todoId: todo.id })
+                  }
                   onDueDateClick={() => setIsDueDateMenuOpen(true)}
                   onRemoveTodo={handleRemoveTodo}
                 />

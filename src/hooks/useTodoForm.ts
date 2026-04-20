@@ -16,7 +16,12 @@ const EMPTY_TODO: Todo = {
   labels: [],
 };
 
-export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
+export default function useTodoForm(
+  projectId: string | null,
+  sectionId: string | null,
+  initialTodo?: Todo,
+  onClose?: () => void,
+) {
   const [todo, setTodo] = useState<Todo>(
     () => initialTodo ?? { ...EMPTY_TODO, id: Date.now() },
   );
@@ -39,10 +44,16 @@ export default function useTodoForm(initialTodo?: Todo, onClose?: () => void) {
 
     if (!todo.title.trim()) return;
 
+    const finalTodo = {
+      ...todo,
+      projectId,
+      sectionId,
+    };
+
     if (initialTodo) {
-      dispatch(updateTodo({ id: todo.id, changes: todo }));
+      dispatch(updateTodo({ id: todo.id, changes: finalTodo }));
     } else {
-      dispatch(addTodo(todo));
+      dispatch(addTodo(finalTodo));
     }
 
     setTodo({ ...EMPTY_TODO, id: Date.now() });
