@@ -1,7 +1,8 @@
 export const dueDateColors: Record<
-  "today" | "tomorrow" | "weekday" | "future",
+  "past" | "today" | "tomorrow" | "weekday" | "future",
   string
 > = {
+  past: "text-[#d1453c]",
   today: "text-[#088527]",
   tomorrow: "text-[#ad6200]",
   weekday: "text-[#6a2ec2]",
