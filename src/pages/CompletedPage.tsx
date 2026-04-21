@@ -11,5 +11,11 @@ export default function CompletedPage() {
     return todo.completed ? todo : "";
   });
 
-  return <TodosPageView title="Today" todos={completedTodos} />;
+  return (
+    <TodosPageView
+      projectId={"completed"}
+      title="Completed"
+      todos={completedTodos}
+    />
+  );
 }

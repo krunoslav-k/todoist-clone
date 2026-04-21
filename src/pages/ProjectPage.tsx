@@ -10,9 +10,10 @@ export default function ProjectPage() {
   );
 
   const todos = useAppSelector((state) =>
-    state.todos.ids.map((id) => state.todos.entities[id]),
+    state.todos.ids
+      .map((id) => state.todos.entities[id])
+      .filter((todo) => todo.projectId === projectId),
   );
-  const projectTodos = todos.filter((todo) => todo.projectId === projectId);
 
   const sections = useAppSelector((state) =>
     state.sections.sections.filter(
@@ -22,10 +23,13 @@ export default function ProjectPage() {
 
   return (
     <>
-      {project ? (
-        <TodosPageView title={project.name} todos={projectTodos} />
-      ) : (
-        <div>Projekt nije pronađen</div>
+      {project && (
+        <TodosPageView
+          projectId={projectId || "inbox"}
+          title={project.name}
+          todos={todos}
+          sections={sections}
+        />
       )}
     </>
   );

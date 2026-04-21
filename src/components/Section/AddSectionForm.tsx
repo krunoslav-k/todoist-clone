@@ -19,12 +19,7 @@ export default function AddSectionForm({
 
     if (!name.trim()) return;
 
-    dispatch(
-      addSection({
-        name,
-        projectId,
-      }),
-    );
+    dispatch(addSection(name, projectId));
 
     setName("");
     onCancelAddSection();

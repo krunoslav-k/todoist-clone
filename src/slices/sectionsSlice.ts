@@ -1,5 +1,6 @@
 import { createSlice, nanoid, type PayloadAction } from "@reduxjs/toolkit";
 import { dummySections } from "../data/dummySections";
+import type Section from "../types/section";
 
 const initialState = {
   sections: dummySections,
@@ -9,15 +10,19 @@ const sectionsSlice = createSlice({
   name: "sections",
   initialState,
   reducers: {
-    addSection(
-      state,
-      action: PayloadAction<{ name: string; projectId: string }>,
-    ) {
-      state.sections.push({
-        id: nanoid(),
-        name: action.payload.name,
-        projectId: action.payload.projectId,
-      });
+    addSection: {
+      reducer(state, action: PayloadAction<Section>) {
+        state.sections.push(action.payload);
+      },
+      prepare(name: string, projectId: string) {
+        return {
+          payload: {
+            id: nanoid(),
+            name,
+            projectId,
+          },
+        };
+      },
     },
 
     removeSection(state, action: PayloadAction<string>) {

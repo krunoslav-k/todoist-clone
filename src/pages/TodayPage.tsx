@@ -10,5 +10,5 @@ export default function TodayPage() {
     (todo) => todo.dueDate && isToday(new Date(todo.dueDate)),
   );
 
-  return <TodosPageView title="Today" todos={todayTodos} />;
+  return <TodosPageView projectId={"today"} title="Today" todos={todayTodos} />;
 }

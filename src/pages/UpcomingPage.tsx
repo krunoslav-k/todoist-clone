@@ -15,5 +15,11 @@ export default function UpcomingPage() {
     return !isToday(due) && isAfter(due, new Date());
   });
 
-  return <TodosPageView title="Today" todos={upcomingTodos} />;
+  return (
+    <TodosPageView
+      projectId={"upcoming"}
+      title="Upcoming"
+      todos={upcomingTodos}
+    />
+  );
 }

@@ -5,8 +5,8 @@ import TodoList from "./Todo/TodoList";
 import type Todo from "../types/todo";
 import AddSectionButton from "./Section/AddSectionButton";
 import AddSectionForm from "./Section/AddSectionForm";
-import { useAppSelector } from "../hooks/reduxHooks";
 import SectionItem from "./Section/SectionItem";
+import type Section from "../types/section";
 
 export type ActiveTodoForm =
   | { type: "add"; sectionId: string | null }
@@ -14,8 +14,10 @@ export type ActiveTodoForm =
   | null;
 
 interface TodosPageViewProps {
+  projectId: string;
   title: string;
   todos: Todo[];
+  sections?: Section[];
 }
 
 function isAddOpen(activeTodoForm: ActiveTodoForm, sectionId: string | null) {
@@ -24,11 +26,14 @@ function isAddOpen(activeTodoForm: ActiveTodoForm, sectionId: string | null) {
   );
 }
 
-export default function TodosPageView({ title, todos }: TodosPageViewProps) {
+export default function TodosPageView({
+  projectId,
+  title,
+  todos,
+  sections,
+}: TodosPageViewProps) {
   const [activeTodoForm, setActiveTodoForm] = useState<ActiveTodoForm>(null);
   const [isAddSectionFormActive, setIsAddSectionFormActive] = useState(false);
-
-  const sections = useAppSelector((state) => state.sections.sections);
 
   const toggleSectionForm = () => {
     setIsAddSectionFormActive((prev) => !prev);
@@ -61,7 +66,11 @@ export default function TodosPageView({ title, todos }: TodosPageViewProps) {
         )}
 
         {isGlobalAddOpen && (
-          <TodoForm projectId={null} sectionId={null} onClose={closeForm} />
+          <TodoForm
+            projectId={projectId}
+            sectionId={null}
+            onClose={closeForm}
+          />
         )}
       </section>
 
@@ -69,7 +78,7 @@ export default function TodosPageView({ title, todos }: TodosPageViewProps) {
       <section className="w-full">
         {isAddSectionFormActive ? (
           <AddSectionForm
-            projectId="inbox"
+            projectId={projectId}
             onCancelAddSection={toggleSectionForm}
           />
         ) : (
@@ -78,16 +87,18 @@ export default function TodosPageView({ title, todos }: TodosPageViewProps) {
       </section>
 
       {/* SECTIONS */}
-      <section className="w-full">
-        {sections.map((section) => (
-          <SectionItem
-            key={section.id}
-            section={section}
-            activeTodoForm={activeTodoForm}
-            setActiveTodoForm={setActiveTodoForm}
-          />
-        ))}
-      </section>
+      {sections && (
+        <section className="w-full">
+          {sections.map((section) => (
+            <SectionItem
+              key={section.id}
+              section={section}
+              activeTodoForm={activeTodoForm}
+              setActiveTodoForm={setActiveTodoForm}
+            />
+          ))}
+        </section>
+      )}
     </main>
   );
 }
