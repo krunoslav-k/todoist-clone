@@ -45,4 +45,14 @@ export const dummyData: Todo[] = [
     hasReminder: false,
     sectionId: "once",
   },
+  {
+    id: 6,
+    title: "Proučiti NextJs",
+    description: "Pročitati dokumentaciju i pogledati nekoliko tutorijala",
+    completed: false,
+    dueDate: new Date("12.08.2027"),
+    priority: 2,
+    hasReminder: true,
+    projectId: "errands",
+  },
 ];

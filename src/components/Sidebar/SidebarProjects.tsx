@@ -14,7 +14,7 @@ export default function SidebarProjects() {
       {projects.map((project) => {
         return (
           <NavLink
-            to="/"
+            to={`/projects/${project.id}`}
             className={({ isActive }) =>
               `sidebar_button ${isActive ? "bg-gray-200" : ""}`
             }
@@ -24,7 +24,7 @@ export default function SidebarProjects() {
               strokeWidth={1.1}
               className="text-amber-700 scale-80"
             />
-            {project}
+            {project.name}
           </NavLink>
         );
       })}

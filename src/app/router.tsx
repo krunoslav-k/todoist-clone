@@ -4,6 +4,7 @@ import RootLayout from "../layouts/RootLayout";
 import TodayPage from "../pages/TodayPage";
 import UpcomingPage from "../pages/UpcomingPage";
 import CompletedPage from "../pages/CompletedPage";
+import ProjectPage from "../pages/ProjectPage";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,15 @@ export const router = createBrowserRouter([
       {
         path: "completed",
         element: <CompletedPage />,
+      },
+      {
+        path: "projects",
+        children: [
+          {
+            path: ":projectId",
+            element: <ProjectPage />,
+          },
+        ],
       },
     ],
   },

@@ -76,7 +76,7 @@ export default function TodoForm({
               sideOffset={5}
               onInteractOutside={(e) => e.preventDefault()}
               onOpenAutoFocus={(e) => e.preventDefault()}
-              className="w-[var(--radix-popover-trigger-width)]"
+              className="w-(--radix-popover-trigger-width)"
             >
               <LabelsDropdown
                 onLabelSelect={handleSelectLabel}

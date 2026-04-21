@@ -34,7 +34,11 @@ export default function RootLayout() {
               className="w-full max-w-lg bg-white shadow-2xl relative"
               onClick={(e) => e.stopPropagation()}
             >
-              <TodoForm onClose={closeModal} />
+              <TodoForm
+                projectId={null}
+                sectionId={null}
+                onClose={closeModal}
+              />
             </div>
           </div>
         )}
