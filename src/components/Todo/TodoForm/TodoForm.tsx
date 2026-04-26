@@ -112,6 +112,7 @@ export default function TodoForm({
             onSelectDate={handleSelectDate}
             onRemoveDate={handleRemoveDate}
           />
+
           <PriorityPopover
             priorityOpen={isOpen("priority")}
             onOpenChange={(open) =>
@@ -120,6 +121,7 @@ export default function TodoForm({
             priority={todo.priority}
             onPrioritySelect={handlePrioritySelect}
           />
+
           <ReminderPopover
             remindersOpen={isOpen("reminders")}
             onOpenChange={(open) =>

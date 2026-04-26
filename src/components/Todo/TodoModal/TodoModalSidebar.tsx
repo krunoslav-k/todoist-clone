@@ -1,8 +1,10 @@
 import {
+  Calendar,
   ChevronDown,
   Flag,
   LockKeyhole,
   Plus,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import TodoModalSidebarItem from "./TodoModalSidebarItem";
@@ -14,6 +16,9 @@ import RemindersDropdown from "../TodoForm/menus/RemindersDropdown";
 import useTodoActions from "../../../hooks/useTodoActions";
 import { useAppSelector } from "../../../hooks/reduxHooks";
 import { priorityColors } from "../../../config/priorityStyles";
+import { formatDueTime } from "../../../utils/formatDueDate";
+import { categorizeDueDate } from "../../../utils/categorizeDueDate";
+import { dueDateColors } from "../../../config/dueDateColors";
 
 interface TodoModalSidebarProps {
   selectedTodoId: number;
@@ -40,6 +45,10 @@ export default function TodoModalSidebar({
 
   if (!todo) return null;
 
+  const dueDateTime = formatDueTime(todo.dueDate);
+  const { label, category } = categorizeDueDate(todo.dueDate);
+  const color = dueDateColors[category];
+
   const items: Item[] = [
     {
       label: "Project",
@@ -50,16 +59,36 @@ export default function TodoModalSidebar({
       dropdown: <></>,
     },
     {
-      label: null,
-      buttonText: "Date",
+      label: todo.dueDate ? "Date" : null,
+      buttonText: todo.dueDate ? (
+        <span className={`w-full flex justify-between items-center`}>
+          <span className="flex items-center gap-2">
+            <Calendar strokeWidth={1.5} size={14} className={`${color}`} />{" "}
+            {label} {dueDateTime}
+          </span>
+
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              removeDueDate();
+            }}
+            role="button"
+            className=" p-1 rounded-sm hover:bg-gray-300"
+          >
+            <X strokeWidth={1.5} size={15} />
+          </span>
+        </span>
+      ) : (
+        "Date"
+      ),
       hasStar: false,
       Icon: Plus,
-      iconClasses: "",
+      iconClasses: todo.dueDate ? "hidden" : "",
       dropdown: (
         <DueDateMenu
           onSelectDate={setDueDate}
           onSelectDateAndClose={setDueDate}
-          onDeleteDate={removeDueDate}
+          onRemoveDate={removeDueDate}
         />
       ),
     },
