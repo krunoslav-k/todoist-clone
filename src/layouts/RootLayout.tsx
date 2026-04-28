@@ -19,10 +19,10 @@ export default function RootLayout() {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
 
-      <main className="flex-1 h-screen">
+      <main className="flex-1 h-screen overflow-y-auto">
         <Outlet />
 
         {modal === "add-task" && (
