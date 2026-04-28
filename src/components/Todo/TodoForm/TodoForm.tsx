@@ -42,10 +42,7 @@ export default function TodoForm({
   const labels = todo.labels ?? [];
   return (
     <div className="relative">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full border border-gray-300 rounded-lg flex flex-col focus-within:border-gray-400"
-      >
+      <form onSubmit={handleSubmit} className="w-full flex flex-col">
         {/* TITLE + LABELS */}
         <Popover.Root
           open={isOpen("labels")}

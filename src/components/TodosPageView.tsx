@@ -66,11 +66,13 @@ export default function TodosPageView({
         )}
 
         {isGlobalAddOpen && (
-          <TodoForm
-            projectId={projectId}
-            sectionId={null}
-            onClose={closeForm}
-          />
+          <div className="rounded-lg border border-gray-300 focus-within:border-gray-400">
+            <TodoForm
+              projectId={projectId}
+              sectionId={null}
+              onClose={closeForm}
+            />
+          </div>
         )}
       </section>
 

@@ -31,7 +31,7 @@ export default function RootLayout() {
             onClick={closeModal}
           >
             <div
-              className="w-full max-w-lg bg-white shadow-2xl relative"
+              className="w-full max-w-lg bg-white shadow-[0_8px_50px_-6px_rgba(0,0,0,0.25)] relative rounded-lg"
               onClick={(e) => e.stopPropagation()}
             >
               <TodoForm
